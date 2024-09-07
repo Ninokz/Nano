@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Log">
+      <UniqueIdentifier>{5ad69309-1c27-4e16-9bbc-751ffb28efe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Log">
+      <UniqueIdentifier>{bd60c5b8-66b8-4e90-b06f-e7cc0b35af18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Concurrent">
+      <UniqueIdentifier>{d187b5a3-3db4-46eb-a3de-2401743921bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Concurrent">
+      <UniqueIdentifier>{31d730fd-b09d-41af-8c55-a8b0255dd61b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Nano.cpp">

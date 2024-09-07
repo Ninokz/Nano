@@ -11,101 +11,85 @@
 
 namespace Nano {
 	namespace Log {
-		/// <summary>
-		/// 日志级别
-		/// </summary>
-		enum class LogLevel {
-			UNKOWN = 0,
-			DEBUG = 1,
-			INFO = 2,
-			WARN = 3,
-			ERROR = 4,
-			FATAL = 5
+		class LogLevel {
+		public:
+			enum class Level {
+				FATAL = 0,
+				ALERT = 100,
+				ERROR = 200,
+				WARN = 300,
+				NOTICE = 400,
+				INFO = 500,
+				DEBUG = 600
+			};
+
+			const static char* ToString(LogLevel::Level level);
+
+			static LogLevel::Level FromString(const std::string& str);
 		};
 
-		/// <summary>
-		/// 日志事件
-		/// </summary>
 		class LogEvent {
-		private:
-			const char* m_file = nullptr;	// 文件名
-			int32_t m_line = 0;				// 行号
-			uint32_t m_elapse = 0;			// 程序启动开始到现在的毫秒数
-			uint32_t m_threadId = 0;		// 线程id
-			uint32_t m_fiberId = 0;			// 协程id
-			uint64_t m_time = 0;			// 时间戳
-			std::string m_content;
 		public:
 			typedef std::shared_ptr<LogEvent> ptr;
-			LogEvent();
+
+			LogEvent(const std::string& logger_name, LogLevel::Level level, const char* file, int32_t line
+				, int64_t elapse, uint32_t thread_id, uint64_t fiber_id, time_t time, const std::string& thread_name);
+
+			LogLevel::Level getLevel() const { return m_level; }
+			std::string getContent() const { return m_ss.str(); }
+			std::string getFile() const { return m_file; }
+			int32_t getLine() const { return m_line; }
+			int64_t getElapse() const { return m_elapse; }
+			uint32_t getThreadId() const { return m_threadId; }
+			uint64_t getFiberId() const { return m_fiberId; }
+			time_t getTime() const { return m_time; }
+			const std::string& getThreadName() const { return m_threadName; }
+			std::stringstream& getSS() { return m_ss; }
+			const std::string& getLoggerName() const { return m_loggerName; }
+
+			void printf(const char* fmt, ...);
+			void vprintf(const char* fmt, va_list ap);
+		private:
+			/// 日志级别
+			LogLevel::Level m_level;
+			/// 日志内容，使用stringstream存储，便于流式写入日志
+			std::stringstream m_ss;
+			/// 文件名
+			const char* m_file = nullptr;
+			/// 行号
+			int32_t m_line = 0;
+			/// 从日志器创建开始到当前的耗时
+			int64_t m_elapse = 0;
+			/// 线程id
+			uint32_t m_threadId = 0;
+			/// 协程id
+			uint64_t m_fiberId = 0;
+			/// UTC时间戳
+			time_t m_time;
+			/// 线程名称
+			std::string m_threadName;
+			/// 日志器名称
+			std::string m_loggerName;
 		};
 
-		/// <summary>
-		/// 日志格式器
-		/// </summary>
 		class LogFormatter {
-		private:
 
-		public:
-			typedef std::shared_ptr<LogFormatter> ptr;
-
-			std::string format(LogEvent::ptr event);
 		};
 
-		/// <summary>
-		/// 日志输出地
-		/// </summary>
 		class LogAppender {
-		protected:
-			LogLevel m_level;
-		public:
-			typedef std::shared_ptr<LogAppender> ptr;
-			virtual ~LogAppender() {}
-			virtual void log(LogLevel level, LogEvent::ptr event) = 0;
+
 		};
 
-		/// <summary>
-		/// 日志器
-		/// </summary>
 		class Logger {
-		private:
-			std::string m_name;							// 日志名称
-			std::list< LogAppender::ptr> m_appenders;	// Appender集合
-			LogLevel m_level;							// 日志级别
-		public:
-			typedef std::shared_ptr<Logger> ptr;
-			Logger(const std::string& name = "root");
-			void log(LogLevel level, LogEvent::ptr event);
 
-			void debug(LogEvent::ptr event);
-			void info(LogEvent::ptr event);
-			void warn(LogEvent::ptr event);
-			void error(LogEvent::ptr event);
-			void fatal(LogEvent::ptr event);
-
-			void addAppender(LogAppender::ptr appender);
-			void delAppender(LogAppender::ptr appender);
-			LogLevel getLevel() const { return m_level; }
-			void setLevel(LogLevel level) { m_level = level; }
 		};
 
-		/// <summary>
-		/// 输出到控制台的Appender
-		/// </summary>
 		class StdoutLogAppender : public LogAppender {
-		private:
-
-		public:
-			void log(LogLevel level, LogEvent::ptr event) override;
 
 		};
 
-		/// <summary>
-		/// 输出到文件的Appender
-		/// </summary>
 		class FileLogAppender : public LogAppender {
-		public:
-			void log(LogLevel level, LogEvent::ptr event) override;
+
 		};
 	}
 }
