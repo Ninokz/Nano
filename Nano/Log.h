@@ -217,7 +217,7 @@ namespace Nano {
     #define LOG_NAME(name) LOG_MGR->getLogger(name)
 
     #define LOG_LEVEL(logger, level, sender) \
-	    if (logger->getLevel() <= level) \
+	    if (logger->getLevel() >= level) \
 		    Nano::Log::LogEventWrap(logger, \
 			    std::make_shared<Nano::Log::LogEvent>(logger->getName(), level, __FILE__, __LINE__, \
 				    Nano::Utils::GetThreadId(), time(0), sender)).getLogEvent()->getSS()
@@ -229,7 +229,7 @@ namespace Nano {
     #define LOG_UNKNOWN(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::UNKNOWN, sender)
 
     #define LOG_FMT_LEVEL(logger, level, sender, fmt, ...) \
-	    if (logger->getLevel() <= level) \
+	    if (logger->getLevel() >= level) \
 		    Nano::Log::LogEventWrap(logger, \
 			    std::make_shared<Nano::Log::LogEvent>(logger->getName(), level, __FILE__, __LINE__, \
 				    Nano::Utils::GetThreadId(), time(0), sender)).getLogEvent()->printf(fmt, ##__VA_ARGS__)

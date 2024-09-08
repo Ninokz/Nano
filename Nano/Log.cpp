@@ -423,6 +423,7 @@ namespace Nano {
 
         void Logger::log(LogEvent::ptr event) {
             if (event->getLevel() <= m_level) {
+                /// Logger至少要有一个appender，否则没有输出
                 for (auto& i : m_appenders) {
                     i->log(event);
                 }
