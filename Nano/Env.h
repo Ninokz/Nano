@@ -8,14 +8,14 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+#include <map>
 #include <cstdlib>
 
 #include "singleton.h"
 
 namespace Nano {
 	namespace Env {
-		std::string GetCurrentDirectoryPlatformSpecific();
-		
 		class EnvMgr : public Singleton<EnvMgr> {
 			friend class Singleton<EnvMgr>;
 		private:
@@ -24,8 +24,35 @@ namespace Nano {
 			std::string GetRootPath() {
 				return m_rootPath;
 			}
+
+			std::string GetConfigPath() {
+				return m_configPath;
+			}
+
+			std::string GetLogFolderPath() {
+				return m_logFolderPath;
+			}
+
+			static std::string GetCurrentDirectoryPlatformSpecific();
+
+			void addEnvVar(const std::string& key, const std::string& value) {
+				m_envVars[key] = value;
+			}
+
+			std::string getEnvVar(const std::string& key) {
+				return m_envVars[key];
+			}
+
+			void delEnvVar(const std::string& key) {
+				m_envVars.erase(key);
+			}
+
 		private:
 			std::string m_rootPath;
+			std::string m_configPath;
+			std::string m_logFolderPath;
+
+			std::map<std::string, std::string> m_envVars;
 		};
 	}
 }

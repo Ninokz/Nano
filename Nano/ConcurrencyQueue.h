@@ -53,7 +53,7 @@ namespace Nano {
 
 			virtual ~ConcurrentQueue(){
 				if(this->m_count!=0)
-					std::cerr << "Error, ConcurrentQueue is not empty!" << std::endl;
+					std::cerr << "ConcurrentQueue is not empty!" << std::endl;
 			}
 
 			std::shared_ptr<T> WaitPop()

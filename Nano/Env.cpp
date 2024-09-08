@@ -1,8 +1,15 @@
-#include "Env.h"
+#include "env.h"
 
 namespace Nano {
 	namespace Env {
-        std::string GetCurrentDirectoryPlatformSpecific()
+		EnvMgr::EnvMgr()
+		{
+			m_rootPath = GetCurrentDirectoryPlatformSpecific();
+			m_configPath = m_rootPath + "/config.json";
+			m_logFolderPath = m_rootPath + "/logs";
+		}
+
+        std::string EnvMgr::GetCurrentDirectoryPlatformSpecific()
         {
 #ifdef _WIN32
             wchar_t cwd[MAX_PATH];
@@ -16,9 +23,9 @@ namespace Nano {
                     throw std::runtime_error("wcstombs_s failed");
                 }
                 else {
-					std::string str(cstr);
+                    std::string str(cstr);
                     delete[] cstr;
-					return str;
+                    return str;
                 }
             }
             else {
@@ -34,11 +41,5 @@ namespace Nano {
             }
 #endif
         }
-
-		EnvMgr::EnvMgr()
-		{
-			m_rootPath = GetCurrentDirectoryPlatformSpecific();
-		}
-
 	}
 }
