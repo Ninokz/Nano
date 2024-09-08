@@ -5,16 +5,12 @@ using namespace Nano::Log;
 using namespace Nano::Utils;
 
 int main() {
-    auto logger = Nano::LOG_NAME("example");
-	logger->addAppender(std::make_shared<ANSIColorStdoutLogAppender>());
-	logger->setLevel(LogLevel::Level::DEBUG);
+	auto asyncLogger = ASYNC_LOG_NAME("TEST");
+	asyncLogger->addAppender(std::make_shared<StdoutLogAppender>());
+	asyncLogger->setLevel(LogLevel::Level::DEBUG);
+	ASYNC_LOG_DEBUG(asyncLogger, "main");
 
-    // Log a message at different levels
-
-	LOG_FATAL(logger, "main");
-	LOG_DEBUG(logger, "main");
-	LOG_INFO(logger,  "main");
-	LOG_WARN(logger, "main");
-	LOG_ERROR(logger,  "main");
+	
+	system("pause");
     return 0;
 }
