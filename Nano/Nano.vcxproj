@@ -128,13 +128,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Env.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="Nano.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConcurrencyQueue.h" />
+    <ClInclude Include="concurrencyqueue.h" />
+    <ClInclude Include="Env.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />

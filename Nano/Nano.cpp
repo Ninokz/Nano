@@ -1,16 +1,14 @@
 ﻿#include "utils.h"
 #include "Log.h"
+#include "Env.h"    
 
 using namespace Nano::Log;
 using namespace Nano::Utils;
+using namespace Nano::Env;
 
-int main() {
-	auto asyncLogger = ASYNC_LOG_NAME("TEST");
-	asyncLogger->addAppender(std::make_shared<StdoutLogAppender>());
-	asyncLogger->setLevel(LogLevel::Level::DEBUG);
-	ASYNC_LOG_DEBUG(asyncLogger, "main");
-
-	
-	system("pause");
+int main(int argc, char** argv) {
+	auto sig = EnvMgr::GetInstance();
+	auto rootPath = sig->GetRootPath();
+	std::cout << rootPath << std::endl;
     return 0;
 }

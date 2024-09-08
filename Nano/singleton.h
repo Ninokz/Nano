@@ -1,5 +1,9 @@
 #pragma once
 #include <memory>
+#include <mutex>	
+#include <iostream>
+#include <string>
+#include <cstdlib>
 
 namespace Nano {
 	template <typename T>

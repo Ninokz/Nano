@@ -27,6 +27,9 @@
     <ClCompile Include="utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Env.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nocopyable.h">
@@ -44,7 +47,10 @@
     <ClInclude Include="singleton.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ConcurrencyQueue.h">
+    <ClInclude Include="concurrencyqueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Env.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
