@@ -134,6 +134,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConcurrencyQueue.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />

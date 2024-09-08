@@ -17,7 +17,9 @@
 #include "utils.h"
 #include "mutex.h"
 #include "singleton.h"
+#include "ConcurrencyQueue.h"
 
+using Nano::Mutex::SpinLock;
 namespace Nano {
 	namespace Log {
         class Logger;
@@ -81,13 +83,13 @@ namespace Nano {
         public:       
             typedef std::shared_ptr<LogFormatter> ptr;
             LogFormatter(const std::string& pattern = "%d{%Y-%m-%d %H:%M:%S} %T%t%T%N%T%T[%p]%T[%c]%T%f:%l%T%m%n");
-            
+			virtual ~LogFormatter() {}
             void init();
+
             bool isError() const { return m_error; }
             std::string format(LogEvent::ptr event);
             std::ostream& format(std::ostream& os, LogEvent::ptr event);
             std::string getPattern() const { return m_pattern; }
-
         public:
             class FormatItem {
             public:
@@ -137,6 +139,61 @@ namespace Nano {
                     m_defaultFormatter->format(std::cout, event);
                 }
             }
+        };
+
+        class ANSIColorStdoutLogAppender : public LogAppender {
+		public:
+			typedef std::shared_ptr<ANSIColorStdoutLogAppender> ptr;
+            ANSIColorStdoutLogAppender() : LogAppender(std::make_shared<LogFormatter>()) {}
+			void log(LogEvent::ptr event) override {
+				if (m_formatter) {
+                    const char* color = GetColor(event->getLevel());
+                    const char* reset = ResetColor();
+                    std::cout << color;  // 设置颜色
+					m_formatter->format(std::cout, event);
+					std::cout << reset;  // 重置颜色
+				}
+				else {
+                    const char* color = GetColor(event->getLevel());
+                    const char* reset = ResetColor();
+                    std::cout << color;  // 设置颜色
+					m_defaultFormatter->format(std::cout, event);
+                    std::cout << reset;  // 重置颜色
+				}
+			}
+        private:
+            enum class LogColor {
+                RESET = 0,
+                RED = 31,
+                GREEN = 32,
+                YELLOW = 33,
+                BLUE = 34,
+                MAGENTA = 35,
+                CYAN = 36,
+                WHITE = 37
+            };
+
+            inline const char* GetColor(LogLevel::Level level) {
+                switch (level) {
+                case LogLevel::Level::FATAL:
+                    return "\033[1;91m";  // 亮红色 + 加粗
+                case LogLevel::Level::ERROR:
+                    return "\033[91m";    // 亮红色
+                case LogLevel::Level::WARN:
+                    return "\033[33m";  // 黄色
+                case LogLevel::Level::INFO:
+                    return "\033[32m";  // 绿色
+                case LogLevel::Level::DEBUG:
+                    return "\033[36m";  // 青色
+                case LogLevel::Level::UNKNOWN:
+                default:
+                    return "\033[37m";  // 白色
+                }
+            }
+            inline const char* ResetColor() {
+                return "\033[0m";  // 重置为默认颜色
+            }
+           
         };
 
         class FileLogAppender : public LogAppender {
@@ -209,7 +266,6 @@ namespace Nano {
             /// 日志器集合
             std::map<std::string, Logger::ptr> m_loggers;
         };
-
         typedef Nano::Singleton<LoggerManager> LoggerMgrSin;
     }
 

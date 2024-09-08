@@ -198,7 +198,7 @@ namespace Nano {
 
         LogFormatter::LogFormatter(const std::string& pattern)
             : m_pattern(pattern) {
-            init();
+			init();
         }
 
         void LogFormatter::init() {
@@ -443,5 +443,6 @@ namespace Nano {
             m_loggers[name] = logger;
             return logger;
         }
+
     }
 }
