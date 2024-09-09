@@ -1,0 +1,6 @@
+{
+    "test.app2.port": 8080,
+    "test.app2.name": "SampleApp",
+    "test.log2.level": "info",
+    "test.list2.items" : ["item1", "item2", "item3"]
+}

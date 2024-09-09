@@ -6,13 +6,13 @@ namespace Nano {
 		const char* LogLevel::ToString(LogLevel::Level level)
 		{
 			switch (level) {
-#define XX(name) case LogLevel::Level::name: return #name;
+			#define XX(name) case LogLevel::Level::name: return #name;
 				XX(FATAL);
 				XX(ERROR);
 				XX(WARN);
 				XX(INFO);
 				XX(DEBUG);
-#undef XX
+			#undef XX
 			default:
 				return "UNKNOWN";
 			}

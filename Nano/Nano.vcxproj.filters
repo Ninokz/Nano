@@ -13,51 +13,69 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\su">
+      <UniqueIdentifier>{b50f68cc-e5b2-476f-a9b7-dd86605ee586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\su">
+      <UniqueIdentifier>{adb80f50-2dd0-4dfa-8e62-817328b794ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\jrpc-protocol">
+      <UniqueIdentifier>{07cf385a-11b7-4027-9a76-67bc29eac520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\jrpc-protocol">
+      <UniqueIdentifier>{1ca96422-6661-4b11-aeb9-611195d40670}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="config.cpp">
+      <Filter>源文件\su</Filter>
+    </ClCompile>
+    <ClCompile Include="env.cpp">
+      <Filter>源文件\su</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>源文件\su</Filter>
+    </ClCompile>
+    <ClCompile Include="mutex.cpp">
+      <Filter>源文件\su</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>源文件\su</Filter>
+    </ClCompile>
     <ClCompile Include="Nano.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mutex.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="env.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="config.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="jrpcproto.cpp">
+      <Filter>源文件\jrpc-protocol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="nocopyable.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="mutex.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="singleton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="concurrencyqueue.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="env.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\su</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="env.h">
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="mutex.h">
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="nocopyable.h">
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="singleton.h">
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>头文件\su</Filter>
+    </ClInclude>
+    <ClInclude Include="jrpcproto.h">
+      <Filter>头文件\jrpc-protocol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

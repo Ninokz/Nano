@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="config.cpp" />
     <ClCompile Include="env.cpp" />
+    <ClCompile Include="jrpcproto.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="Nano.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="concurrencyqueue.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="env.h" />
+    <ClInclude Include="jrpcproto.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />
