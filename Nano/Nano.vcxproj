@@ -134,6 +134,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseClient.cpp" />
+    <ClCompile Include="BaseServer.cpp" />
     <ClCompile Include="ceventhandler.cpp" />
     <ClCompile Include="code.cpp" />
     <ClCompile Include="conacceptor.cpp" />
@@ -149,6 +151,8 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseClient.h" />
+    <ClInclude Include="BaseServer.h" />
     <ClInclude Include="ceventhandler.h" />
     <ClInclude Include="code.h" />
     <ClInclude Include="conacceptor.h" />

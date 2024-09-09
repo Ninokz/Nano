@@ -76,7 +76,13 @@
       <Filter>源文件\netbase</Filter>
     </ClCompile>
     <ClCompile Include="ioServicePool.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\netbase</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseClient.cpp">
+      <Filter>源文件\netbase</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseServer.cpp">
+      <Filter>源文件\netbase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +132,13 @@
       <Filter>头文件\netbase</Filter>
     </ClInclude>
     <ClInclude Include="ioServicePool.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\netbase</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseServer.h">
+      <Filter>头文件\netbase</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseClient.h">
+      <Filter>头文件\netbase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
