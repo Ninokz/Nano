@@ -106,7 +106,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>F:\Library\boost_1_85_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -141,17 +141,20 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="Nano.cpp" />
+    <ClCompile Include="packet.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code.h" />
     <ClInclude Include="concurrencyqueue.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="const.h" />
     <ClInclude Include="env.h" />
     <ClInclude Include="jrpcproto.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />
+    <ClInclude Include="packet.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
