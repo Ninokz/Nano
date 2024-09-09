@@ -136,8 +136,10 @@
   <ItemGroup>
     <ClCompile Include="ceventhandler.cpp" />
     <ClCompile Include="code.cpp" />
+    <ClCompile Include="conacceptor.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="env.cpp" />
+    <ClCompile Include="ioServicePool.cpp" />
     <ClCompile Include="jrpcproto.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="mutex.cpp" />
@@ -149,10 +151,12 @@
   <ItemGroup>
     <ClInclude Include="ceventhandler.h" />
     <ClInclude Include="code.h" />
+    <ClInclude Include="conacceptor.h" />
     <ClInclude Include="concurrencyqueue.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="const.h" />
     <ClInclude Include="env.h" />
+    <ClInclude Include="ioServicePool.h" />
     <ClInclude Include="jrpcproto.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="mutex.h" />

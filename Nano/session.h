@@ -22,7 +22,7 @@ namespace Nano {
 		public:
 			typedef std::shared_ptr<Session> Ptr;
 		public:
-			Session(boost::asio::io_context& ioContext, std::shared_ptr<CEventHandler> ceventHandler);
+			Session(boost::asio::io_context& ioContext, CEventHandler& ceventHandler);
 			virtual ~Session();
 
 			void Start();
@@ -33,8 +33,8 @@ namespace Nano {
 				return this->m_uid;
 			}
 
-			const boost::asio::ip::tcp::socket& getSocket() const {
-				return this->m_socket;
+			boost::asio::ip::tcp::socket& getSocket() {
+				return m_socket;
 			}
 		private:
 			void HandleHeadRead(const boost::system::error_code& ec, size_t bytes_tramsferred);
@@ -48,7 +48,7 @@ namespace Nano {
 			std::mutex m_sendMutex;
 			std::queue<std::shared_ptr<SendPacket>> m_sendQueue;
 
-			std::shared_ptr<CEventHandler> m_ceventHandler;
+			CEventHandler& m_ceventHandler;
 		};
 	}
 }

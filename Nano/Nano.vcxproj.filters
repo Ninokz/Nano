@@ -72,6 +72,12 @@
     <ClCompile Include="ceventhandler.cpp">
       <Filter>源文件\netbase</Filter>
     </ClCompile>
+    <ClCompile Include="conacceptor.cpp">
+      <Filter>源文件\netbase</Filter>
+    </ClCompile>
+    <ClCompile Include="ioServicePool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="concurrencyqueue.h">
@@ -115,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="ceventhandler.h">
       <Filter>头文件\netbase</Filter>
+    </ClInclude>
+    <ClInclude Include="conacceptor.h">
+      <Filter>头文件\netbase</Filter>
+    </ClInclude>
+    <ClInclude Include="ioServicePool.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

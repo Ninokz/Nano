@@ -3,7 +3,7 @@
 
 namespace Nano {
 	namespace Communication {
-		Session::Session(boost::asio::io_context& ioContext, std::shared_ptr<CEventHandler> ceventHandler):
+		Session::Session(boost::asio::io_context& ioContext, CEventHandler& ceventHandler):
 			m_socket(ioContext),
 			m_ceventHandler(ceventHandler),
 			m_uid(boost::uuids::to_string(boost::uuids::random_generator()())),
@@ -24,7 +24,7 @@ namespace Nano {
 					boost::bind(&Session::HandleHeadRead, shared_from_this(), 
 						std::placeholders::_1, std::placeholders::_2)
 				);
-				m_ceventHandler->OnConnected(shared_from_this());
+				m_ceventHandler.OnConnected(shared_from_this());
 			}
 			catch (std::exception& e) {
 				std::cerr << e.what() << std::endl;
@@ -34,7 +34,7 @@ namespace Nano {
 
 		void Session::Close()
 		{
-			m_ceventHandler->OnClosed(shared_from_this());
+			m_ceventHandler.OnClosed(shared_from_this());
 			m_socket.close();
 		}
 
@@ -113,7 +113,7 @@ namespace Nano {
 					/// copy m_recvPacket
 					auto newPacket = std::make_shared<RecvPacket>(*m_recvPacket);
 					/// notify data ready
-					this->m_ceventHandler->OnDataReady(shared_from_this(), newPacket);
+					this->m_ceventHandler.OnDataReady(shared_from_this(), newPacket);
 					/// read next packet
 					this->m_recvPacket->Clear();
 					boost::asio::async_read(
