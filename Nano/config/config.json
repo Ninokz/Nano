@@ -1,0 +1,6 @@
+{
+    "app.port": 8080,
+    "app.name": "SampleApp",
+    "log.level": "info",
+    "list.items" : ["item1", "item2", "item3"]
+}

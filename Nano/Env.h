@@ -25,8 +25,8 @@ namespace Nano {
 				return m_rootPath;
 			}
 
-			std::string GetConfigPath() {
-				return m_configPath;
+			std::string GetConfigFolderPath() {
+				return m_configFolderPath;
 			}
 
 			std::string GetLogFolderPath() {
@@ -49,7 +49,7 @@ namespace Nano {
 
 		private:
 			std::string m_rootPath;
-			std::string m_configPath;
+			std::string m_configFolderPath;
 			std::string m_logFolderPath;
 
 			std::map<std::string, std::string> m_envVars;

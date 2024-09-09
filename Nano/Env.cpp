@@ -5,8 +5,8 @@ namespace Nano {
 		EnvMgr::EnvMgr()
 		{
 			m_rootPath = GetCurrentDirectoryPlatformSpecific();
-			m_configPath = m_rootPath + "/config.json";
-			m_logFolderPath = m_rootPath + "/logs";
+			m_configFolderPath = m_rootPath + "\\config";
+			m_logFolderPath = m_rootPath + "\\logs";
 		}
 
         std::string EnvMgr::GetCurrentDirectoryPlatformSpecific()
