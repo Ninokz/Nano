@@ -37,24 +37,6 @@
     <Filter Include="源文件\netbase">
       <UniqueIdentifier>{033fa79a-5a00-413e-9479-06a120035b1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\netbase\server">
-      <UniqueIdentifier>{e7c78942-0e87-4379-9be0-0b4c8792131b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\netbase\server">
-      <UniqueIdentifier>{86eea06e-e2e2-4655-a9ac-11f4e08e686f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\netbase\client">
-      <UniqueIdentifier>{0fade49e-ae8c-401e-9351-c49ea1b7111c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\netbase\client">
-      <UniqueIdentifier>{2cbe4ed5-5e45-4020-8cee-a1d42ca12c0e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\netbase\packet">
-      <UniqueIdentifier>{219a69ef-32cb-4830-a882-9920baad0444}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\netbase\packet">
-      <UniqueIdentifier>{135556ea-553f-4c4a-a8b8-3e02e5bc6192}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -82,7 +64,13 @@
       <Filter>源文件\encode-decode</Filter>
     </ClCompile>
     <ClCompile Include="packet.cpp">
-      <Filter>源文件\netbase\packet</Filter>
+      <Filter>源文件\netbase</Filter>
+    </ClCompile>
+    <ClCompile Include="session.cpp">
+      <Filter>源文件\netbase</Filter>
+    </ClCompile>
+    <ClCompile Include="ceventhandler.cpp">
+      <Filter>源文件\netbase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +108,13 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="packet.h">
-      <Filter>头文件\netbase\packet</Filter>
+      <Filter>头文件\netbase</Filter>
+    </ClInclude>
+    <ClInclude Include="session.h">
+      <Filter>头文件\netbase</Filter>
+    </ClInclude>
+    <ClInclude Include="ceventhandler.h">
+      <Filter>头文件\netbase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

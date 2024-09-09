@@ -57,5 +57,9 @@ namespace Nano
 			memcpy(m_data, &s_size, Const::PACKET_HEAD_SIZE);
 			memcpy(m_data + Const::PACKET_HEAD_SIZE, data, size);
 		}
+		void RecvPacket::Clear()
+		{
+			memset(m_data, 0, m_size);
+		}
 	}
 }

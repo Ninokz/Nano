@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ceventhandler.cpp" />
     <ClCompile Include="code.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="env.cpp" />
@@ -142,9 +143,11 @@
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="Nano.cpp" />
     <ClCompile Include="packet.cpp" />
+    <ClCompile Include="session.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ceventhandler.h" />
     <ClInclude Include="code.h" />
     <ClInclude Include="concurrencyqueue.h" />
     <ClInclude Include="config.h" />
@@ -155,6 +158,7 @@
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />
     <ClInclude Include="packet.h" />
+    <ClInclude Include="session.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

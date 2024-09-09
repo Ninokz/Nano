@@ -36,6 +36,8 @@ namespace Nano
 		public:
 			RecvPacket() = delete;
 			RecvPacket(unsigned short size) : Packet(size){}
+			
+			void Clear();
 		};
 
 		class SendPacket : public Packet
