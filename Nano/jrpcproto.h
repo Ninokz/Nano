@@ -38,7 +38,7 @@ namespace Nano {
 				return request;
 			}
 
-			static JsonRpcRequest::Ptr generate(const std::string& jsonStr);
+			static JsonRpcRequest::Ptr generate(const std::string& jsonStr, bool* flag);
 		private:
 			static void addParams(Json::Value& params) {}
 
@@ -99,6 +99,8 @@ namespace Nano {
 		class JrpcResponseParser {
 		public:
 			static JsonRpcResponse::Ptr parse(const std::string& jsonStr,bool* flag);
+		private:
+			static bool fieldsExist(const Json::Value& root);
 		};
 	}
 }
