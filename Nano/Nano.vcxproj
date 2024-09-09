@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="code.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="env.cpp" />
     <ClCompile Include="jrpcproto.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="code.h" />
     <ClInclude Include="concurrencyqueue.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="env.h" />

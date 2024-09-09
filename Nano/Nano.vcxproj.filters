@@ -25,6 +25,12 @@
     <Filter Include="头文件\jrpc-protocol">
       <UniqueIdentifier>{1ca96422-6661-4b11-aeb9-611195d40670}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\encode-decode">
+      <UniqueIdentifier>{3bf6d92f-06aa-4a83-913c-75f40000795a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\encode-decode">
+      <UniqueIdentifier>{010d28bd-fc02-4d90-8cee-052ee04b1c44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -47,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="jrpcproto.cpp">
       <Filter>源文件\jrpc-protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="code.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="jrpcproto.h">
       <Filter>头文件\jrpc-protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="code.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
