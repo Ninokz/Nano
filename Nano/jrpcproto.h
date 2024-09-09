@@ -16,12 +16,37 @@ namespace Nano {
 
 			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters, std::string requestId)
 				: m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id(requestId) {}
-			static bool fromJson(const std::string& jsonStr, JsonRpcRequest& request);
+			
+			std::string toJsonStr() const;
+
+			Json::Value toJson() const;
 		public:
 			std::string m_ver;
 			std::string m_method;
 			Json::Value m_params;
 			std::string m_id;
+		};
+
+		class JrpcRequestGenerator {
+		public:
+			template <typename... Args>
+			static JsonRpcRequest::Ptr generate(const std::string& method, const std::string id, const Args&... args) {
+				Json::Value params(Json::objectValue);
+				addParams(params, args...);
+				std::string ver = "2.0";
+				JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(ver, method, params, id);
+				return request;
+			}
+
+			static JsonRpcRequest::Ptr generate(const std::string& jsonStr);
+		private:
+			static void addParams(Json::Value& params) {}
+
+			template <typename Key, typename Value, typename... Args>
+			static void addParams(Json::Value& params, const Key& key, const Value& value, const Args&... args) {
+				params[key] = value;
+				addParams(params, args...);
+			}
 		};
 
         class JsonRpcError {
@@ -36,77 +61,44 @@ namespace Nano {
 			typedef std::shared_ptr<JsonRpcError> Ptr;
         public:
             JsonRpcError(JsonRpcErrorCode errorCode)
-				: code(errorCode), message(getErrorMessage(errorCode)) {}
-
-            JsonRpcError(JsonRpcErrorCode errorCode, const std::string& errorMsg)
-				: code(errorCode), message(errorMsg) {}
+				: m_code(errorCode), m_message(getErrorMessage(errorCode)) {}
 
 			Json::Value toJson() const;
 
+			std::string	toJsonStr() const;
+
 			static std::string getErrorMessage(JsonRpcErrorCode code);
+
+			static JsonRpcErrorCode toErrorCode(const int code);
 		public:
-			JsonRpcErrorCode code;
-			std::string message;
+			JsonRpcErrorCode m_code;
+			std::string m_message;
         };
 
         class JsonRpcResponse {
-        public:
-            std::string jsonrpc;
-            Json::Value result;
-            JsonRpcError* error = nullptr;
+		public:
+			typedef std::shared_ptr<JsonRpcResponse> Ptr;
+		public:
+
+			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) : jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
+
+            JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode):
+				jsonrpc(jsonrpcVersion), m_id(requestId), error(std::make_shared<JsonRpcError>(errorCode)) {}
+
+			Json::Value toJson() const;
+
+			std::string toJsonStr() const;
+		public:
+			std::string jsonrpc;
 			std::string m_id;
 
-            // 构造函数：成功响应
-            JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& resultValue)
-                : jsonrpc(jsonrpcVersion), m_id(requestId), result(resultValue), error(nullptr) {}
-
-            // 构造函数：错误响应
-            JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode)
-                : jsonrpc(jsonrpcVersion), m_id(requestId), error(new JsonRpcError(errorCode)) {}
-
-			~JsonRpcResponse();
-
-			std::string toJson() const;
-        };
-
-        class JrpcRequestGenerator {
-        public:
-            // This function accepts a variable number of key-value pairs.
-            template <typename... Args>
-            static std::string generate(const std::string& method, const int id, const Args&... args) {
-                // Create the root object for the JSON-RPC request
-                Json::Value root;
-                root["jsonrpc"] = "2.0";   // JSON-RPC version
-                root["method"] = method;   // Method name
-                root["id"] = id;           // Request ID
-
-                // Pack the variadic arguments into a JSON object (key-value pairs)
-                Json::Value params(Json::objectValue);
-                addParams(params, args...);  // Recursively add the variadic key-value pairs to the JSON object
-
-                root["params"] = params;    // Add the parameters to the root object
-
-                // Convert the JSON object to a string and return it
-                Json::StreamWriterBuilder writer;
-                return Json::writeString(writer, root);
-            }
-
-        private:
-            // Base case for recursion: no arguments
-            static void addParams(Json::Value& params) {
-            }
-
-            // Recursive function to add variadic key-value arguments to the JSON object
-            template <typename Key, typename Value, typename... Args>
-            static void addParams(Json::Value& params, const Key& key, const Value& value, const Args&... args) {
-                params[key] = value;       // Add the current key-value pair to the params object
-                addParams(params, args...);  // Recur for the remaining arguments
-            }
+			Json::Value result;
+			JsonRpcError::Ptr error;
         };
 
 		class JrpcResponseParser {
 		public:
-
+			static JsonRpcResponse::Ptr parse(const std::string& jsonStr,bool* flag);
 		};
 	}
 }
