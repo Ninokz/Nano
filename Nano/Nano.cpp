@@ -12,14 +12,8 @@ using namespace Nano::Communication;
 
 int main() {
 	InitLoggers();
-	auto logger = ASYNC_LOG_NAME("SERVER_STD_LOGGER");
-
-	ASYNC_LOG_FATAL(logger, "main");
-	ASYNC_LOG_DEBUG(logger, "main");
-	ASYNC_LOG_INFO(logger, "main");
-	ASYNC_LOG_WARN(logger, "main");
-	ASYNC_LOG_ERROR(logger, "main");
-
+	BaseServer server(9800);
+	server.Start();
 	system("pause");
 	return 0;
 }

@@ -4,8 +4,8 @@
 using namespace Nano::Log;
 namespace Nano {
 	namespace Log {
-		const char* consoleDetailParrten = "%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T%T[%p]%T[%c]%T%f:%l%T%m%n";
-		const char* consoleStdParrten = "%d{%Y-%m-%d %H:%M:%S}%T%t%T%N%T[%p]%T[%c]%T%m%n";
+		const char* consoleDetailParrten = "%d{%Y-%m-%d %H:%M:%S}%T[%p]%T[%c]%T%t%T%N%T%f:%l%T%m%n";
+		const char* consoleStdParrten = "%d{%Y-%m-%d %H:%M:%S}%T[%p]%T%t%T%N%T%m%n";
 		static void InitLoggers()
 		{
 			auto std_serverlogger = ASYNC_LOG_NAME("SERVER_STD_LOGGER");

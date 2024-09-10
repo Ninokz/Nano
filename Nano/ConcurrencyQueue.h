@@ -88,6 +88,14 @@ namespace Nano {
 				m_count.fetch_add(1);
 				m_dataCondi.notify_one();
 			}
+
+			void Clear()
+			{
+				std::lock_guard<std::mutex> head_lock(m_headMutex);
+				m_head.reset(new Node);
+				m_tail = m_head.get();
+				m_count.store(0);
+			}
 		};
 	}
 }

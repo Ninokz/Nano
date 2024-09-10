@@ -457,6 +457,8 @@ namespace Nano {
 				m_queue.Push(nullptr);
 			}
 			this->m_thread->join();
+			std::cout << "Logger: " << m_name << " clear." << std::endl;
+			this->m_queue.Clear();
 			std::cout << "Logger: " << m_name << " exit." << std::endl;
 		}
 
