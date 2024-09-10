@@ -8,12 +8,12 @@ namespace Nano {
 		const char* consoleStdParrten = "%d{%Y-%m-%d %H:%M:%S}%T[%p]%T%t%T%N%T%m%n";
 		static void InitLoggers()
 		{
-			auto std_serverlogger = ASYNC_LOG_NAME("SERVER_STD_LOGGER");
+			auto stdlogger = ASYNC_LOG_NAME("STD_LOGGER");
 			LogFormatter::ptr stdFormat = std::make_shared<LogFormatter>(consoleStdParrten);
 			ANSIColorStdoutLogAppender::ptr stdAppender = std::make_shared<ANSIColorStdoutLogAppender>();
 			stdAppender->setFormatter(stdFormat);
-			std_serverlogger->addAppender(stdAppender);
-			std_serverlogger->setLevel(LogLevel::Level::DEBUG);
+			stdlogger->addAppender(stdAppender);
+			stdlogger->setLevel(LogLevel::Level::DEBUG);
 		}
 	}
 }

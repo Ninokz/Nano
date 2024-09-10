@@ -8,9 +8,8 @@ namespace Nano
 		{
 		}
 
-		Packet::Packet(unsigned short size) : m_data(new char[size]), m_size(size)
+		Packet::Packet(unsigned short size) : m_data(new char[size]()), m_size(size)
 		{
-			memset(m_data, 0, size);
 		}
 
 		Packet::~Packet()

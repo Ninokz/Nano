@@ -14,6 +14,5 @@ int main() {
 	InitLoggers();
 	BaseServer server(9800);
 	server.Start();
-	system("pause");
 	return 0;
 }

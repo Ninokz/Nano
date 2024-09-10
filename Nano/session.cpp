@@ -13,6 +13,7 @@ namespace Nano {
 
 		Session::~Session()
 		{
+			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "Session destroyed: " << this->m_uid;
 		}
 
 		void Session::Start()
@@ -45,6 +46,7 @@ namespace Nano {
 				std::lock_guard<std::mutex> lock(m_sendMutex);
 				if (this->m_sendQueue.size() >= Const::MAX_SESSION_SEND_QUEUE_PENDING_SIZE) {
 					/// queue is full
+					ASYNC_LOG_WARN(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "Send queue is full, session: " << this->m_uid;
 					return;
 				}
 				if (!this->m_sendQueue.empty()) {
@@ -88,14 +90,16 @@ namespace Nano {
 						return;
 					}
 					m_recvPacket = std::make_shared<RecvPacket>(dataSize);
+
 					boost::asio::async_read(
 						m_socket,
-						boost::asio::buffer(m_recvPacket->m_data, dataSize),
+						boost::asio::buffer(m_recvPacket->m_data, m_recvPacket->m_size),
 						boost::bind(&Session::HandleBodyRead, shared_from_this(),
 							std::placeholders::_1, std::placeholders::_2)
 					);
 				}
 				else {
+					ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleHeadRead error: " << ec.message();
 					this->Close();
 				}
 			}
@@ -112,6 +116,8 @@ namespace Nano {
 				{
 					/// copy m_recvPacket
 					auto newPacket = std::make_shared<RecvPacket>(*m_recvPacket);
+					/// test
+					std::cout << newPacket->ToString() << std::endl;
 					/// notify data ready
 					this->m_ceventHandler.OnDataReady(shared_from_this(), newPacket);
 					/// read next packet
@@ -125,6 +131,7 @@ namespace Nano {
 				}
 				else
 				{
+					ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleBodyRead error: " << ec.message();
 					this->Close();
 				}
 			}
@@ -151,6 +158,7 @@ namespace Nano {
 					}
 				}
 				else {
+					ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleWrite error: " << ec.message();
 					Close();
 				}
 			}

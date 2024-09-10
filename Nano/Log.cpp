@@ -499,11 +499,10 @@ namespace Nano {
 					break;
 				}
 				if (event->getLevel() <= m_level) {
-					
 					for (auto& i : m_appenders) {
 						i->log(event);
 					}
-				}	
+				}
 			}
 			//std::cout << "AsyncLogger::threadFunc() exit" << std::endl;
 		}

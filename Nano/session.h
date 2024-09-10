@@ -12,11 +12,12 @@
 #include "const.h"
 #include "packet.h"
 #include "nocopyable.h"
+#include "Log.h"
 
 namespace Nano {
 	namespace Communication {
 		class CEventHandler;
-		class Session : public std::enable_shared_from_this<Session>, public Noncopyable
+		class Session : public std::enable_shared_from_this<Session>
 		{
 		public:
 			typedef std::shared_ptr<Session> Ptr;

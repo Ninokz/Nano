@@ -6,6 +6,7 @@
 
 #include "ceventhandler.h"
 #include "session.h"
+#include "Log.h"
 
 namespace Nano {
 	namespace Communication {

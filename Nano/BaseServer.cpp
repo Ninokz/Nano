@@ -35,12 +35,12 @@ namespace Nano {
 					m_acceptor->StopAccept();
 					});
 
+				m_acceptor->StartAccept();
 				m_listenThread = std::thread([this]() {
 					m_running = true;
-					m_acceptor->StartAccept();
 					m_ioc.run();
 					});
-				ASYNC_LOG_INFO(ASYNC_LOG_NAME("SERVER_STD_LOGGER"), "BaseServer") << "Server started on port: " << m_port;
+				ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "BaseServer") << "Server started on port: " << m_port;
 				m_listenThread.join();
 			}
 			catch (std::exception& e)
@@ -55,7 +55,7 @@ namespace Nano {
 				m_ioc.stop();
 				m_listenThread.join();
 			}
-			ASYNC_LOG_INFO(ASYNC_LOG_NAME("SERVER_STD_LOGGER"), "BaseServer") << "Server stop";
+			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "BaseServer") << "Server stop";
 		}
 	}
 }

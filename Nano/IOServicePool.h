@@ -9,7 +9,7 @@
 
 namespace Nano {
 	namespace Communication {
-		class IOServicePool : public Singleton<IOServicePool>, public Noncopyable
+		class IOServicePool : public Singleton<IOServicePool>
 		{
 			friend class Singleton<IOServicePool>;
 		public:
@@ -22,6 +22,10 @@ namespace Nano {
 		private:
 			IOServicePool(std::size_t poolSize = std::thread::hardware_concurrency());
 			void Stop();
+
+			IOServicePool(const IOServicePool&) = delete;
+			IOServicePool& operator=(const IOServicePool&) = delete;
+			IOServicePool(IOServicePool&&) = delete;
 		private:
 			std::vector<Context> m_ioContexts;
 			std::vector<WorkPtr> m_works;
