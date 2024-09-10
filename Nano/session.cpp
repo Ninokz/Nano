@@ -65,7 +65,8 @@ namespace Nano {
 				);
 			}
 			catch (std::exception& e) {
-				std::cerr << e.what() << std::endl;
+				//std::cerr << e.what() << std::endl;
+				ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << e.what();
 				this->Close();
 			}
 		}
@@ -99,12 +100,13 @@ namespace Nano {
 					);
 				}
 				else {
-					ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleHeadRead error: " << ec.message();
+					ASYNC_LOG_WARN(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleHeadRead error: " << ec.message();
 					this->Close();
 				}
 			}
 			catch (std::exception& e) {
-				std::cerr << e.what() << std::endl;
+				//std::cerr << e.what() << std::endl;
+				ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << e.what();
 				this->Close();
 			}
 		}
@@ -131,12 +133,13 @@ namespace Nano {
 				}
 				else
 				{
-					ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleBodyRead error: " << ec.message();
+					ASYNC_LOG_WARN(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleBodyRead error: " << ec.message();
 					this->Close();
 				}
 			}
 			catch (std::exception& e) {
-				std::cerr << e.what() << std::endl;
+				//std::cerr << e.what() << std::endl;
+				ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << e.what();
 				this->Close();
 			}
 		}
@@ -158,12 +161,13 @@ namespace Nano {
 					}
 				}
 				else {
-					ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleWrite error: " << ec.message();
+					ASYNC_LOG_WARN(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "HandleWrite error: " << ec.message();
 					Close();
 				}
 			}
 			catch (std::exception& e) {
-				std::cerr << e.what() << std::endl;
+				//std::cerr << e.what() << std::endl;
+				ASYNC_LOG_ERROR(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << e.what();
 				this->Close();
 			}
 		}
