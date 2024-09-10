@@ -111,6 +111,9 @@
     <ClCompile Include="rpcclientstub.cpp">
       <Filter>源文件\alayer</Filter>
     </ClCompile>
+    <ClCompile Include="threadpool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="concurrencyqueue.h">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="rpcclientstub.h">
       <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="threadpool.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

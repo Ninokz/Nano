@@ -1,5 +1,12 @@
 #pragma once
-class rpcserver
-{
-};
 
+
+#include "BaseServer.h"
+
+namespace Nano {
+	namespace Rpc {
+		class RPCServer {
+
+		};
+	}
+}
