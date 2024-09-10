@@ -120,6 +120,9 @@
     <ClCompile Include="threadpool.cpp">
       <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
+    <ClCompile Include="parrallenThreadPool.cpp">
+      <Filter>源文件\su\concurrency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -188,7 +191,7 @@
     <ClInclude Include="rpcclientstub.h">
       <Filter>头文件\alayer</Filter>
     </ClInclude>
-    <ClInclude Include="concurrencyqueue.h">
+    <ClInclude Include="concurrentqueue.h">
       <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
     <ClInclude Include="threadpool.h">
@@ -197,7 +200,13 @@
     <ClInclude Include="mutex.h">
       <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
-    <ClInclude Include="task.h">
+    <ClInclude Include="parrallenThreadPool.h">
+      <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="functionWrapper.h">
+      <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="jointhreads.h">
       <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
   </ItemGroup>

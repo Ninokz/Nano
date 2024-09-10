@@ -147,6 +147,7 @@
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="Nano.cpp" />
     <ClCompile Include="packet.cpp" />
+    <ClCompile Include="parrallenThreadPool.cpp" />
     <ClCompile Include="rpcclient.cpp" />
     <ClCompile Include="rpcclientstub.cpp" />
     <ClCompile Include="rpcserver.cpp" />
@@ -162,17 +163,20 @@
     <ClInclude Include="ceventhandler.h" />
     <ClInclude Include="code.h" />
     <ClInclude Include="conacceptor.h" />
-    <ClInclude Include="concurrencyqueue.h" />
+    <ClInclude Include="concurrentqueue.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="const.h" />
     <ClInclude Include="env.h" />
+    <ClInclude Include="functionWrapper.h" />
     <ClInclude Include="ioServicePool.h" />
+    <ClInclude Include="jointhreads.h" />
     <ClInclude Include="jrpcproto.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Loginit.h" />
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />
     <ClInclude Include="packet.h" />
+    <ClInclude Include="parrallenThreadPool.h" />
     <ClInclude Include="rpcclient.h" />
     <ClInclude Include="rpcclientstub.h" />
     <ClInclude Include="rpcserver.h" />
@@ -180,7 +184,6 @@
     <ClInclude Include="session.h" />
     <ClInclude Include="sessionmanager.h" />
     <ClInclude Include="singleton.h" />
-    <ClInclude Include="task.h" />
     <ClInclude Include="threadpool.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

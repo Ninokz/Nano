@@ -1,9 +1,10 @@
 #pragma once
 #include <memory>
+#include "nocopyable.h"
 
 namespace Nano {
 	namespace Concurrency {
-        class Task
+        class FunctionWrapper : public Noncopyable
         {
             struct impl_base {
                 virtual void call() = 0;
@@ -19,22 +20,20 @@ namespace Nano {
             };
         public:
             template<typename F>
-            Task(F&& f) :
+            FunctionWrapper(F&& f) :
                 impl(new impl_type<F>(std::move(f)))
             {}
             void operator()() { impl->call(); }
-            Task() = default;
-            Task(Task&& other) noexcept :
+            FunctionWrapper() = default;
+            FunctionWrapper(FunctionWrapper&& other) noexcept :
                 impl(std::move(other.impl))
             {}
-            Task& operator=(Task&& other) noexcept
+            FunctionWrapper& operator=(FunctionWrapper&& other) noexcept
             {
                 impl = std::move(other.impl);
                 return *this;
             }
-            Task(const Task&) = delete;
-            Task(Task&) = delete;
-            Task& operator=(const Task&) = delete;
         };
+
 	}
 }
