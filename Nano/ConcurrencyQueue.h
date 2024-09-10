@@ -51,8 +51,8 @@ namespace Nano {
 		public:
 			ConcurrentQueue() :m_head(new Node), m_tail(m_head.get()) {}
 
-			virtual ~ConcurrentQueue(){
-				if(this->m_count!=0)
+			virtual ~ConcurrentQueue() {
+				if (this->m_count != 0)
 					std::cerr << "ConcurrentQueue is not empty!" << std::endl;
 			}
 

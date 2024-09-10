@@ -15,9 +15,8 @@
 
 namespace Nano {
 	namespace Communication {
-
 		class CEventHandler;
-		class Session : public std::enable_shared_from_this<Session>, public Noncopyable 
+		class Session : public std::enable_shared_from_this<Session>, public Noncopyable
 		{
 		public:
 			typedef std::shared_ptr<Session> Ptr;

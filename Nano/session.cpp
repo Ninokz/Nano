@@ -3,7 +3,7 @@
 
 namespace Nano {
 	namespace Communication {
-		Session::Session(boost::asio::io_context& ioContext, CEventHandler& ceventHandler):
+		Session::Session(boost::asio::io_context& ioContext, CEventHandler& ceventHandler) :
 			m_socket(ioContext),
 			m_ceventHandler(ceventHandler),
 			m_uid(boost::uuids::to_string(boost::uuids::random_generator()())),
@@ -20,8 +20,8 @@ namespace Nano {
 			try {
 				boost::asio::async_read(
 					m_socket,
-					boost::asio::buffer(m_recvHead->m_data,Const::PACKET_HEAD_SIZE),
-					boost::bind(&Session::HandleHeadRead, shared_from_this(), 
+					boost::asio::buffer(m_recvHead->m_data, Const::PACKET_HEAD_SIZE),
+					boost::bind(&Session::HandleHeadRead, shared_from_this(),
 						std::placeholders::_1, std::placeholders::_2)
 				);
 				m_ceventHandler.OnConnected(shared_from_this());

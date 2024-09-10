@@ -18,7 +18,7 @@
 #include "utils.h"
 
 namespace Nano {
-	namespace Configuration{
+	namespace Configuration {
 		class ConfigVarBase {
 		public:
 			typedef std::shared_ptr<ConfigVarBase> ptr;

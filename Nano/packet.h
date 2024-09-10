@@ -35,8 +35,8 @@ namespace Nano
 			typedef std::shared_ptr<RecvPacket> Ptr;
 		public:
 			RecvPacket() = delete;
-			RecvPacket(unsigned short size) : Packet(size){}
-			
+			RecvPacket(unsigned short size) : Packet(size) {}
+
 			void Clear();
 		};
 

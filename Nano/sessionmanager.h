@@ -15,10 +15,10 @@ namespace Nano {
 			typedef std::shared_ptr<SessionManager> Ptr;
 
 			SessionManager(size_t maxSessions) : m_MAX_SESSIONS(maxSessions) {}
-			virtual ~SessionManager(){}
+			virtual ~SessionManager() {}
 
 			virtual void OnClosed(std::shared_ptr<Session> sender) override;
-			virtual void OnConnected(std::shared_ptr<Session> sender) override;	
+			virtual void OnConnected(std::shared_ptr<Session> sender) override;
 		private:
 			inline bool addSession(std::shared_ptr<Session> session);
 			inline void removeSession(std::string& uid);

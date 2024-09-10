@@ -33,13 +33,13 @@ namespace Nano {
 					m_running = false;
 					m_ioc.stop();
 					m_acceptor->StopAccept();
-				});
+					});
 
 				m_listenThread = std::thread([this]() {
 					m_running = true;
 					m_acceptor->StartAccept();
 					m_ioc.run();
-				});
+					});
 				m_listenThread.join();
 			}
 			catch (std::exception& e)

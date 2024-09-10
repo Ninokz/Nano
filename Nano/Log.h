@@ -213,7 +213,7 @@ namespace Nano {
 			bool m_reopenError = false;
 		};
 
-		#pragma region SyncLogger
+#pragma region SyncLogger
 		class Logger {
 		public:
 			typedef std::shared_ptr<Logger> ptr;
@@ -267,9 +267,9 @@ namespace Nano {
 			std::map<std::string, Logger::ptr> m_loggers;
 		};
 		typedef Nano::Singleton<LoggerManager> LoggerMgrSin;
-		#pragma endregion
+#pragma endregion
 
-		class AsyncLogger{
+		class AsyncLogger {
 		public:
 			typedef std::shared_ptr<AsyncLogger> ptr;
 			typedef Nano::Mutex::SpinLock MutexType;
@@ -278,7 +278,7 @@ namespace Nano {
 			const uint64_t& getCreateTime() const { return m_createTime; }
 			void setLevel(LogLevel::Level level) { m_level = level; }
 			LogLevel::Level getLevel() const { return m_level; }
-			
+
 			AsyncLogger(const std::string& name);
 			~AsyncLogger();
 
@@ -360,7 +360,6 @@ namespace Nano {
 #define LOG_FMT_INFO(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::INFO, sender, fmt, ##__VA_ARGS__)
 #define LOG_FMT_DEBUG(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::DEBUG, sender, fmt, ##__VA_ARGS__)
 #define LOG_FMT_UNKNOWN(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::UNKNOWN, sender, fmt, ##__VA_ARGS__)
-
 
 #define ASYNC_LOG_MGR() Nano::Log::AsyncLoggerMgrSin::GetInstance()
 #define ASYNC_LOG_NAME(name) Nano::Log::AsyncLoggerMgrSin::GetInstance()->getLogger(name)

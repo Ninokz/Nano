@@ -17,7 +17,7 @@ namespace Nano {
 		public:
 			typedef std::shared_ptr<ConnectionAcceptor> Ptr;
 		public:
-			ConnectionAcceptor(boost::asio::io_context& ioc, short port,CEventHandler& ceventHandler);
+			ConnectionAcceptor(boost::asio::io_context& ioc, short port, CEventHandler& ceventHandler);
 			~ConnectionAcceptor();
 
 			void StartAccept();

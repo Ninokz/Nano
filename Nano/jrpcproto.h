@@ -16,7 +16,7 @@ namespace Nano {
 
 			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters, std::string requestId)
 				: m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id(requestId) {}
-			
+
 			std::string toJsonStr() const;
 
 			Json::Value toJson() const;
@@ -49,7 +49,7 @@ namespace Nano {
 			}
 		};
 
-        class JsonRpcError {
+		class JsonRpcError {
 		public:
 			enum class JsonRpcErrorCode {
 				ParseError = -32700,
@@ -59,8 +59,8 @@ namespace Nano {
 				InternalError = -32603
 			};
 			typedef std::shared_ptr<JsonRpcError> Ptr;
-        public:
-            JsonRpcError(JsonRpcErrorCode errorCode)
+		public:
+			JsonRpcError(JsonRpcErrorCode errorCode)
 				: m_code(errorCode), m_message(getErrorMessage(errorCode)) {}
 
 			Json::Value toJson() const;
@@ -73,16 +73,16 @@ namespace Nano {
 		public:
 			JsonRpcErrorCode m_code;
 			std::string m_message;
-        };
+		};
 
-        class JsonRpcResponse {
+		class JsonRpcResponse {
 		public:
 			typedef std::shared_ptr<JsonRpcResponse> Ptr;
 		public:
 
 			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) : jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
 
-            JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode):
+			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), error(std::make_shared<JsonRpcError>(errorCode)) {}
 
 			Json::Value toJson() const;
@@ -94,11 +94,11 @@ namespace Nano {
 
 			Json::Value result;
 			JsonRpcError::Ptr error;
-        };
+		};
 
 		class JrpcResponseParser {
 		public:
-			static JsonRpcResponse::Ptr parse(const std::string& jsonStr,bool* flag);
+			static JsonRpcResponse::Ptr parse(const std::string& jsonStr, bool* flag);
 		private:
 			static bool fieldsExist(const Json::Value& root);
 		};

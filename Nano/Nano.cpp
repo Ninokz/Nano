@@ -12,5 +12,5 @@ using namespace Nano::Communication;
 int main() {
 	BaseServer server(9800);
 	server.Start();
-    return 0;
+	return 0;
 }
