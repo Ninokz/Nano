@@ -15,7 +15,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "env.h"
 #include "utils.h"
 
 namespace Nano {

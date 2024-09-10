@@ -6,5 +6,6 @@ namespace Nano {
 		const int PACKET_MAX_SIZE = 1024;
 
 		const int MAX_SESSION_SEND_QUEUE_PENDING_SIZE = 64;
+		const int MAS_SESSION = 64;
 	}
 }

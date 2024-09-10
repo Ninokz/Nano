@@ -148,6 +148,7 @@
     <ClCompile Include="Nano.cpp" />
     <ClCompile Include="packet.cpp" />
     <ClCompile Include="session.cpp" />
+    <ClCompile Include="sessionmanager.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +168,7 @@
     <ClInclude Include="nocopyable.h" />
     <ClInclude Include="packet.h" />
     <ClInclude Include="session.h" />
+    <ClInclude Include="sessionmanager.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

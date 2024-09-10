@@ -21,12 +21,15 @@ namespace Nano {
 			~ConnectionAcceptor();
 
 			void StartAccept();
+			void StopAccept();
 		private:
 			void HandleAccept(std::shared_ptr<Session> new_session, const boost::system::error_code& ec);
 		private:
 			boost::asio::ip::tcp::acceptor m_acceptor;
 			boost::asio::io_context& m_ioContext;
 			CEventHandler& m_ceventHandler;
+
+			bool m_accepting;
 		};
 	}
 }

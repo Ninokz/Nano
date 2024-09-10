@@ -1,5 +1,6 @@
 #pragma once
 #ifdef _WIN32
+#include <winsock2.h>
 #include <windows.h>
 #elif __linux__
 #include <unistd.h>
