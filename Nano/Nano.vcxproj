@@ -147,6 +147,10 @@
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="Nano.cpp" />
     <ClCompile Include="packet.cpp" />
+    <ClCompile Include="rpcclient.cpp" />
+    <ClCompile Include="rpcclientstub.cpp" />
+    <ClCompile Include="rpcserver.cpp" />
+    <ClCompile Include="rpcserverstub.cpp" />
     <ClCompile Include="session.cpp" />
     <ClCompile Include="sessionmanager.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -168,6 +172,10 @@
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />
     <ClInclude Include="packet.h" />
+    <ClInclude Include="rpcclient.h" />
+    <ClInclude Include="rpcclientstub.h" />
+    <ClInclude Include="rpcserver.h" />
+    <ClInclude Include="rpcserverstub.h" />
     <ClInclude Include="session.h" />
     <ClInclude Include="sessionmanager.h" />
     <ClInclude Include="singleton.h" />

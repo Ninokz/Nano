@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\clayer">
+      <UniqueIdentifier>{c8a527b5-8edf-4873-9f21-a781856d219f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\clayer">
+      <UniqueIdentifier>{f63d8b92-2cf8-4327-95bb-0c70f19c8908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\clayer\encode-decode">
+      <UniqueIdentifier>{010d28bd-fc02-4d90-8cee-052ee04b1c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\clayer\netbase">
+      <UniqueIdentifier>{404728b0-69d5-48de-9b79-81c08f3deb36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\clayer\encode-decode">
+      <UniqueIdentifier>{3bf6d92f-06aa-4a83-913c-75f40000795a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\clayer\netbase">
+      <UniqueIdentifier>{033fa79a-5a00-413e-9479-06a120035b1a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="头文件\su">
       <UniqueIdentifier>{b50f68cc-e5b2-476f-a9b7-dd86605ee586}</UniqueIdentifier>
     </Filter>
@@ -25,17 +43,11 @@
     <Filter Include="头文件\jrpc-protocol">
       <UniqueIdentifier>{1ca96422-6661-4b11-aeb9-611195d40670}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\encode-decode">
-      <UniqueIdentifier>{3bf6d92f-06aa-4a83-913c-75f40000795a}</UniqueIdentifier>
+    <Filter Include="头文件\alayer">
+      <UniqueIdentifier>{3fc67771-b3ae-4399-8fd6-2df0706305ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\encode-decode">
-      <UniqueIdentifier>{010d28bd-fc02-4d90-8cee-052ee04b1c44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\netbase">
-      <UniqueIdentifier>{404728b0-69d5-48de-9b79-81c08f3deb36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\netbase">
-      <UniqueIdentifier>{033fa79a-5a00-413e-9479-06a120035b1a}</UniqueIdentifier>
+    <Filter Include="源文件\alayer">
+      <UniqueIdentifier>{dcde1bf8-cafc-4d0e-bd24-29fd06cf7e03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,31 +73,43 @@
       <Filter>源文件\jrpc-protocol</Filter>
     </ClCompile>
     <ClCompile Include="code.cpp">
-      <Filter>源文件\encode-decode</Filter>
+      <Filter>源文件\clayer\encode-decode</Filter>
     </ClCompile>
     <ClCompile Include="packet.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="session.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="ceventhandler.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="conacceptor.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="ioServicePool.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="BaseClient.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="BaseServer.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
     </ClCompile>
     <ClCompile Include="sessionmanager.cpp">
-      <Filter>源文件\netbase</Filter>
+      <Filter>源文件\clayer\netbase</Filter>
+    </ClCompile>
+    <ClCompile Include="rpcserver.cpp">
+      <Filter>源文件\alayer</Filter>
+    </ClCompile>
+    <ClCompile Include="rpcclient.cpp">
+      <Filter>源文件\alayer</Filter>
+    </ClCompile>
+    <ClCompile Include="rpcserverstub.cpp">
+      <Filter>源文件\alayer</Filter>
+    </ClCompile>
+    <ClCompile Include="rpcclientstub.cpp">
+      <Filter>源文件\alayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,37 +141,49 @@
       <Filter>头文件\jrpc-protocol</Filter>
     </ClInclude>
     <ClInclude Include="code.h">
-      <Filter>头文件\encode-decode</Filter>
+      <Filter>头文件\clayer\encode-decode</Filter>
     </ClInclude>
     <ClInclude Include="const.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="packet.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="session.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="ceventhandler.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="conacceptor.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="ioServicePool.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="BaseServer.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="BaseClient.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="sessionmanager.h">
-      <Filter>头文件\netbase</Filter>
+      <Filter>头文件\clayer\netbase</Filter>
     </ClInclude>
     <ClInclude Include="Loginit.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcserver.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcclient.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcserverstub.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcclientstub.h">
+      <Filter>头文件\alayer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
