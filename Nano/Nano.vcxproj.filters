@@ -112,7 +112,7 @@
       <Filter>源文件\alayer</Filter>
     </ClCompile>
     <ClCompile Include="threadpool.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\su</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,7 +189,7 @@
       <Filter>头文件\alayer</Filter>
     </ClInclude>
     <ClInclude Include="threadpool.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\su</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
