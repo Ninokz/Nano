@@ -44,7 +44,6 @@ namespace Nano {
 					m_acceptor->StartAccept();
 					m_ioc.run();
 				});
-				std::cout << "Server started at"<< m_port << std::endl;
 				m_listenThread.join();
 			}
 			catch (std::exception& e)

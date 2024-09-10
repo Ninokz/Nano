@@ -8,7 +8,7 @@ namespace Nano {
 			switch (level) {
 			#define XX(name) case LogLevel::Level::name: return #name;
 				XX(FATAL);
-				XX(ERROR);
+				XX(ERROR_);
 				XX(WARN);
 				XX(INFO);
 				XX(DEBUG);
@@ -26,13 +26,13 @@ namespace Nano {
 					return LogLevel::Level::level; \
 				}
 			XX(FATAL, fatal);
-			XX(ERROR, error);
+			XX(ERROR_, error_);
 			XX(WARN, warn);
 			XX(INFO, info);
 			XX(DEBUG, debug);
 
 			XX(FATAL, FATAL);
-			XX(ERROR, ERROR);
+			XX(ERROR_, ERROR_);
 			XX(WARN, WARN);
 			XX(INFO, INFO);
 			XX(DEBUG, DEBUG);

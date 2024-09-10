@@ -16,7 +16,9 @@
 #include "const.h"
 #include "sessionmanager.h"
 #include "nocopyable.h"
+#include "Log.h"
 
+using namespace Nano::Log;
 namespace Nano {
 	namespace Communication {
 		class BaseServer : public Noncopyable

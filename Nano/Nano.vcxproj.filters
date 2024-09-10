@@ -85,7 +85,7 @@
       <Filter>源文件\netbase</Filter>
     </ClCompile>
     <ClCompile Include="sessionmanager.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\netbase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +144,7 @@
       <Filter>头文件\netbase</Filter>
     </ClInclude>
     <ClInclude Include="sessionmanager.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\netbase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
