@@ -28,6 +28,7 @@ namespace Nano {
 			BaseServer(short port);
 			virtual ~BaseServer();
 			void Start();
+			void Stop();
 
 		public:
 			std::shared_ptr<CEventHandler> m_ceventHandler;

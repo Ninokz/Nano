@@ -17,11 +17,7 @@ namespace Nano {
 		BaseServer::~BaseServer()
 		{
 			try {
-				if (m_running)
-				{
-					m_ioc.stop();
-					m_listenThread.join();
-				}
+				Stop();
 			}
 			catch (std::exception& e)
 			{
@@ -49,6 +45,14 @@ namespace Nano {
 			catch (std::exception& e)
 			{
 				std::cerr << "Exception: " << e.what() << std::endl;
+			}
+		}
+		void BaseServer::Stop()
+		{
+			if (m_running)
+			{
+				m_ioc.stop();
+				m_listenThread.join();
 			}
 		}
 	}
