@@ -49,6 +49,12 @@
     <Filter Include="源文件\alayer">
       <UniqueIdentifier>{dcde1bf8-cafc-4d0e-bd24-29fd06cf7e03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\su\concurrency">
+      <UniqueIdentifier>{daeaab34-a8b3-41cb-a077-3bb43aa3dad5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\su\concurrency">
+      <UniqueIdentifier>{2789581a-6e1c-4f96-87f4-c61e7f51ae68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -58,9 +64,6 @@
       <Filter>源文件\su</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
-      <Filter>源文件\su</Filter>
-    </ClCompile>
-    <ClCompile Include="mutex.cpp">
       <Filter>源文件\su</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
@@ -111,14 +114,14 @@
     <ClCompile Include="rpcclientstub.cpp">
       <Filter>源文件\alayer</Filter>
     </ClCompile>
+    <ClCompile Include="mutex.cpp">
+      <Filter>源文件\su\concurrency</Filter>
+    </ClCompile>
     <ClCompile Include="threadpool.cpp">
-      <Filter>源文件\su</Filter>
+      <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="concurrencyqueue.h">
-      <Filter>头文件\su</Filter>
-    </ClInclude>
     <ClInclude Include="config.h">
       <Filter>头文件\su</Filter>
     </ClInclude>
@@ -126,9 +129,6 @@
       <Filter>头文件\su</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
-      <Filter>头文件\su</Filter>
-    </ClInclude>
-    <ClInclude Include="mutex.h">
       <Filter>头文件\su</Filter>
     </ClInclude>
     <ClInclude Include="nocopyable.h">
@@ -188,8 +188,17 @@
     <ClInclude Include="rpcclientstub.h">
       <Filter>头文件\alayer</Filter>
     </ClInclude>
+    <ClInclude Include="concurrencyqueue.h">
+      <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
     <ClInclude Include="threadpool.h">
-      <Filter>头文件\su</Filter>
+      <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="mutex.h">
+      <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="task.h">
+      <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

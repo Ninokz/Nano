@@ -454,11 +454,9 @@ namespace Nano {
 		{
 			if (!m_isExit) {
 				m_isExit.exchange(true);
-				m_queue.Push(nullptr);
+				m_queue.push(nullptr);
 			}
 			this->m_thread->join();
-			std::cout << "Logger: " << m_name << " clear." << std::endl;
-			this->m_queue.Clear();
 			std::cout << "Logger: " << m_name << " exit." << std::endl;
 		}
 
@@ -487,13 +485,13 @@ namespace Nano {
 
 		void AsyncLogger::log(LogEvent::ptr event)
 		{
-			this->m_queue.Push(event);
+			m_queue.push(event);
 		}
 
 		void AsyncLogger::threadFunc()
 		{
 			while (!m_isExit.load()) {
-				auto event = *(m_queue.WaitPop());
+				auto event = *(m_queue.wait_and_pop());
 				if (event == nullptr) {
 					m_isExit.exchange(true);
 					break;

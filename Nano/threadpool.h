@@ -9,12 +9,13 @@
 #include <vector>
 #include <functional>
 #include <type_traits>
+#include "nocopyable.h"
 
 #include "singleton.h"
 
 namespace Nano {
 	namespace Concurrency {
-		class ThreadPool : public Singleton<ThreadPool>
+		class ThreadPool : public Singleton<ThreadPool>, public Noncopyable 
 		{
 			friend class Singleton<ThreadPool>;
 			using Task = std::packaged_task<void()>;
