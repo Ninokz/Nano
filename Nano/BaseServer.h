@@ -29,6 +29,7 @@ namespace Nano {
 			virtual ~BaseServer();
 			void Start();
 
+		public:
 			std::shared_ptr<CEventHandler> m_ceventHandler;
 		protected:
 			bool m_running;

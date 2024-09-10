@@ -21,7 +21,14 @@ namespace Nano {
 		{
 		public:
 			typedef std::shared_ptr<BaseClient> Ptr;
+			BaseClient();
+			virtual ~BaseClient();
 
+			bool Connect(const std::string& ip, short port);
+			void Disconnect();
+			void Send(const char* data, int dataLength);
+		public:
+			std::shared_ptr<CEventHandler> m_ceventHandler;
 		protected:
 			bool m_running;
 			boost::asio::ip::tcp::endpoint m_endpoint;
@@ -29,7 +36,6 @@ namespace Nano {
 			std::thread m_clientThread;
 			boost::asio::io_context m_ioc;
 			std::shared_ptr<Session> m_session;
-			std::shared_ptr<CEventHandler> m_ceventHandler;
 		};
 	}
 }
