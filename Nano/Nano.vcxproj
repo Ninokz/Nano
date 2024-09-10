@@ -164,6 +164,7 @@
     <ClInclude Include="ioServicePool.h" />
     <ClInclude Include="jrpcproto.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="Loginit.h" />
     <ClInclude Include="mutex.h" />
     <ClInclude Include="nocopyable.h" />
     <ClInclude Include="packet.h" />

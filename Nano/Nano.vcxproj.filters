@@ -146,5 +146,8 @@
     <ClInclude Include="sessionmanager.h">
       <Filter>头文件\netbase</Filter>
     </ClInclude>
+    <ClInclude Include="Loginit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

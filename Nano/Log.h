@@ -29,7 +29,7 @@ namespace Nano {
 			enum class Level
 			{
 				FATAL = 0,
-				ERROR_ = 100,
+				ERRO = 100,
 				WARN = 200,
 				INFO = 300,
 				DEBUG = 400,
@@ -89,6 +89,7 @@ namespace Nano {
 			std::string format(LogEvent::ptr event);
 			std::ostream& format(std::ostream& os, LogEvent::ptr event);
 			std::string getPattern() const { return m_pattern; }
+
 		public:
 			class FormatItem {
 			public:
@@ -109,11 +110,11 @@ namespace Nano {
 
 			LogAppender(LogFormatter::ptr default_formatter) : m_defaultFormatter(default_formatter) {}
 			virtual ~LogAppender() {}
+
 			void setFormatter(LogFormatter::ptr val) {
 				std::lock_guard<MutexType> lock(m_mutex);
 				m_formatter = val;
 			}
-
 			LogFormatter::ptr getFormatter() {
 				std::lock_guard<MutexType> lock(m_mutex);
 				return m_formatter ? m_formatter : m_defaultFormatter;
@@ -177,7 +178,7 @@ namespace Nano {
 				switch (level) {
 				case LogLevel::Level::FATAL:
 					return "\033[1;91m";  // 亮红色 + 加粗
-				case LogLevel::Level::ERROR_:
+				case LogLevel::Level::ERRO:
 					return "\033[91m";    // 亮红色
 				case LogLevel::Level::WARN:
 					return "\033[33m";  // 黄色
@@ -343,7 +344,7 @@ namespace Nano {
 			    std::make_shared<Nano::Log::LogEvent>(logger->getName(), level, __FILE__, __LINE__, \
 				    Nano::Utils::GetThreadId(), time(0), sender)).getLogEvent()->getSS()
 #define LOG_FATAL(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::FATAL, sender)
-#define LOG_ERROR(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::ERROR_, sender)
+#define LOG_ERROR(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::ERRO, sender)
 #define LOG_WARN(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::WARN, sender)
 #define LOG_INFO(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::INFO, sender)
 #define LOG_DEBUG(logger,sender) LOG_LEVEL(logger, Nano::Log::LogLevel::Level::DEBUG, sender)
@@ -355,7 +356,7 @@ namespace Nano {
 			    std::make_shared<Nano::Log::LogEvent>(logger->getName(), level, __FILE__, __LINE__, \
 				    Nano::Utils::GetThreadId(), time(0), sender)).getLogEvent()->printf(fmt, ##__VA_ARGS__)
 #define LOG_FMT_FATAL(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::FATAL, sender, fmt, ##__VA_ARGS__)
-#define LOG_FMT_ERROR(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::ERROR_, sender, fmt, ##__VA_ARGS__)
+#define LOG_FMT_ERROR(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::ERRO, sender, fmt, ##__VA_ARGS__)
 #define LOG_FMT_WARN(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::WARN, sender, fmt, ##__VA_ARGS__)
 #define LOG_FMT_INFO(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::INFO, sender, fmt, ##__VA_ARGS__)
 #define LOG_FMT_DEBUG(logger,sender,fmt,...) LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::DEBUG, sender, fmt, ##__VA_ARGS__)
@@ -370,7 +371,7 @@ namespace Nano {
 			    std::make_shared<Nano::Log::LogEvent>(logger->getName(), level, __FILE__, __LINE__, \
 				    Nano::Utils::GetThreadId(), time(0), sender)).getLogEvent()->getSS()
 #define ASYNC_LOG_FATAL(logger,sender) ASYNC_LOG_LEVEL(logger, Nano::Log::LogLevel::Level::FATAL, sender)
-#define ASYNC_LOG_ERROR(logger,sender) ASYNC_LOG_LEVEL(logger, Nano::Log::LogLevel::Level::ERROR_, sender)
+#define ASYNC_LOG_ERROR(logger,sender) ASYNC_LOG_LEVEL(logger, Nano::Log::LogLevel::Level::ERRO, sender)
 #define ASYNC_LOG_WARN(logger,sender) ASYNC_LOG_LEVEL(logger, Nano::Log::LogLevel::Level::WARN, sender)
 #define ASYNC_LOG_INFO(logger,sender) ASYNC_LOG_LEVEL(logger, Nano::Log::LogLevel::Level::INFO, sender)
 #define ASYNC_LOG_DEBUG(logger,sender) ASYNC_LOG_LEVEL(logger, Nano::Log::LogLevel::Level::DEBUG, sender)
@@ -382,7 +383,7 @@ namespace Nano {
 			    std::make_shared<Nano::Log::LogEvent>(logger->getName(), level, __FILE__, __LINE__, \
 				    Nano::Utils::GetThreadId(), time(0), sender)).getLogEvent()->printf(fmt, ##__VA_ARGS__)
 #define ASYNC_LOG_FMT_FATAL(logger,sender,fmt,...) ASYNC_LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::FATAL, sender, fmt, ##__VA_ARGS__)
-#define ASYNC_LOG_FMT_ERROR(logger,sender,fmt,...) ASYNC_LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::ERROR_, sender, fmt, ##__VA_ARGS__)
+#define ASYNC_LOG_FMT_ERROR(logger,sender,fmt,...) ASYNC_LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::ERRO, sender, fmt, ##__VA_ARGS__)
 #define ASYNC_LOG_FMT_WARN(logger,sender,fmt,...) ASYNC_LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::WARN, sender, fmt, ##__VA_ARGS__)
 #define ASYNC_LOG_FMT_INFO(logger,sender,fmt,...) ASYNC_LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::INFO, sender, fmt, ##__VA_ARGS__)
 #define ASYNC_LOG_FMT_DEBUG(logger,sender,fmt,...) ASYNC_LOG_FMT_LEVEL(logger, Nano::Log::LogLevel::Level::DEBUG, sender, fmt, ##__VA_ARGS__)

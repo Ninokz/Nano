@@ -8,7 +8,7 @@ namespace Nano {
 			switch (level) {
 #define XX(name) case LogLevel::Level::name: return #name;
 				XX(FATAL);
-				XX(ERROR_);
+				XX(ERRO);
 				XX(WARN);
 				XX(INFO);
 				XX(DEBUG);
@@ -26,13 +26,13 @@ namespace Nano {
 					return LogLevel::Level::level; \
 				}
 			XX(FATAL, fatal);
-			XX(ERROR_, error_);
+			XX(ERRO, erro);
 			XX(WARN, warn);
 			XX(INFO, info);
 			XX(DEBUG, debug);
 
 			XX(FATAL, FATAL);
-			XX(ERROR_, ERROR_);
+			XX(ERRO, ERRO);
 			XX(WARN, WARN);
 			XX(INFO, INFO);
 			XX(DEBUG, DEBUG);
@@ -295,7 +295,7 @@ namespace Nano {
 						XX(d, DateTimeFormatItem),          // d:日期时间
 						XX(f, FileNameFormatItem),          // f:文件名
 						XX(l, LineFormatItem),              // l:行号
-						XX(t, ThreadIdFormatItem),          // t:编程号
+						XX(t, ThreadIdFormatItem),          // t:线程号
 						XX(N, SenderFormatItem),            // N:名称
 						XX(%, PercentSignFormatItem),       // %:百分号
 						XX(T, TabFormatItem),               // T:制表符
@@ -457,7 +457,7 @@ namespace Nano {
 				m_queue.Push(nullptr);
 			}
 			this->m_thread->join();
-			//std::cout << "AsyncLogger::~AsyncLogger() " << m_name << std::endl;
+			std::cout << "Logger: " << m_name << " exit." << std::endl;
 		}
 
 		void AsyncLogger::addAppender(LogAppender::ptr appender)
@@ -497,10 +497,11 @@ namespace Nano {
 					break;
 				}
 				if (event->getLevel() <= m_level) {
+					
 					for (auto& i : m_appenders) {
 						i->log(event);
 					}
-				}
+				}	
 			}
 			//std::cout << "AsyncLogger::threadFunc() exit" << std::endl;
 		}
