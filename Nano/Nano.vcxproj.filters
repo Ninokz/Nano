@@ -124,7 +124,7 @@
       <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
     <ClCompile Include="stealThreadPool.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,7 +213,7 @@
       <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
     <ClInclude Include="stealThreadPool.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
