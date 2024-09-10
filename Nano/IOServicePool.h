@@ -19,10 +19,10 @@ namespace Nano {
 
 			virtual ~IOServicePool();
 			Context& getIOContext();
+
 		private:
 			IOServicePool(std::size_t poolSize = std::thread::hardware_concurrency());
 			void Stop();
-
 			IOServicePool(const IOServicePool&) = delete;
 			IOServicePool& operator=(const IOServicePool&) = delete;
 			IOServicePool(IOServicePool&&) = delete;
@@ -34,3 +34,7 @@ namespace Nano {
 		};
 	}
 }
+
+/// TODO:
+/// 1.基于每个 io_context 当前的负载分发任务
+/// 将 Context& getIOContext(); 改为返回 std::shared_ptr<Context> getIOContext() 通过shared_ptr计数来判断当前的负载情况

@@ -16,7 +16,7 @@ namespace Nano {
 			{
 				m_threads.emplace_back([this, i]() {
 					m_ioContexts[i].run();
-					});
+				});
 			}
 		}
 
