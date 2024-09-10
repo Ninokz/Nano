@@ -154,6 +154,7 @@
     <ClCompile Include="rpcserverstub.cpp" />
     <ClCompile Include="session.cpp" />
     <ClCompile Include="sessionmanager.cpp" />
+    <ClCompile Include="stealThreadPool.cpp" />
     <ClCompile Include="threadpool.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="session.h" />
     <ClInclude Include="sessionmanager.h" />
     <ClInclude Include="singleton.h" />
+    <ClInclude Include="stealThreadPool.h" />
     <ClInclude Include="threadpool.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

@@ -123,6 +123,9 @@
     <ClCompile Include="parrallenThreadPool.cpp">
       <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
+    <ClCompile Include="stealThreadPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="jointhreads.h">
       <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="stealThreadPool.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
