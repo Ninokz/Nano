@@ -118,8 +118,8 @@ namespace Nano {
 				{
 					/// copy m_recvPacket
 					auto newPacket = std::make_shared<RecvPacket>(*m_recvPacket);
-					/// test
-					std::cout << newPacket->ToString() << std::endl;
+					///// test
+					//std::cout << newPacket->ToString() << std::endl;
 					/// notify data ready
 					this->m_ceventHandler.OnDataReady(shared_from_this(), newPacket);
 					/// read next packet

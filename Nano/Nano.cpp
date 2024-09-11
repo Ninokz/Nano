@@ -1,7 +1,6 @@
 ﻿#include "test.h"
 
 int main() {
-	threadPoolTest();
-	system("pause");
+	rpcserverTest();
 	return 0;
 }

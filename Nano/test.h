@@ -5,6 +5,7 @@
 #include "BaseServer.h"
 #include "RpcService.h"
 #include "RpcProcedure.h"
+#include "RpcServer.h"
 
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
@@ -15,6 +16,7 @@ using namespace Nano::JrpcProto;
 using namespace Nano::Communication;
 using namespace Nano::Rpc;
 using namespace Nano::Concurrency;
+
 
 void hellocallbackDone(Json::Value response) {
 	std::cout << "Response: " << response["result"].asString() << std::endl;
@@ -167,4 +169,13 @@ void threadPoolTest()
     catch (const std::exception& e) {
         std::cerr << "Error occurred: " << e.what() << std::endl;
     }
+}
+
+void rpcserverTest()
+{
+	InitLoggers();
+	RpcServer rpcServer(9800);
+	rpcServer.Start();
+	system("pause");
+	rpcServer.Stop();
 }
