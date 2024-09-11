@@ -152,6 +152,7 @@
     <ClCompile Include="rpcclientstub.cpp" />
     <ClCompile Include="rpcserver.cpp" />
     <ClCompile Include="rpcserverstub.cpp" />
+    <ClCompile Include="rpcservice.cpp" />
     <ClCompile Include="session.cpp" />
     <ClCompile Include="sessionmanager.cpp" />
     <ClCompile Include="stealThreadPool.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="rpcclientstub.h" />
     <ClInclude Include="rpcserver.h" />
     <ClInclude Include="rpcserverstub.h" />
+    <ClInclude Include="rpcservice.h" />
     <ClInclude Include="session.h" />
     <ClInclude Include="sessionmanager.h" />
     <ClInclude Include="singleton.h" />

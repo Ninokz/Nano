@@ -120,6 +120,9 @@
     <ClCompile Include="jrpcproto.cpp">
       <Filter>源文件\alayer</Filter>
     </ClCompile>
+    <ClCompile Include="rpcservice.cpp">
+      <Filter>源文件\alayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -213,6 +216,9 @@
       <Filter>头文件\alayer</Filter>
     </ClInclude>
     <ClInclude Include="jrpcproto.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcservice.h">
       <Filter>头文件\alayer</Filter>
     </ClInclude>
   </ItemGroup>

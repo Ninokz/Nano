@@ -10,6 +10,7 @@
 
 #include "rpcexception.h"
 #include "jrpcproto.h"
+#include "nocopyable.h"
 
 namespace Nano {
 	namespace Rpc {
@@ -48,9 +49,6 @@ namespace Nano {
 			Func m_callback;
 			std::unordered_map<std::string, Json::ValueType> m_params;
 		};
-
-		typedef RpcProcedure<ProcedureReturnCallback> ProcedureReturn;
-		typedef RpcProcedure<ProcedureNotifyCallback> ProcedureNotify;
 
 		template <>
 		void RpcProcedure<ProcedureReturnCallback>::validateRequest(Json::Value& request) const {
