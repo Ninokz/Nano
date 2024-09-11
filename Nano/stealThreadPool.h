@@ -19,6 +19,7 @@ namespace Nano {
 	namespace Concurrency {
 		class StealThreadPool : public Singleton<StealThreadPool>, public Noncopyable
 		{
+			friend class Singleton<StealThreadPool>;
 		private:
 			StealThreadPool();
 

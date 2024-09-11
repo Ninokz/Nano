@@ -15,8 +15,8 @@ namespace Nano {
 		class RpcService : public Noncopyable {
 			typedef std::unique_ptr<ProcedureReturn> ProcedureReturnPtr;
 			typedef std::unique_ptr<ProcedureNotify> ProcedureNotifyPtr;
-			typedef std::unordered_map<std::string, ProcedureReturnPtr> ProcedureReturnList;
-			typedef std::unordered_map<std::string, ProcedureNotifyPtr> ProcedureNotifyList;
+			typedef std::unordered_map<std::string, ProcedureReturnPtr> ProcedureReturnMap;
+			typedef std::unordered_map<std::string, ProcedureNotifyPtr> ProcedureNotifyMap;
 		public:
 			typedef std::unique_ptr<RpcService> Ptr;
 
@@ -37,8 +37,8 @@ namespace Nano {
 			void callProcedureNotify(std::string methodName, Json::Value& request);
 
 		private:
-			ProcedureReturnList m_procedureReturn;
-			ProcedureNotifyList m_procedureNotfiy;
+			ProcedureReturnMap m_procedureReturn;
+			ProcedureNotifyMap m_procedureNotfiy;
 		};
 	}
 }

@@ -1,13 +1,23 @@
 #pragma once
+#include <iostream>
+
 #include "BaseServer.h"
 #include "RpcService.h"
 #include "RpcProcedure.h"
+
+#include "stealThreadPool.h"
+#include "functionWrapper.h"
 
 using namespace Nano::Log;
 using namespace Nano::Utils;
 using namespace Nano::JrpcProto;
 using namespace Nano::Communication;
 using namespace Nano::Rpc;
+using namespace Nano::Concurrency;
+
+void hellocallbackDone(Json::Value response) {
+	std::cout << "Response: " << response["result"].asString() << std::endl;
+}
 
 void helloCallback(Json::Value& request, const RpcDoneCallback& done) {
     std::string name = request["params"]["name"].asString();
@@ -33,7 +43,7 @@ void helloPc()
     // 调用过程
     helloProcedure->invoke(request, [](Json::Value response) {
         std::cout << "Response: " << response["result"].asString() << std::endl;
-        });
+    });
 }
 
 void hello()
@@ -81,7 +91,7 @@ void substractPc()
     // 调用过程
     subtractProcedure->invoke(request, [](Json::Value response) {
         std::cout << "Response: " << response["result"].asInt() << std::endl;
-        });
+    });
 }
 
 void substract()
@@ -109,4 +119,31 @@ void sub()
     const char* jsonStr = "{\"jsonrpc\":\"2.0\",\"method\":\"subtract\",\"params\":{\"subtrahend\":23,\"minuend\":42},\"id\":\"132\"}";
     bool flag = false;
     JsonRpcRequest::Ptr request = JrpcRequestGenerator::generate(jsonStr, &flag);
+
+	if (flag) {
+		std::cout << "Request: " << request->toJsonStr() << std::endl;
+	}
+	else {
+		std::cout << "Invalid JSON-RPC request" << std::endl;
+	}
+}
+
+
+void threadPoolTest()
+{
+	auto stealThreadPool = StealThreadPool::GetInstance();
+
+    auto helloProcedure = std::make_shared<ProcedureReturn>(
+        helloCallback,
+        "name", Json::ValueType::stringValue
+    );
+
+    Json::Value request;
+    request["jsonrpc"] = "2.0";
+    request["method"] = "hello";
+    request["params"]["name"] = "World";
+
+    helloProcedure->invoke(request, [](Json::Value response) {
+        std::cout << "Response: " << response["result"].asString() << std::endl;
+    });
 }

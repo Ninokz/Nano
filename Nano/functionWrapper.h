@@ -34,6 +34,5 @@ namespace Nano {
                 return *this;
             }
         };
-
 	}
 }

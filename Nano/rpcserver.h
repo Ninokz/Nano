@@ -5,6 +5,9 @@
 
 namespace Nano {
 	namespace Rpc {
+		class RpcServer 
+		{
 
+		};
 	}
 }
