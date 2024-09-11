@@ -221,5 +221,8 @@
     <ClInclude Include="rpcservice.h">
       <Filter>头文件\alayer</Filter>
     </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

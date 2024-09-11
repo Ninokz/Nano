@@ -25,15 +25,15 @@ namespace Nano {
 				assert(m_procedureReturn.find(methodName) == m_procedureReturn.end());
 				m_procedureReturn.emplace(std::move(methodName), std::move(p));
 			}
+
 			void addProcedureNotify(std::string methodName, ProcedureNotifyPtr p)
 			{
 				assert(m_procedureNotfiy.find(methodName) == m_procedureNotfiy.end());
 				m_procedureNotfiy.emplace(std::string(methodName), std::move(p));
 			}
 
-			void callProcedureReturn(std::string methodName,
-				Json::Value& request,
-				const RpcDoneCallback& done);
+			void callProcedureReturn(std::string methodName,Json::Value& request,const RpcDoneCallback& done);
+
 			void callProcedureNotify(std::string methodName, Json::Value& request);
 
 		private:

@@ -30,7 +30,7 @@ namespace Nano {
 			{
 				constexpr int n = sizeof...(nameAndTypes);
 				static_assert(n % 2 == 0, "procedure must have param name and type pairs");
-				initProcedure(nameAndTypes...);
+				initProcedure(std::forward<ParamNameAndTypes>(nameAndTypes)...);
 			}
 
 			void invoke(Json::Value& request, const RpcDoneCallback& done) {
@@ -43,17 +43,23 @@ namespace Nano {
 				m_callback(request);
 			}
 		private:
-			template<typename Name, typename Type, typename... ParamNameAndTypes>
-			void initProcedure(Name paramName, Type parmType, ParamNameAndTypes &&... nameAndTypes)
+			void initProcedure() {}
+
+			template<typename Name, typename Type, typename... Rest>
+			void initProcedure(Name&& paramName, Type&& paramType, Rest&&... rest)
 			{
-				static_assert(std::is_same_v<Type, Json::ValueType>, "param type must be json::ValueType");
+				static_assert(std::is_same_v<std::decay_t<Type>, Json::ValueType>,
+					"param type must be Json::ValueType");
+				m_params.insert(std::make_pair(std::forward<Name>(paramName),
+					std::forward<Type>(paramType)));
+				initProcedure(std::forward<Rest>(rest)...);
 			}
 
 			void validateRequest(Json::Value& request) const;
 			bool validateGeneric(Json::Value& request) const;
 		private:
 			Func m_callback;
-			std::unordered_map<std::string, Json::ValueType> m_params;
+			std::unordered_map<std::string, Json::ValueType> m_params;	// 参数列表
 		};
 
 		template <>

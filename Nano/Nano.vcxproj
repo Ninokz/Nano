@@ -190,6 +190,7 @@
     <ClInclude Include="sessionmanager.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="stealThreadPool.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="threadpool.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
