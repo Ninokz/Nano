@@ -70,6 +70,8 @@ namespace Nano {
 			static std::string getErrorMessage(JsonRpcErrorCode code);
 
 			static JsonRpcErrorCode toErrorCode(const int code);
+
+			static int toInt(JsonRpcErrorCode code);
 		public:
 			JsonRpcErrorCode m_code;
 			std::string m_message;

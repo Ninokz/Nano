@@ -37,12 +37,6 @@
     <Filter Include="源文件\su">
       <UniqueIdentifier>{adb80f50-2dd0-4dfa-8e62-817328b794ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\jrpc-protocol">
-      <UniqueIdentifier>{07cf385a-11b7-4027-9a76-67bc29eac520}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\jrpc-protocol">
-      <UniqueIdentifier>{1ca96422-6661-4b11-aeb9-611195d40670}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\alayer">
       <UniqueIdentifier>{3fc67771-b3ae-4399-8fd6-2df0706305ea}</UniqueIdentifier>
     </Filter>
@@ -71,9 +65,6 @@
     </ClCompile>
     <ClCompile Include="Nano.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="jrpcproto.cpp">
-      <Filter>源文件\jrpc-protocol</Filter>
     </ClCompile>
     <ClCompile Include="code.cpp">
       <Filter>源文件\clayer\encode-decode</Filter>
@@ -126,6 +117,9 @@
     <ClCompile Include="stealThreadPool.cpp">
       <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
+    <ClCompile Include="jrpcproto.cpp">
+      <Filter>源文件\alayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -145,9 +139,6 @@
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>头文件\su</Filter>
-    </ClInclude>
-    <ClInclude Include="jrpcproto.h">
-      <Filter>头文件\jrpc-protocol</Filter>
     </ClInclude>
     <ClInclude Include="code.h">
       <Filter>头文件\clayer\encode-decode</Filter>
@@ -214,6 +205,15 @@
     </ClInclude>
     <ClInclude Include="stealThreadPool.h">
       <Filter>头文件\su\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcprocedure.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="rpcexception.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
+    <ClInclude Include="jrpcproto.h">
+      <Filter>头文件\alayer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

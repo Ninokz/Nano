@@ -111,6 +111,11 @@ namespace Nano {
 			}
 		}
 
+		int JsonRpcError::toInt(JsonRpcErrorCode code)
+		{
+			return static_cast<int>(code);
+		}
+
 		Json::Value JsonRpcResponse::toJson() const
 		{
 			Json::Value response;

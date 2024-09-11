@@ -178,6 +178,8 @@
     <ClInclude Include="nocopyable.h" />
     <ClInclude Include="packet.h" />
     <ClInclude Include="parrallenThreadPool.h" />
+    <ClInclude Include="rpcexception.h" />
+    <ClInclude Include="rpcprocedure.h" />
     <ClInclude Include="rpcclient.h" />
     <ClInclude Include="rpcclientstub.h" />
     <ClInclude Include="rpcserver.h" />
