@@ -36,6 +36,24 @@ void helloPc()
         });
 }
 
+void hello()
+{
+	RpcService rpcService;
+	auto helloProcedure = std::make_unique<ProcedureReturn>(
+		helloCallback,
+		"name", Json::ValueType::stringValue
+	);
+    rpcService.addProcedureReturn("helloService", std::move(helloProcedure));
+	Json::Value request;
+	request["jsonrpc"] = "2.0";
+	request["method"] = "helloService";
+	request["params"]["name"] = "World";
+
+	rpcService.callProcedureReturn("helloService", request, [](Json::Value response) {
+		std::cout << "Response: " << response["result"].asString() << std::endl;
+	});
+}
+
 void subtractCallback(Json::Value& request, const RpcDoneCallback& done) {
     int subtrahend = request["params"]["subtrahend"].asInt();
     int minuend = request["params"]["minuend"].asInt();
@@ -66,10 +84,29 @@ void substractPc()
         });
 }
 
+void substract()
+{
+	RpcService rpcService;
+	auto subtractProcedure = std::make_unique<ProcedureReturn>(
+		subtractCallback,
+		"subtrahend", Json::ValueType::intValue,
+		"minuend", Json::ValueType::intValue
+	);
+	rpcService.addProcedureReturn("subtractService", std::move(subtractProcedure));
+	Json::Value request;
+	request["jsonrpc"] = "2.0";
+	request["method"] = "subtractService";
+	request["params"]["subtrahend"] = 23;
+	request["params"]["minuend"] = 42;
+
+	rpcService.callProcedureReturn("subtractService", request, [](Json::Value response) {
+		std::cout << "Response: " << response["result"].asInt() << std::endl;
+		});
+}
+
 void sub()
 {
     const char* jsonStr = "{\"jsonrpc\":\"2.0\",\"method\":\"subtract\",\"params\":{\"subtrahend\":23,\"minuend\":42},\"id\":\"132\"}";
     bool flag = false;
     JsonRpcRequest::Ptr request = JrpcRequestGenerator::generate(jsonStr, &flag);
-
 }
