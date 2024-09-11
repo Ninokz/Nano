@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 
+#include "Loginit.h"
 #include "BaseServer.h"
 #include "RpcService.h"
 #include "RpcProcedure.h"
@@ -128,7 +129,6 @@ void sub()
 	}
 }
 
-
 void threadPoolTest()
 {
 	auto stealThreadPool = StealThreadPool::GetInstance();
@@ -143,7 +143,28 @@ void threadPoolTest()
     request["method"] = "hello";
     request["params"]["name"] = "World";
 
-    helloProcedure->invoke(request, [](Json::Value response) {
-        std::cout << "Response: " << response["result"].asString() << std::endl;
+    // 使用 lambda 函数提交任务到线程池
+    auto future = stealThreadPool->submit([helloProcedure, request]() mutable {
+        helloProcedure->invoke(request, [](Json::Value response) {
+            std::cout << "Response: " << response["result"].asString() << std::endl;
+		/*	ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "BaseServer") << "Response: " << response["result"].asString();*/
+        });
     });
+
+    // 如果您确实想使用 std::bind，可以这样做：
+    //auto future = stealThreadPool->submit(std::bind(
+    //    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
+    //    helloProcedure.get(),
+    //    std::ref(request),
+    //    [](const Json::Value& response) {
+    //        std::cout << "Response: " << response["result"].asString() << std::endl;
+    //    }
+    //));
+
+    try {
+        future.get();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error occurred: " << e.what() << std::endl;
+    }
 }
