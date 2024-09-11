@@ -30,12 +30,18 @@ namespace Nano {
 			{
 				constexpr int n = sizeof...(nameAndTypes);
 				static_assert(n % 2 == 0, "procedure must have param name and type pairs");
-				if constexpr (n > 0)
-					initProcedure(nameAndTypes...);
+				initProcedure(nameAndTypes...);
 			}
 
-			void invoke(Json::Value& request, const RpcDoneCallback& done);
-			void invoke(Json::Value& request);
+			void invoke(Json::Value& request, const RpcDoneCallback& done) {
+				validateRequest(request);
+				m_callback(request, done);
+			}
+
+			void invoke(Json::Value& request) {
+				validateRequest(request);
+				m_callback(request);
+			}
 		private:
 			template<typename Name, typename Type, typename... ParamNameAndTypes>
 			void initProcedure(Name paramName, Type parmType, ParamNameAndTypes &&... nameAndTypes)
@@ -51,22 +57,22 @@ namespace Nano {
 		};
 
 		template <>
-		void RpcProcedure<ProcedureReturnCallback>::validateRequest(Json::Value& request) const {
+		inline void RpcProcedure<ProcedureReturnCallback>::validateRequest(Json::Value& request) const {
 			if (!validateGeneric(request))
 			{
 				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
-				const char* detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams).c_str();
+				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
 				throw RpcException(code, detail);
 			}
 		}
 
 		template <>
-		void RpcProcedure<ProcedureNotifyCallback>::validateRequest(Json::Value& request) const
+		inline void RpcProcedure<ProcedureNotifyCallback>::validateRequest(Json::Value& request) const
 		{
 			if (!validateGeneric(request))
 			{
 				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
-				const char* detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams).c_str();
+				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
 				throw RpcException(code, detail);
 			}
 		}
@@ -83,23 +89,14 @@ namespace Nano {
 				if (m_params.find(key) == m_params.end()) {
 					return false;
 				}
-				if (m_params[key] != value.type()) {
+				auto standradItem = m_params.find(key);
+				if (standradItem->second != value.type()) {
 					return false;
 				}
 			}
 			return true;
 		}
-
-		template <>
-		void RpcProcedure<ProcedureReturnCallback>::invoke(Json::Value& request, const RpcDoneCallback& done) {
-			validateRequest(request);
-			m_callback(request, done);
-		}
-
-		template <>
-		void RpcProcedure<ProcedureNotifyCallback>::invoke(Json::Value& request) {
-			validateRequest(request);
-			m_callback(request);
-		}
+		typedef RpcProcedure<ProcedureReturnCallback> ProcedureReturn;
+		typedef RpcProcedure<ProcedureNotifyCallback> ProcedureNotify;
 	}
 }
