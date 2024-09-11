@@ -11,18 +11,13 @@ namespace Nano {
 		{
 			m_ceventHandler->AddConnectHandler(std::static_pointer_cast<IConnectEventHandler>(m_sessionManager));
 			m_ceventHandler->AddCloseHandler(std::static_pointer_cast<ICloseEventHandler>(m_sessionManager));
+
 			m_acceptor = std::make_unique<ConnectionAcceptor>(m_ioc, port, *m_ceventHandler);
 		}
 
 		BaseServer::~BaseServer()
 		{
-			try {
-				Stop();
-			}
-			catch (std::exception& e)
-			{
-				std::cerr << "Exception: " << e.what() << std::endl;
-			}
+			Stop();
 		}
 
 		void BaseServer::Start()

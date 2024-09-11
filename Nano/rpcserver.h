@@ -14,17 +14,26 @@
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
 
+#include "Log.h"
+
 namespace Nano {
 	namespace Rpc {
-		class RpcServer : public Communication::BaseServer
+		class RpcServer : public Communication::BaseServer, public Communication::IDataReadyEventHandler, 
+			public std::enable_shared_from_this<RpcServer>
 		{
 		public:
 			typedef std::shared_ptr<RpcServer> Ptr;
-			RpcServer(short port);
-			~RpcServer();
 
+			RpcServer(short port);
+			virtual ~RpcServer();
+
+			static RpcServer::Ptr Create(short port) {
+				return std::make_shared<RpcServer>(port);
+			}
+			void Init();
 			void addService(std::string serviceName, RpcService::Ptr service);
 			void delService(std::string serviceName);
+			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;
 		private:
 			std::unordered_map<std::string, RpcService::Ptr> m_services;
 			std::shared_ptr<Concurrency::StealThreadPool> m_threadPool;

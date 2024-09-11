@@ -4,11 +4,16 @@ namespace Nano {
 	namespace Rpc {
 		RpcServer::RpcServer(short port) : Communication::BaseServer(port)
 		{
-			
+
 		}
 
 		RpcServer::~RpcServer()
 		{
+		}
+
+		void RpcServer::Init()
+		{
+			m_ceventHandler->AddDataReadyHandler(weak_from_this());
 		}
 
 		void RpcServer::addService(std::string serviceName, RpcService::Ptr service)
@@ -21,5 +26,9 @@ namespace Nano {
 			m_services.erase(serviceName);
 		}
 
+		void RpcServer::OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet)
+		{
+			std::cout << packet->ToString() << std::endl;
+		}
 	}
 }

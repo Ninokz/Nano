@@ -37,40 +37,58 @@ namespace Nano {
 				this->m_dataReadyHandlers.clear();
 			}
 
-			void AddCloseHandler(std::shared_ptr<ICloseEventHandler> handler) {
+			void AddCloseHandler(std::weak_ptr<ICloseEventHandler> handler) {
 				this->m_closeHandlers.push_back(handler);
 			}
-			void AddConnectHandler(std::shared_ptr<IConnectEventHandler> handler) {
+			void AddConnectHandler(std::weak_ptr<IConnectEventHandler> handler) {
 				this->m_connectHandlers.push_back(handler);
 			}
-			void AddDataReadyHandler(std::shared_ptr<IDataReadyEventHandler> handler) {
+			void AddDataReadyHandler(std::weak_ptr<IDataReadyEventHandler> handler) {
 				this->m_dataReadyHandlers.push_back(handler);
 			}
 
 			void OnClosed(std::shared_ptr<Session> sender) {
 				std::lock_guard<std::mutex> lock(this->m_mutex);
-				for (auto handler : this->m_closeHandlers) {
-					handler->OnClosed(sender);
+				for (auto it = m_closeHandlers.begin(); it != m_closeHandlers.end();) {
+					if (auto handler = it->lock()) {
+						handler->OnClosed(sender);
+						++it;
+					}
+					else {
+						it = m_closeHandlers.erase(it);
+					}
 				}
 			}
 
 			void OnConnected(std::shared_ptr<Session> sender) {
 				std::lock_guard<std::mutex> lock(this->m_mutex);
-				for (auto handler : this->m_connectHandlers) {
-					handler->OnConnected(sender);
+				for (auto it = m_connectHandlers.begin(); it != m_connectHandlers.end();) {
+					if (auto handler = it->lock()) {
+						handler->OnConnected(sender);
+						++it;
+					}
+					else {
+						it = m_connectHandlers.erase(it);
+					}
 				}
 			}
 
 			void OnDataReady(std::shared_ptr<Session> sender, std::shared_ptr<RecvPacket> packet) {
 				std::lock_guard<std::mutex> lock(this->m_mutex);
-				for (auto handler : this->m_dataReadyHandlers) {
-					handler->OnDataReady(sender, packet);
+				for (auto it = m_dataReadyHandlers.begin(); it != m_dataReadyHandlers.end();) {
+					if (auto handler = it->lock()) {
+						handler->OnDataReady(sender, packet);
+						++it;
+					}
+					else {
+						it = m_dataReadyHandlers.erase(it);
+					}
 				}
 			}
 		protected:
-			std::vector<std::shared_ptr<ICloseEventHandler>> m_closeHandlers;
-			std::vector<std::shared_ptr<IConnectEventHandler>> m_connectHandlers;
-			std::vector<std::shared_ptr<IDataReadyEventHandler>> m_dataReadyHandlers;
+			std::vector<std::weak_ptr<ICloseEventHandler>> m_closeHandlers;
+			std::vector<std::weak_ptr<IConnectEventHandler>> m_connectHandlers;
+			std::vector<std::weak_ptr<IDataReadyEventHandler>> m_dataReadyHandlers;
 			std::mutex m_mutex;
 		};
 	}

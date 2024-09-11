@@ -4,6 +4,9 @@
 #include "Loginit.h"
 #include "BaseServer.h"
 #include "RpcService.h"
+
+#include "ceventhandler.h"
+
 #include "RpcProcedure.h"
 #include "RpcServer.h"
 
@@ -171,11 +174,53 @@ void threadPoolTest()
     }
 }
 
+void testBaseServer()
+{
+    InitLoggers();
+    BaseServer baseServer(9800);
+    baseServer.Start();
+    system("pause");
+}
+
 void rpcserverTest()
 {
 	InitLoggers();
-	RpcServer rpcServer(9800);
-	rpcServer.Start();
+	RpcServer::Ptr rpcServer = RpcServer::Create(9800);
+	rpcServer->Init();
+	rpcServer->Start();
 	system("pause");
-	rpcServer.Stop();
+}
+
+void eventhanldertest()
+{
+    class A : public IDataReadyEventHandler, public std::enable_shared_from_this<A>
+    {
+    public:
+        A() {
+
+        }
+
+        /// weak_from_this() 是 std::enable_shared_from_this 的一部分，
+        /// 但它只有在对象已经被 std::shared_ptr 管理时才能正常工作。
+		/// 所以 init 函数中调用 shared_from_this() 来获取 std::shared_ptr<A> 对象。
+        void init() {
+            eventHandler.AddDataReadyHandler(weak_from_this());
+        }
+
+        void OnDataReady(std::shared_ptr<Session> sender, std::shared_ptr<RecvPacket> packet) override {
+            if (sender && packet) {
+                std::cout << "A: OnDataReady" << std::endl;
+            }
+            else {
+                std::cout << "A: OnDataReady nullptr" << std::endl;
+            }
+        }
+    public:
+        CEventHandler eventHandler;
+    };
+
+    // 使用 std::shared_ptr 来管理 A 对象
+    std::shared_ptr<A> a = std::make_shared<A>();
+	a->init();  
+    a->eventHandler.OnDataReady(nullptr, nullptr);
 }
