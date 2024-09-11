@@ -33,10 +33,13 @@ namespace Nano {
 			void Init();
 			void addService(std::string serviceName, RpcService::Ptr service);
 			void delService(std::string serviceName);
+		private:
 			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;
+			void handlePacket(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet);
+			void handleProcedureReturn(std::shared_ptr<Communication::Session> sender, Json::Value& request);
+			void handleProcedureNotify(std::shared_ptr<Communication::Session> sender, Json::Value& request);
 		private:
 			std::unordered_map<std::string, RpcService::Ptr> m_services;
-			std::shared_ptr<Concurrency::StealThreadPool> m_threadPool;
 		};
 	}
 }

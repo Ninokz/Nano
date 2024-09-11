@@ -2,7 +2,8 @@
 
 namespace Nano {
 	namespace Rpc {
-		RpcServer::RpcServer(short port) : Communication::BaseServer(port)
+		RpcServer::RpcServer(short port) : 
+			Communication::BaseServer(port)
 		{
 
 		}
@@ -29,6 +30,18 @@ namespace Nano {
 		void RpcServer::OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet)
 		{
 			std::cout << packet->ToString() << std::endl;
+		}
+
+		void RpcServer::handlePacket(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet)
+		{
+		}
+
+		void RpcServer::handleProcedureReturn(std::shared_ptr<Communication::Session> sender, Json::Value& request)
+		{
+		}
+
+		void RpcServer::handleProcedureNotify(std::shared_ptr<Communication::Session> sender, Json::Value& request)
+		{
 		}
 	}
 }
