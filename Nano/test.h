@@ -253,8 +253,36 @@ void rpcclientTest()
 	system("pause");
 }
 
-void rpcclientStubTest()
-{
-	RpcClientStub rpcClientStub;
-	
+/////// Final Test
+
+void helloworldCallback(Json::Value& response) {
+	std::cout << "Response: " << response["result"].asString() << std::endl;
+};
+
+void ClientStubHelloWorldTest() {
+	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"name", Json::ValueType::stringValue}
+	};
+	rpcClientStub->rpcReturnCall("127.0.0.1",9800,"1", "helloworldMethod", paramsNameTypesMap, helloworldCallback, 3000);
+	RpcCallRecord::Ptr result = rpcClientStub->getReturnCallResult("1");
+}
+
+void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
+	std::string name = request["params"]["name"].asString();
+	Json::Value response;
+	response["result"] = "Hello, " + name + "!";
+	done(response);
+}
+
+void RpcServerStubHelloWorldTest() {
+	RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"name", Json::ValueType::stringValue}
+	};
+
+	rpcServerStub->registReturn("helloworldMethod", paramsNameTypesMap, helloworldReturnService);
+	rpcServerStub->run();
+	system("pause");
+	rpcServerStub->stop();
 }
