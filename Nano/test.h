@@ -263,7 +263,6 @@ void ClientStubHelloWorldTest() {
 	  {"name", Json::ValueType::stringValue}
 	};
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", paramsNameTypesMap, helloworldCallback, 3000);
-	RpcCallRecord::Ptr result = rpcClientStub->getReturnCallResult("1");
 }
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {

@@ -29,7 +29,7 @@ namespace Nano {
 				JrpcProto::JsonRpcRequest::Ptr request = JrpcProto::JrpcRequestGenerator::generate(requestJsonStr, &generateResult);
 
 				if (generateResult) {
-					std::cout << packet->ToString() << std::endl;
+					ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << packet->ToString();
 					if (request->isReturnRequest()) {
 						handleProcedureReturn(sender, request);
 					}
@@ -52,6 +52,7 @@ namespace Nano {
 				stealthreadPool->submit([this, sender, request]() mutable {
 					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params,
 					[this, sender, request](Json::Value& response) {
+							ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "Response: " << response["result"].asString();
 							bool flag = false;
 							JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &flag);
 							if (flag)

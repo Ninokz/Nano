@@ -21,14 +21,14 @@ namespace Nano {
 				return false;
 			}
 			m_sessions.insert(std::make_pair(session->getUid(), session));
-			ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "SessionManager") << "Session connected: " << session->getUid();
+			//ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "SessionManager") << "Session connected: " << session->getUid();
 			return true;
 		}
 
 		inline void SessionManager::removeSession(std::string& uid)
 		{
 			m_sessions.erase(uid);
-			ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "SessionManager") << "Session removed: " << uid;
+			//ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "SessionManager") << "Session removed: " << uid;
 		}
 	}
 }
