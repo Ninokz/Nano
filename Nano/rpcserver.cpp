@@ -50,8 +50,8 @@ namespace Nano {
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
 				stealthreadPool->submit([this, sender, request]() mutable {
-					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, 
-					[this,sender,request](Json::Value& response) {
+					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params,
+					[this, sender, request](Json::Value& response) {
 							bool flag = false;
 							JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &flag);
 							if (flag)
@@ -95,8 +95,8 @@ namespace Nano {
 									buffer = nullptr;
 								}
 							}
+						});
 					});
-				});
 			}
 			else
 			{
@@ -111,7 +111,7 @@ namespace Nano {
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
 				stealthreadPool->submit([this, sender, request]() mutable {
 					this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
-				});
+					});
 			}
 			else
 			{
@@ -139,6 +139,5 @@ namespace Nano {
 				buffer = nullptr;
 			}
 		}
-		
 	}
 }

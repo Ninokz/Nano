@@ -1,4 +1,9 @@
 #pragma once
-class rpcclientstub
-{
-};
+
+namespace Nano {
+	namespace Rpc {
+		class rpcclientstub
+		{
+		};
+	}
+}

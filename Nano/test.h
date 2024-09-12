@@ -9,10 +9,14 @@
 
 #include "RpcProcedure.h"
 #include "RpcServer.h"
+#include "RpcClient.h"
+
 
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
 #include "rpcserverstub.h"
+#include "rpcclientstub.h"
+
 
 using namespace Nano::Log;
 using namespace Nano::Utils;
@@ -117,7 +121,7 @@ void substract()
 
 	rpcService.callProcedureReturn("subtractService", request, [](Json::Value response) {
 		std::cout << "Response: " << response["result"].asInt() << std::endl;
-	});
+		});
 }
 
 void threadPoolTest()
@@ -159,7 +163,6 @@ void threadPoolTest()
 		std::cerr << "Error occurred: " << e.what() << std::endl;
 	}
 }
-
 
 void testRpcserverregisHW()
 {
@@ -205,8 +208,6 @@ void testRpcserverregistSub() {
 		std::cout << "Response: " << response["result"].asInt() << std::endl;
 		});
 }
-
-
 
 void hwDoneCallback(Json::Value& response) {
 	std::cout << "Response: " << response["result"].asString() << std::endl;

@@ -183,6 +183,7 @@
     <ClInclude Include="rpcprocedure.h" />
     <ClInclude Include="rpcclient.h" />
     <ClInclude Include="rpcclientstub.h" />
+    <ClInclude Include="rpccallrecord.h" />
     <ClInclude Include="rpcserver.h" />
     <ClInclude Include="rpcserverstub.h" />
     <ClInclude Include="rpcservice.h" />

@@ -108,7 +108,7 @@ namespace Nano {
 			JsonRpcResponse(std::string jsonrpcVersion, std::string requestId, Json::Value result) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
 
-			JsonRpcResponse( std::string jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :
+			JsonRpcResponse(std::string jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), error(std::make_shared<JsonRpcError>(errorCode)) {}
 
 			Json::Value toJson() const;

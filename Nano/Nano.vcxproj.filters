@@ -224,5 +224,8 @@
     <ClInclude Include="test.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="rpccallrecord.h">
+      <Filter>头文件\alayer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
