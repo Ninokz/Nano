@@ -21,7 +21,7 @@
 
 namespace Nano {
 	namespace Rpc {
-		class RpcServer : public Communication::BaseServer, public Communication::IDataReadyEventHandler, 
+		class RpcServer : public Communication::BaseServer, public Communication::IDataReadyEventHandler,
 			public std::enable_shared_from_this<RpcServer>
 		{
 		public:
@@ -47,7 +47,7 @@ namespace Nano {
 			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;
 			void handleProcedureReturn(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcRequest::Ptr request);
 			void handleProcedureNotify(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcRequest::Ptr request);
-		
+
 			void handleMethodNotFound(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcRequest::Ptr request);
 		public:
 			RpcService::Ptr m_rpcService;

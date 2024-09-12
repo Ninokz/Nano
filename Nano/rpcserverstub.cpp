@@ -10,7 +10,6 @@ namespace Nano {
 
 		RpcServerStub::~RpcServerStub()
 		{
-
 		}
 
 		void RpcServerStub::registReturn(std::string methodName, std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap, ProcedureReturnCallback done)

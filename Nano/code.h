@@ -12,7 +12,7 @@ namespace Nano {
 					/// str -> buffer
 					size_t length = str.size();
 					if (length > INT32_MAX)
-						throw std::runtime_error("encode: buffer size is too large");			
+						throw std::runtime_error("encode: buffer size is too large");
 					*len = static_cast<int>(length);
 					*buffer = new char[length];
 					memcpy(*buffer, str.c_str(), length);

@@ -194,7 +194,7 @@ namespace Nano {
 				return nullptr;
 			}
 		}
-		
+
 		bool JrpcResponseParser::fieldsExist(const Json::Value& root)
 		{
 			if (root.isMember("error") && root.isMember("result"))

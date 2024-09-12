@@ -2,6 +2,5 @@
 
 namespace Nano {
 	namespace TransferCode {
-		
 	}
 }

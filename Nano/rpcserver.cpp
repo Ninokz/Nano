@@ -4,7 +4,6 @@ namespace Nano {
 	namespace Rpc {
 		RpcServer::RpcServer(short port) : Communication::BaseServer(port)
 		{
-
 		}
 
 		RpcServer::~RpcServer()
@@ -42,7 +41,7 @@ namespace Nano {
 				std::string requestJsonStr = TransferCode::Code::decode(packet->m_data, packet->m_size);
 				bool generateResult = false;
 				JrpcProto::JsonRpcRequest::Ptr request = JrpcProto::JrpcRequestGenerator::generate(requestJsonStr, &generateResult);
-				
+
 				if (generateResult) {
 					std::cout << packet->ToString() << std::endl;
 					if (request->isReturnRequest()) {
@@ -65,18 +64,18 @@ namespace Nano {
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
 				if (m_rpcDoneCallback.find(request->m_method) != m_rpcDoneCallback.end())
 				{
-					stealthreadPool->submit([this,request]() mutable {
+					stealthreadPool->submit([this, request]() mutable {
 						this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, m_rpcDoneCallback[request->m_method]);
-					});
+						});
 				}
 				else
 				{
 					/// TODO:此处应该输出警告日志，因为没有设置默认的回调函数
-					/// 
+					///
 					Nano::Rpc::RpcDoneCallback defalutDone = [](Json::Value val) {};
 					stealthreadPool->submit([this, request, defalutDone]() mutable {
 						this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, defalutDone);
-					});
+						});
 				}
 			}
 			else
@@ -94,16 +93,16 @@ namespace Nano {
 				{
 					stealthreadPool->submit([this, request]() mutable {
 						this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
-					});
+						});
 				}
 				else
 				{
 					/// TODO:此处应该输出警告日志，因为没有设置默认的回调函数
-					/// 
+					///
 					Nano::Rpc::RpcDoneCallback defalutDone = [](Json::Value val) {};
 					stealthreadPool->submit([this, request, defalutDone]() mutable {
 						this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
-					});
+						});
 				}
 			}
 			else

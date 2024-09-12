@@ -50,7 +50,7 @@ namespace Nano {
 				m_ioc.stop();
 				m_listenThread.join();
 				ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "BaseServer") << "Server stop";
-			}	
+			}
 		}
 	}
 }

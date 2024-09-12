@@ -47,7 +47,6 @@ namespace Nano {
 						wrapper();
 						break;
 					}
-
 				}
 
 				if (steal_res) {

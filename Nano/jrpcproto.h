@@ -21,7 +21,7 @@ namespace Nano {
 			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters, std::string requestId)
 				: m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id(requestId) {}
 
-			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters):
+			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters) :
 				m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id("") {}
 
 			std::string toJsonStr() const;
@@ -106,7 +106,7 @@ namespace Nano {
 			typedef std::shared_ptr<JsonRpcResponse> Ptr;
 		public:
 
-			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) : 
+			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
 
 			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :

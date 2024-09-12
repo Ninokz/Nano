@@ -97,7 +97,7 @@ namespace Nano {
 			}
 			for (Json::Value::const_iterator it = params.begin(); it != params.end(); ++it) {
 				std::string key = it.key().asString();  // 获取键
-				Json::Value value = *it;  // 获取对应的值		
+				Json::Value value = *it;  // 获取对应的值
 				if (m_params.find(key) == m_params.end()) {
 					return false;
 				}

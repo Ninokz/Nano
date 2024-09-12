@@ -9,7 +9,6 @@
 #include "rpcprocedure.h"
 #include "jrpcproto.h"
 
-
 namespace Nano {
 	namespace Rpc {
 		class RpcService : public Noncopyable {
@@ -33,7 +32,7 @@ namespace Nano {
 				m_procedureNotfiy.emplace(std::string(methodName), std::move(p));
 			}
 
-			void callProcedureReturn(std::string methodName,Json::Value& request,const RpcDoneCallback& done);
+			void callProcedureReturn(std::string methodName, Json::Value& request, const RpcDoneCallback& done);
 
 			void callProcedureNotify(std::string methodName, Json::Value& request);
 
