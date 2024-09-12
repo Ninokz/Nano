@@ -14,6 +14,9 @@
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
 
+#include "jrpcproto.h"
+#include "code.h"
+
 #include "Log.h"
 
 namespace Nano {
@@ -23,23 +26,28 @@ namespace Nano {
 		{
 		public:
 			typedef std::shared_ptr<RpcServer> Ptr;
-
 			RpcServer(short port);
-			virtual ~RpcServer();
 
-			static RpcServer::Ptr Create(short port) {
-				return std::make_shared<RpcServer>(port);
-			}
+			virtual ~RpcServer();
+			static RpcServer::Ptr Create(short port);
 			void Init();
-			void addService(std::string serviceName, RpcService::Ptr service);
-			void delService(std::string serviceName);
+
+			void addProcedureReturn(std::string methodName, RpcService::ProcedureReturnPtr p)
+			{
+				m_rpcService->addProcedureReturn(std::move(methodName), std::move(p));
+			}
+
+			void addProcedureNotify(std::string methodName, RpcService::ProcedureNotifyPtr p)
+			{
+				m_rpcService->addProcedureNotify(std::move(methodName), std::move(p));
+			}
 		private:
 			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;
 			void handlePacket(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet);
 			void handleProcedureReturn(std::shared_ptr<Communication::Session> sender, Json::Value& request);
 			void handleProcedureNotify(std::shared_ptr<Communication::Session> sender, Json::Value& request);
 		private:
-			std::unordered_map<std::string, RpcService::Ptr> m_services;
+			RpcService::Ptr m_rpcService;
 		};
 	}
 }

@@ -120,20 +120,6 @@ void substract()
 		});
 }
 
-void sub()
-{
-    const char* jsonStr = "{\"jsonrpc\":\"2.0\",\"method\":\"subtract\",\"params\":{\"subtrahend\":23,\"minuend\":42},\"id\":\"132\"}";
-    bool flag = false;
-    JsonRpcRequest::Ptr request = JrpcRequestGenerator::generate(jsonStr, &flag);
-
-	if (flag) {
-		std::cout << "Request: " << request->toJsonStr() << std::endl;
-	}
-	else {
-		std::cout << "Invalid JSON-RPC request" << std::endl;
-	}
-}
-
 void threadPoolTest()
 {
 	auto stealThreadPool = StealThreadPool::GetInstance();
@@ -223,4 +209,52 @@ void eventhanldertest()
     std::shared_ptr<A> a = std::make_shared<A>();
 	a->init();  
     a->eventHandler.OnDataReady(nullptr, nullptr);
+}
+
+void testRpcserverregist(){
+    // 定义参数映射
+    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+        {"subtrahend", Json::ValueType::intValue},
+        {"minuend", Json::ValueType::intValue}
+    };
+
+    // 模拟 RPC 请求
+    Json::Value request;
+    request["jsonrpc"] = "2.0";
+    request["method"] = "subtract";
+    request["params"]["subtrahend"] = 23;
+    request["params"]["minuend"] = 42;
+
+    auto subtractProcedure = std::make_shared<ProcedureReturn>(
+        subtractCallback,
+		paramsNameTypesMap
+    );
+
+	// 调用过程
+	subtractProcedure->invoke(request, [](Json::Value response) {
+		std::cout << "Response: " << response["result"].asInt() << std::endl;
+	});
+}
+
+void testRpcserverregist2() {
+    RpcService rpcService;
+    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+      {"subtrahend", Json::ValueType::intValue},
+      {"minuend", Json::ValueType::intValue}
+    };
+    auto subtractProcedure = std::make_unique<ProcedureReturn>(
+        subtractCallback,
+        paramsNameTypesMap
+    );
+	rpcService.addProcedureReturn("subtractService", std::move(subtractProcedure));
+
+	Json::Value request;
+	request["jsonrpc"] = "2.0";
+	request["method"] = "subtractService";
+	request["params"]["subtrahend"] = 23;
+	request["params"]["minuend"] = 42;
+
+	rpcService.callProcedureReturn("subtractService", request, [](Json::Value response) {
+		std::cout << "Response: " << response["result"].asInt() << std::endl;
+	});
 }

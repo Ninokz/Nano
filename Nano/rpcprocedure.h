@@ -33,6 +33,12 @@ namespace Nano {
 				initProcedure(std::forward<ParamNameAndTypes>(nameAndTypes)...);
 			}
 
+			explicit RpcProcedure(Func&& callback, std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap) :
+				m_callback(std::forward<Func>(callback)),
+				m_params(std::move(paramsNameTypesMap))
+			{
+			}
+
 			void invoke(Json::Value& request, const RpcDoneCallback& done) {
 				validateRequest(request);
 				m_callback(request, done);

@@ -1,6 +1,6 @@
 ﻿#include "test.h"
 
 int main() {
-	rpcserverTest();
+	testRpcserverregist2();
 	return 0;
 }

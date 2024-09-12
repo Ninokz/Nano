@@ -82,7 +82,8 @@ namespace Nano {
 			typedef std::shared_ptr<JsonRpcResponse> Ptr;
 		public:
 
-			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) : jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
+			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) : 
+				jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
 
 			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), error(std::make_shared<JsonRpcError>(errorCode)) {}
