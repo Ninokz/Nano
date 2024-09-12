@@ -11,12 +11,10 @@
 #include "RpcServer.h"
 #include "RpcClient.h"
 
-
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
 #include "rpcserverstub.h"
 #include "rpcclientstub.h"
-
 
 using namespace Nano::Log;
 using namespace Nano::Utils;
@@ -236,7 +234,7 @@ void rpcserverStubTest()
 }
 
 void call(Json::Value& response) {
-	std::cout << "Response: " << response["result"].asString()<< std::endl;
+	std::cout << "Response: " << response["result"].asString() << std::endl;
 }
 
 void rpcclientTest()
@@ -264,7 +262,7 @@ void ClientStubHelloWorldTest() {
 	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
 	  {"name", Json::ValueType::stringValue}
 	};
-	rpcClientStub->rpcReturnCall("127.0.0.1",9800,"1", "helloworldMethod", paramsNameTypesMap, helloworldCallback, 3000);
+	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", paramsNameTypesMap, helloworldCallback, 3000);
 	RpcCallRecord::Ptr result = rpcClientStub->getReturnCallResult("1");
 }
 
@@ -276,6 +274,7 @@ void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) 
 }
 
 void RpcServerStubHelloWorldTest() {
+	InitLoggers();
 	RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
 	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
 	  {"name", Json::ValueType::stringValue}

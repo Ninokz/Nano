@@ -84,7 +84,7 @@ namespace Nano {
 				bool parseResult = false;
 				JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &parseResult);
 				if (parseResult)
-				{			
+				{
 					std::cout << packet->ToString() << std::endl;
 					if (this->m_callRecords.find(jsresponse->m_id) != this->m_callRecords.end())
 					{

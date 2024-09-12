@@ -33,7 +33,7 @@ namespace Nano {
 			public std::enable_shared_from_this<RpcClient>
 		{
 		public:
-			typedef std::shared_ptr<RpcClient> Ptr;	
+			typedef std::shared_ptr<RpcClient> Ptr;
 		public:
 			RpcClient();
 			virtual ~RpcClient();

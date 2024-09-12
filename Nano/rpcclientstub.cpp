@@ -10,8 +10,8 @@ namespace Nano {
 		{
 		}
 
-		void RpcClientStub::rpcReturnCall(std::string ip, short port, std::string id, std::string methodName, 
-			std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap, 
+		void RpcClientStub::rpcReturnCall(std::string ip, short port, std::string id, std::string methodName,
+			std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap,
 			const RpcResponseCallback callback, int milliseconds_timeout)
 		{
 			Json::Value params;
