@@ -258,6 +258,7 @@ void helloworldCallback(Json::Value& response) {
 };
 
 void ClientStubHelloWorldTest() {
+	InitLoggers();
 	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
 	Json::Value params;
 	params["name"] = "World";
