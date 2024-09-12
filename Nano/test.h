@@ -180,6 +180,7 @@ void testRpcserverregisHW()
 	request["jsonrpc"] = "2.0";
 	request["method"] = "helloService";
 	request["params"]["name"] = "World";
+	request["id"] = "123";
 
 	rpcService.callProcedureReturn("helloService", request, [](Json::Value response) {
 		std::cout << "Response: " << response["result"].asString() << std::endl;
@@ -232,4 +233,28 @@ void rpcserverStubTest()
 	rpcServerStub.run();
 	system("pause");
 	rpcServerStub.stop();
+}
+
+void call(Json::Value& response) {
+	std::cout << "Response: " << response["result"].asString()<< std::endl;
+}
+
+void rpcclientTest()
+{
+	Json::Value params;
+	params["params"]["name"] = "World";
+	JsonRpcRequest::Ptr request = Nano::JrpcProto::JrpcRequestGenerator::generate("hellomethod", params);
+
+	RpcClient::Ptr rpcClient = std::make_shared<RpcClient>();
+	rpcClient->Connect("127.0.0.1", 9800);
+	rpcClient->callReturnProcedure(request, call);
+	system("pause");
+	rpcClient->Disconnect();
+	system("pause");
+}
+
+void rpcclientStubTest()
+{
+	RpcClientStub rpcClientStub;
+	
 }

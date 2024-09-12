@@ -70,6 +70,26 @@ namespace Nano {
 			}
 		}
 
+		JsonRpcRequest::Ptr JrpcRequestGenerator::generate(std::string method, std::string id, Json::Value params)
+		{
+			JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>();
+			request->m_ver = "2.0";
+			request->m_method = method;
+			request->m_params = params;
+			request->m_id = id;
+			return request;
+		}
+
+		JsonRpcRequest::Ptr JrpcRequestGenerator::generate(std::string method, Json::Value params)
+		{
+			JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>();
+			request->m_ver = "2.0";
+			request->m_method = method;
+			request->m_params = params;
+			request->m_id = "";
+			return request;
+		}
+
 		Json::Value JsonRpcError::toJson() const
 		{
 			Json::Value error;

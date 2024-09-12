@@ -63,6 +63,11 @@ namespace Nano {
 			}
 
 			static JsonRpcRequest::Ptr generate(const std::string& jsonStr, bool* flag);
+
+			static JsonRpcRequest::Ptr generate(std::string method, std::string id, Json::Value params);
+
+			static JsonRpcRequest::Ptr generate(std::string method, Json::Value params);
+
 		private:
 			static void addParams(Json::Value& params) {}
 

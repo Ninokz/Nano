@@ -26,31 +26,25 @@
 
 namespace Nano {
 	namespace Rpc {
-		typedef std::unordered_map<std::string, RpcCallRecord::Ptr> RpcCallRecordMap;
+		typedef std::function<void(Json::Value& response)> RpcResponseCallback;
+		typedef std::unordered_map<std::string, std::pair<RpcCallRecord::Ptr, RpcResponseCallback>> RpcCallRecordMap;
+
 		class RpcClient : public Communication::BaseClient, public Communication::IDataReadyEventHandler,
 			public std::enable_shared_from_this<RpcClient>
 		{
 		public:
-			typedef std::shared_ptr<RpcClient> Ptr;
-			
+			typedef std::shared_ptr<RpcClient> Ptr;	
 		public:
-			typedef std::function<void(Json::Value& response)> RpcResponseCallback;
-
 			RpcClient();
 			virtual ~RpcClient();
 
-			bool connect(const std::string& ip, short port);
-			void disconnect();
-
-			bool callReturnProcedure(JrpcProto::JsonRpcRequest::Ptr request);
+			bool callReturnProcedure(JrpcProto::JsonRpcRequest::Ptr request, const RpcResponseCallback callback);
 			bool callNotifyProcedure(JrpcProto::JsonRpcRequest::Ptr request);
 
-			RpcCallRecord::Ptr getCallRecord(std::string id);
-			void removeCallRecord(std::string id);
+			RpcCallRecord::Ptr getReturnCallRecord(const std::string& id);
 		private:
 			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;
 		private:
-			std::mutex m_mutex;
 			RpcCallRecordMap m_callRecords;
 		};
 	}
