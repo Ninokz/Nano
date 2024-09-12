@@ -18,10 +18,10 @@ namespace Nano {
 		public:
 			JsonRpcRequest() = default;
 
-			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters, std::string requestId)
+			JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, Json::Value parameters, std::string requestId)
 				: m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id(requestId) {}
 
-			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters) :
+			JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, Json::Value parameters) :
 				m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id("") {}
 
 			std::string toJsonStr() const;
@@ -45,7 +45,7 @@ namespace Nano {
 		class JrpcRequestGenerator {
 		public:
 			template <typename... Args>
-			static JsonRpcRequest::Ptr generate(const std::string& method, const std::string id, const Args&... args) {
+			static JsonRpcRequest::Ptr generate(std::string method, std::string id, const Args&... args) {
 				Json::Value params(Json::objectValue);
 				addParams(params, args...);
 				std::string ver = "2.0";
@@ -54,7 +54,7 @@ namespace Nano {
 			}
 
 			template <typename... Args>
-			static JsonRpcRequest::Ptr generate(const std::string& method, const Args&... args) {
+			static JsonRpcRequest::Ptr generate(std::string method, const Args&... args) {
 				Json::Value params(Json::objectValue);
 				addParams(params, args...);
 				std::string ver = "2.0";
@@ -105,11 +105,10 @@ namespace Nano {
 		public:
 			typedef std::shared_ptr<JsonRpcResponse> Ptr;
 		public:
-
-			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, const Json::Value& result) :
+			JsonRpcResponse(std::string jsonrpcVersion, std::string requestId, Json::Value result) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), result(result) {}
 
-			JsonRpcResponse(const std::string& jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :
+			JsonRpcResponse( std::string jsonrpcVersion, std::string requestId, JsonRpcError::JsonRpcErrorCode errorCode) :
 				jsonrpc(jsonrpcVersion), m_id(requestId), error(std::make_shared<JsonRpcError>(errorCode)) {}
 
 			Json::Value toJson() const;
@@ -126,6 +125,8 @@ namespace Nano {
 		class JrpcResponseParser {
 		public:
 			static JsonRpcResponse::Ptr parse(const std::string& jsonStr, bool* flag);
+
+			static JsonRpcResponse::Ptr parse(const Json::Value& root, bool* flag);
 		private:
 			static bool fieldsExist(const Json::Value& root);
 		};

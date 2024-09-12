@@ -37,7 +37,8 @@ namespace Nano {
 						handleProcedureNotify(sender, request);
 					}
 				}
-				else {
+				else
+				{
 					std::cerr << packet->ToString() << std::endl;
 				}
 			}
@@ -49,7 +50,52 @@ namespace Nano {
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
 				auto future = stealthreadPool->submit([this, sender, request]() mutable {
-
+					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, 
+					[sender,request](Json::Value& response) {
+							bool flag = false;
+							JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &flag);
+							if (flag)
+							{
+								/// 解析成功
+								std::string responseJsonStr = jsresponse->toJsonStr();
+								char* buffer = nullptr;
+								int len = 0;
+								if (TransferCode::Code::encode(responseJsonStr, &buffer, &len))
+								{
+									sender->Send(buffer, len);
+									delete buffer;
+									buffer = nullptr;
+								}
+								else
+									std::cerr << "handleProcedureReturn: encode failed" << std::endl;
+								if (buffer)
+								{
+									delete buffer;
+									buffer = nullptr;
+								}
+							}
+							else
+							{
+								/// 解析失败
+								JrpcProto::JsonRpcResponse internalErrorResponse("2.0", request->m_id, Nano::JrpcProto::JsonRpcError::JsonRpcErrorCode::InternalError);
+								std::string responseJsonStr = internalErrorResponse.toJsonStr();
+								char* buffer = nullptr;
+								int len = 0;
+								if (TransferCode::Code::encode(responseJsonStr, &buffer, &len))
+								{
+									sender->Send(buffer, len);
+									delete buffer;
+									buffer = nullptr;
+								}
+								else
+									std::cerr << "handleProcedureReturn: encode failed" << std::endl;
+								if (buffer)
+								{
+									delete buffer;
+									buffer = nullptr;
+								}
+							}
+					});
 				});
 			}
 			else
@@ -63,7 +109,7 @@ namespace Nano {
 			if (this->m_rpcService->hasProcedureNotify(request->m_method))
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				auto future = stealthreadPool->submit([this, request]() mutable {
+				auto future = stealthreadPool->submit([this, sender, request]() mutable {
 					this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
 				});
 			}
@@ -86,9 +132,13 @@ namespace Nano {
 				buffer = nullptr;
 			}
 			else
-			{
 				std::cerr << "handleMethodNotFound: encode failed" << std::endl;
+			if (buffer)
+			{
+				delete buffer;
+				buffer = nullptr;
 			}
 		}
+		
 	}
 }

@@ -195,6 +195,52 @@ namespace Nano {
 			}
 		}
 
+		JsonRpcResponse::Ptr JrpcResponseParser::parse(const Json::Value& root, bool* flag)
+		{
+			try {
+				if (JrpcResponseParser::fieldsExist(root) == false)
+				{
+					*flag = false;
+					return nullptr;
+				}
+				std::string jsonrpc = root["jsonrpc"].asString();
+				if (jsonrpc != "2.0")
+				{
+					*flag = false;
+					return nullptr;
+				}
+				std::string id = root["id"].asString();
+				if (root.isMember("error"))
+				{
+					/// 错误返回解析 JsonRpcError::Ptr error;
+					*flag = true;
+					Json::Value error = root["error"];
+					JsonRpcError::JsonRpcErrorCode code = JsonRpcError::toErrorCode(error["code"].asInt());
+					JsonRpcResponse::Ptr response = std::make_shared<JsonRpcResponse>(jsonrpc, id, code);
+					return response;
+				}
+				else if (root.isMember("result"))
+				{
+					/// 正常返回解析 Json::Value result;
+					*flag = true;
+					Json::Value result = root["result"];
+					JsonRpcResponse::Ptr response = std::make_shared<JsonRpcResponse>(jsonrpc, id, result);
+					return response;
+				}
+				else
+				{
+					*flag = false;
+					return nullptr;
+				}
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << e.what() << std::endl;
+				*flag = false;
+				return nullptr;
+			}
+		}
+
 		bool JrpcResponseParser::fieldsExist(const Json::Value& root)
 		{
 			if (root.isMember("error") && root.isMember("result"))

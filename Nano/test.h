@@ -116,7 +116,7 @@ void substract()
 
 	rpcService.callProcedureReturn("subtractService", request, [](Json::Value response) {
 		std::cout << "Response: " << response["result"].asInt() << std::endl;
-		});
+	});
 }
 
 void threadPoolTest()
@@ -159,14 +159,6 @@ void threadPoolTest()
 	}
 }
 
-void testBaseServer()
-{
-	InitLoggers();
-	BaseServer baseServer(9800);
-	baseServer.Start();
-	system("pause");
-}
-
 void rpcserverTest()
 {
 	InitLoggers();
@@ -176,65 +168,7 @@ void rpcserverTest()
 	system("pause");
 }
 
-void eventhanldertest()
-{
-	class A : public IDataReadyEventHandler, public std::enable_shared_from_this<A>
-	{
-	public:
-		A() {
-		}
-
-		/// weak_from_this() 是 std::enable_shared_from_this 的一部分，
-		/// 但它只有在对象已经被 std::shared_ptr 管理时才能正常工作。
-		/// 所以 init 函数中调用 shared_from_this() 来获取 std::shared_ptr<A> 对象。
-		void init() {
-			eventHandler.AddDataReadyHandler(weak_from_this());
-		}
-
-		void OnDataReady(std::shared_ptr<Session> sender, std::shared_ptr<RecvPacket> packet) override {
-			if (sender && packet) {
-				std::cout << "A: OnDataReady" << std::endl;
-			}
-			else {
-				std::cout << "A: OnDataReady nullptr" << std::endl;
-			}
-		}
-	public:
-		CEventHandler eventHandler;
-	};
-
-	// 使用 std::shared_ptr 来管理 A 对象
-	std::shared_ptr<A> a = std::make_shared<A>();
-	a->init();
-	a->eventHandler.OnDataReady(nullptr, nullptr);
-}
-
 void testRpcserverregist() {
-	// 定义参数映射
-	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
-		{"subtrahend", Json::ValueType::intValue},
-		{"minuend", Json::ValueType::intValue}
-	};
-
-	// 模拟 RPC 请求
-	Json::Value request;
-	request["jsonrpc"] = "2.0";
-	request["method"] = "subtract";
-	request["params"]["subtrahend"] = 23;
-	request["params"]["minuend"] = 42;
-
-	auto subtractProcedure = std::make_shared<ProcedureReturn>(
-		subtractCallback,
-		paramsNameTypesMap
-	);
-
-	// 调用过程
-	subtractProcedure->invoke(request, [](Json::Value response) {
-		std::cout << "Response: " << response["result"].asInt() << std::endl;
-		});
-}
-
-void testRpcserverregist2() {
 	RpcService rpcService;
 	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
 	  {"subtrahend", Json::ValueType::intValue},
