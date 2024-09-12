@@ -94,8 +94,10 @@ namespace Nano {
 
 		template <typename Func>
 		bool RpcProcedure<Func>::validateGeneric(Json::Value& request) const {
-			auto params = request.isMember("params") ? request["params"] : Json::Value(Json::nullValue);
-			if (params == Json::nullValue || !params.isObject()) {
+			//auto params = request.isMember("params") ? request["params"] : Json::Value(Json::nullValue);
+			ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << request.toStyledString() << std::endl;
+			auto params = request;
+			if (params == Json::nullValue) {
 				return false;
 			}
 			for (Json::Value::const_iterator it = params.begin(); it != params.end(); ++it) {

@@ -254,7 +254,7 @@ void rpcclientTest()
 /////// Final Test
 
 void helloworldCallback(Json::Value& response) {
-	std::cout << "Response: " << response["result"].asString() << std::endl;
+	ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldCallback") << "Response: " << response["result"].asString() << std::endl;
 };
 
 void ClientStubHelloWorldTest() {
@@ -262,12 +262,14 @@ void ClientStubHelloWorldTest() {
 	Json::Value params;
 	params["name"] = "World";
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
+
 }
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
 	std::string name = request["params"]["name"].asString();
 	Json::Value response;
 	response["result"] = "Hello, " + name + "!";
+	ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldReturnService") << "DONE!" << std::endl;
 	done(response);
 }
 
