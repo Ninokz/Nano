@@ -15,6 +15,8 @@
 #include "functionWrapper.h"
 #include "jointhreads.h"
 
+#include "const.h"
+
 namespace Nano {
 	namespace Concurrency {
 		class StealThreadPool : public Singleton<StealThreadPool>, public Noncopyable

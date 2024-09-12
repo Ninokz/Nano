@@ -20,6 +20,9 @@ namespace Nano {
 		public:
 			typedef std::unique_ptr<RpcService> Ptr;
 
+			RpcService();
+			virtual ~RpcService() = default;
+
 			void addProcedureReturn(std::string methodName, ProcedureReturnPtr p)
 			{
 				assert(m_procedureReturn.find(methodName) == m_procedureReturn.end());

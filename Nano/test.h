@@ -12,6 +12,7 @@
 
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
+#include "rpcserverstub.h"
 
 using namespace Nano::Log;
 using namespace Nano::Utils;
@@ -159,16 +160,30 @@ void threadPoolTest()
 	}
 }
 
-void rpcserverTest()
+
+void testRpcserverregisHW()
 {
-	InitLoggers();
-	RpcServer::Ptr rpcServer = RpcServer::Create(9800);
-	rpcServer->Init();
-	rpcServer->Start();
-	system("pause");
+	RpcService rpcService;
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+  {"name", Json::ValueType::stringValue}
+	};
+	auto helloProcedure = std::make_unique<ProcedureReturn>(
+		helloCallback,
+		paramsNameTypesMap
+	);
+	rpcService.addProcedureReturn("helloService", std::move(helloProcedure));
+
+	Json::Value request;
+	request["jsonrpc"] = "2.0";
+	request["method"] = "helloService";
+	request["params"]["name"] = "World";
+
+	rpcService.callProcedureReturn("helloService", request, [](Json::Value response) {
+		std::cout << "Response: " << response["result"].asString() << std::endl;
+		});
 }
 
-void testRpcserverregist() {
+void testRpcserverregistSub() {
 	RpcService rpcService;
 	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
 	  {"subtrahend", Json::ValueType::intValue},
@@ -189,4 +204,31 @@ void testRpcserverregist() {
 	rpcService.callProcedureReturn("subtractService", request, [](Json::Value response) {
 		std::cout << "Response: " << response["result"].asInt() << std::endl;
 		});
+}
+
+
+
+void hwDoneCallback(Json::Value& response) {
+	std::cout << "Response: " << response["result"].asString() << std::endl;
+}
+
+void hwProducer(Json::Value& request, const RpcDoneCallback& done) {
+	std::string name = request["params"]["name"].asString();
+	Json::Value response;
+	response["result"] = "Hello, " + name + "!";
+	done(response);
+}
+
+void rpcserverStubTest()
+{
+	InitLoggers();
+	std::string hwm = "helloworldMethod";
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"name", Json::ValueType::stringValue}
+	};
+	Nano::Rpc::RpcServerStub rpcServerStub(9800);
+	rpcServerStub.registReturn(hwm, paramsNameTypesMap, hwProducer);
+	rpcServerStub.run();
+	system("pause");
+	rpcServerStub.stop();
 }

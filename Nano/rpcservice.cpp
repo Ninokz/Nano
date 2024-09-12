@@ -2,6 +2,11 @@
 
 namespace Nano {
 	namespace Rpc {
+		RpcService::RpcService()
+		{
+
+		}
+
 		void RpcService::callProcedureReturn(std::string methodName,
 			Json::Value& request,
 			const RpcDoneCallback& done)

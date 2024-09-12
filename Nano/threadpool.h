@@ -12,6 +12,7 @@
 #include "nocopyable.h"
 
 #include "singleton.h"
+#include "const.h"
 
 namespace Nano {
 	namespace Concurrency {
@@ -28,7 +29,7 @@ namespace Nano {
 			std::mutex  m_cv_mt;
 			std::condition_variable m_cv_lock;
 		private:
-			ThreadPool(int poolSize = std::thread::hardware_concurrency());
+			ThreadPool(int poolSize = Const::THREAD_POOL_SIZE);
 			void Start();
 			void Stop();
 

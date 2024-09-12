@@ -5,7 +5,7 @@ namespace Nano {
 		StealThreadPool::StealThreadPool() :
 			m_done(false), m_joiner(m_threads), m_atm_index(0)
 		{
-			unsigned const thread_count = std::thread::hardware_concurrency();
+			unsigned const thread_count = Const::THREAD_POOL_SIZE;
 			try
 			{
 				m_thread_work_ques = std::vector <Concurrency::ConcurrentQueue<FunctionWrapper>>(thread_count);

@@ -2,7 +2,7 @@
 
 namespace Nano {
 	namespace Rpc {
-		RpcServer::RpcServer(short port) : Communication::BaseServer(port)
+		RpcServer::RpcServer(short port) : Communication::BaseServer(port), m_rpcService(std::make_unique<RpcService>())
 		{
 		}
 
@@ -49,9 +49,9 @@ namespace Nano {
 			if (this->m_rpcService->hasProcedureReturn(request->m_method))
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				auto future = stealthreadPool->submit([this, sender, request]() mutable {
+				stealthreadPool->submit([this, sender, request]() mutable {
 					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, 
-					[sender,request](Json::Value& response) {
+					[this,sender,request](Json::Value& response) {
 							bool flag = false;
 							JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &flag);
 							if (flag)
@@ -109,7 +109,7 @@ namespace Nano {
 			if (this->m_rpcService->hasProcedureNotify(request->m_method))
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				auto future = stealthreadPool->submit([this, sender, request]() mutable {
+				stealthreadPool->submit([this, sender, request]() mutable {
 					this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
 				});
 			}

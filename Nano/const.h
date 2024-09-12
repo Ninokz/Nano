@@ -1,4 +1,5 @@
 #pragma once
+#include <thread>
 
 namespace Nano {
 	namespace Const {
@@ -7,5 +8,7 @@ namespace Nano {
 
 		const int MAX_SESSION_SEND_QUEUE_PENDING_SIZE = 64;
 		const int MAS_SESSION = 64;
+
+		const int THREAD_POOL_SIZE = 4; /*std::thread::hardware_concurrency();*/
 	}
 }
