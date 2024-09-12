@@ -20,20 +20,6 @@ namespace Nano {
 			m_ceventHandler->AddDataReadyHandler(weak_from_this());
 		}
 
-		void RpcServer::addRpcDoneCallback(std::string methodName, RpcDoneCallback done)
-		{
-			if (m_rpcDoneCallback.find(methodName) == m_rpcDoneCallback.end())
-			{
-				m_rpcDoneCallback.emplace(std::move(methodName), std::move(done));
-			}
-			else
-			{
-				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-				throw RpcException(code, detail);
-			}
-		}
-
 		void RpcServer::OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet)
 		{
 			if (sender && packet)
@@ -62,21 +48,9 @@ namespace Nano {
 			if (this->m_rpcService->hasProcedureReturn(request->m_method))
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				if (m_rpcDoneCallback.find(request->m_method) != m_rpcDoneCallback.end())
-				{
-					stealthreadPool->submit([this, request]() mutable {
-						this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, m_rpcDoneCallback[request->m_method]);
-						});
-				}
-				else
-				{
-					/// TODO:此处应该输出警告日志，因为没有设置默认的回调函数
-					///
-					Nano::Rpc::RpcDoneCallback defalutDone = [](Json::Value val) {};
-					stealthreadPool->submit([this, request, defalutDone]() mutable {
-						this->m_rpcService->callProcedureReturn(request->m_method, request->m_params, defalutDone);
-						});
-				}
+				auto future = stealthreadPool->submit([this, sender, request]() mutable {
+
+				});
 			}
 			else
 			{
@@ -89,21 +63,9 @@ namespace Nano {
 			if (this->m_rpcService->hasProcedureNotify(request->m_method))
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				if (m_rpcDoneCallback.find(request->m_method) != m_rpcDoneCallback.end())
-				{
-					stealthreadPool->submit([this, request]() mutable {
-						this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
-						});
-				}
-				else
-				{
-					/// TODO:此处应该输出警告日志，因为没有设置默认的回调函数
-					///
-					Nano::Rpc::RpcDoneCallback defalutDone = [](Json::Value val) {};
-					stealthreadPool->submit([this, request, defalutDone]() mutable {
-						this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
-						});
-				}
+				auto future = stealthreadPool->submit([this, request]() mutable {
+					this->m_rpcService->callProcedureNotify(request->m_method, request->m_params);
+				});
 			}
 			else
 			{

@@ -14,7 +14,7 @@
 
 namespace Nano {
 	namespace Rpc {
-		typedef std::function<void(Json::Value response)> RpcDoneCallback;
+		typedef std::function<void(Json::Value& response)> RpcDoneCallback;
 		typedef std::function<void(Json::Value&, const RpcDoneCallback&)> ProcedureReturnCallback;
 		typedef std::function<void(Json::Value&)> ProcedureNotifyCallback;
 

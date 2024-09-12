@@ -20,7 +20,7 @@ using namespace Nano::Communication;
 using namespace Nano::Rpc;
 using namespace Nano::Concurrency;
 
-void hellocallbackDone(Json::Value response) {
+void hellocallbackDone(Json::Value& response) {
 	std::cout << "Response: " << response["result"].asString() << std::endl;
 }
 
@@ -67,7 +67,7 @@ void hello()
 		});
 }
 
-void subtractCallbackDone(Json::Value response) {
+void subtractCallbackDone(Json::Value& response) {
 	std::cout << "Response: " << response["result"].asInt() << std::endl;
 }
 

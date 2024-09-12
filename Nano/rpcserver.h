@@ -42,7 +42,6 @@ namespace Nano {
 				m_rpcService->addProcedureNotify(std::move(methodName), std::move(p));
 			}
 
-			void addRpcDoneCallback(std::string methodName, RpcDoneCallback done);
 		private:
 			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;
 			void handleProcedureReturn(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcRequest::Ptr request);
@@ -51,7 +50,6 @@ namespace Nano {
 			void handleMethodNotFound(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcRequest::Ptr request);
 		public:
 			RpcService::Ptr m_rpcService;
-			std::unordered_map<std::string, RpcDoneCallback> m_rpcDoneCallback;
 		};
 	}
 }
