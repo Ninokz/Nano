@@ -12,6 +12,8 @@
 #include "jrpcproto.h"
 #include "nocopyable.h"
 
+#include "Log.h"
+
 namespace Nano {
 	namespace Rpc {
 		typedef std::function<void(Json::Value& response)> RpcDoneCallback;
@@ -40,6 +42,7 @@ namespace Nano {
 			}
 
 			void invoke(Json::Value& request, const RpcDoneCallback& done) {
+				ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << request.toStyledString() << std::endl;
 				validateRequest(request);
 				m_callback(request, done);
 			}

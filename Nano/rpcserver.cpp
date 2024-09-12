@@ -49,10 +49,9 @@ namespace Nano {
 			if (this->m_rpcService->hasProcedureReturn(request->m_method))
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				stealthreadPool->submit([this, sender, request]() mutable {
+				auto future = stealthreadPool->submit([this, sender, request]() mutable {
 					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params,
 					[this, sender, request](Json::Value& response) {
-							ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "Response: " << response["result"].asString();
 							bool flag = false;
 							JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &flag);
 							if (flag)
@@ -98,6 +97,7 @@ namespace Nano {
 							}
 						});
 					});
+				future.get();
 			}
 			else
 			{

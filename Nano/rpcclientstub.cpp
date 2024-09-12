@@ -11,14 +11,9 @@ namespace Nano {
 		}
 
 		void RpcClientStub::rpcReturnCall(std::string ip, short port, std::string id, std::string methodName,
-			std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap,
+			Json::Value params,
 			const RpcResponseCallback callback, int milliseconds_timeout)
 		{
-			Json::Value params;
-			for (auto& it : paramsNameTypesMap)
-			{
-				params[it.first] = it.second;
-			}
 			Nano::JrpcProto::JsonRpcRequest::Ptr request = Nano::JrpcProto::JrpcRequestGenerator::generate(methodName, id, params);
 			m_rpcClient = std::make_shared<RpcClient>();
 			m_rpcClient->Connect(ip, port);
@@ -28,13 +23,10 @@ namespace Nano {
 			m_rpcClient.reset();
 		}
 
-		void RpcClientStub::asyncRpcReturnCall(std::string ip, short port, std::string id, std::string methodName, std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap, const RpcResponseCallback callback, int milliseconds_timeout)
+		void RpcClientStub::asyncRpcReturnCall(std::string ip, short port, std::string id, std::string methodName, 
+			Json::Value params,
+			const RpcResponseCallback callback, int milliseconds_timeout)
 		{
-			Json::Value params;
-			for (auto& it : paramsNameTypesMap)
-			{
-				params[it.first] = it.second;
-			}
 			Nano::JrpcProto::JsonRpcRequest::Ptr request = Nano::JrpcProto::JrpcRequestGenerator::generate(methodName, id, params);
 			m_rpcClient = std::make_shared<RpcClient>();
 			m_rpcClient->Connect(ip, port);

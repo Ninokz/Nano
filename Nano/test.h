@@ -259,10 +259,9 @@ void helloworldCallback(Json::Value& response) {
 
 void ClientStubHelloWorldTest() {
 	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
-	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
-	  {"name", Json::ValueType::stringValue}
-	};
-	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", paramsNameTypesMap, helloworldCallback, 3000);
+	Json::Value params;
+	params["name"] = "World";
+	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
 }
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
