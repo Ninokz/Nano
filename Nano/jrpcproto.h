@@ -1,3 +1,7 @@
+// JSON-RPC 2.0: A Remote Procedure Call (RPC) protocol using JSON
+// https://www.jsonrpc.org/specification
+//
+
 #pragma once
 #include <string>
 #include <iostream>
@@ -17,9 +21,20 @@ namespace Nano {
 			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters, std::string requestId)
 				: m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id(requestId) {}
 
+			JsonRpcRequest(const std::string& jsonrpcVersion, const std::string& methodName, const Json::Value& parameters):
+				m_ver(jsonrpcVersion), m_method(methodName), m_params(parameters), m_id("") {}
+
 			std::string toJsonStr() const;
 
 			Json::Value toJson() const;
+
+			bool isNotification() const {
+				return m_id.empty();
+			}
+
+			bool isReturnRequest() const {
+				return !m_id.empty();
+			}
 		public:
 			std::string m_ver;
 			std::string m_method;
@@ -35,6 +50,15 @@ namespace Nano {
 				addParams(params, args...);
 				std::string ver = "2.0";
 				JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(ver, method, params, id);
+				return request;
+			}
+
+			template <typename... Args>
+			static JsonRpcRequest::Ptr generate(const std::string& method, const Args&... args) {
+				Json::Value params(Json::objectValue);
+				addParams(params, args...);
+				std::string ver = "2.0";
+				JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(ver, method, params, "");
 				return request;
 			}
 

@@ -47,9 +47,7 @@ void helloPc()
     request["params"]["name"] = "World";
 
     // 调用过程
-    helloProcedure->invoke(request, [](Json::Value response) {
-        std::cout << "Response: " << response["result"].asString() << std::endl;
-    });
+    helloProcedure->invoke(request, hellocallbackDone);
 }
 
 void hello()
@@ -68,6 +66,10 @@ void hello()
 	rpcService.callProcedureReturn("helloService", request, [](Json::Value response) {
 		std::cout << "Response: " << response["result"].asString() << std::endl;
 	});
+}
+
+void subtractCallbackDone(Json::Value response) {
+	std::cout << "Response: " << response["result"].asInt() << std::endl;
 }
 
 void subtractCallback(Json::Value& request, const RpcDoneCallback& done) {
@@ -95,9 +97,7 @@ void substractPc()
     request["params"]["minuend"] = 42;
 
     // 调用过程
-    subtractProcedure->invoke(request, [](Json::Value response) {
-        std::cout << "Response: " << response["result"].asInt() << std::endl;
-    });
+    subtractProcedure->invoke(request, subtractCallbackDone);
 }
 
 void substract()

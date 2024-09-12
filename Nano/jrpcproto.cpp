@@ -47,14 +47,18 @@ namespace Nano {
 				}
 
 				if (!root.isMember("id") || !root["id"].isString()) {
-					std::cerr << "Invalid or missing 'id' field." << std::endl;
-					*flag = false;
-					return nullptr;
+					/// JSON-RPC 2.0: A Notification is a Request object without an "id" member
+					request->m_id = "";
 				}
+				else
+				{
+					/// JSON-RPC 2.0: A Request object that is a method call is identified by the presence of an "id" member
+					request->m_id = root["id"].asString();
+				}
+
 				request->m_ver = root["jsonrpc"].asString();
 				request->m_method = root["method"].asString();
 				request->m_params = root["params"];
-				request->m_id = root["id"].asString();
 				*flag = true;
 				return request;
 			}
@@ -190,6 +194,7 @@ namespace Nano {
 				return nullptr;
 			}
 		}
+		
 		bool JrpcResponseParser::fieldsExist(const Json::Value& root)
 		{
 			if (root.isMember("error") && root.isMember("result"))

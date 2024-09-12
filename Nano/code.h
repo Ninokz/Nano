@@ -7,12 +7,15 @@ namespace Nano {
 		class Code
 		{
 		public:
-			static inline bool encode(const std::string& str, char** buffer, size_t* len) {
+			static inline bool encode(const std::string& str, char** buffer, int* len) {
 				try {
 					/// str -> buffer
-					*len = str.size();
-					*buffer = new char[*len];
-					memcpy(*buffer, str.c_str(), *len);
+					size_t length = str.size();
+					if (length > INT32_MAX)
+						throw std::runtime_error("encode: buffer size is too large");			
+					*len = static_cast<int>(length);
+					*buffer = new char[length];
+					memcpy(*buffer, str.c_str(), length);
 					return true;
 				}
 				catch (std::exception& e) {
@@ -21,7 +24,7 @@ namespace Nano {
 				}
 			}
 
-			static inline std::string decode(const char* buffer, size_t len) {
+			static inline std::string decode(const char* buffer, int len) {
 				try {
 					std::string str(buffer, len);
 					return std::move(str);

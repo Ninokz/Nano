@@ -1,6 +1,6 @@
 ﻿#include "test.h"
 
 int main() {
-	testRpcserverregist2();
+	substractPc();
 	return 0;
 }

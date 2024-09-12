@@ -37,6 +37,10 @@ namespace Nano {
 
 			void callProcedureNotify(std::string methodName, Json::Value& request);
 
+			bool hasProcedureReturn(std::string methodName);
+
+			bool hasProcedureNotify(std::string methodName);
+
 		private:
 			ProcedureReturnMap m_procedureReturn;
 			ProcedureNotifyMap m_procedureNotfiy;
