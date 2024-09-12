@@ -152,6 +152,7 @@ namespace Nano {
 					this->m_sendQueue.pop();
 					if (!this->m_sendQueue.empty())
 					{
+						ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "SEND!" << std::endl;
 						auto& nxtPacket = this->m_sendQueue.front();
 						boost::asio::async_write(
 							this->m_socket,

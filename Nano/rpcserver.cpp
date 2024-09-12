@@ -50,8 +50,12 @@ namespace Nano {
 			{
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
 				auto future = stealthreadPool->submit([this, sender, request]() mutable {
+					//// 这里已经是传递 param 字段的值了 注意
+
+					//// 这里有BUG，需要修复
 					this->m_rpcService->callProcedureReturn(request->m_method, request->m_params,
 					[this, sender, request](Json::Value& response) {
+							ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "ready SEND!" << response.toStyledString() << std::endl;
 							bool flag = false;
 							JrpcProto::JsonRpcResponse::Ptr jsresponse = JrpcProto::JrpcResponseParser::parse(response, &flag);
 							if (flag)

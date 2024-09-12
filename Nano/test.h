@@ -267,10 +267,10 @@ void ClientStubHelloWorldTest() {
 }
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
-	std::string name = request["params"]["name"].asString();
+	std::string name = request["name"].asString();
 	Json::Value response;
 	response["result"] = "Hello, " + name + "!";
-	ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldReturnService") << "DONE!" << std::endl;
+	ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldReturnService after process") << "DONE!"<< response.toStyledString() << std::endl;
 	done(response);
 }
 
