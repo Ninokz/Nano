@@ -11,6 +11,9 @@
 #include "RpcServer.h"
 #include "RpcServerStub.h"
 
+#include "RpcClient.h"
+#include "RpcClientStub.h"
+
 
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
@@ -146,4 +149,17 @@ void RpcServerStubHelloWorldTest() {
     rpcServerStub->run();
     system("pause");
     rpcServerStub->stop();
+}
+
+void helloworldCallback(Json::Value response) {
+
+};
+
+void ClientStubHelloWorldTest() {
+    InitLoggers();
+    RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
+	std::unordered_map<std::string, Json::Value> params = {
+	  {"name", "World"}
+	};
+	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
 }

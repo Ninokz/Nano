@@ -4,14 +4,24 @@ namespace Nano {
 	namespace JrpcProto {
 		JsonRpcRequest::JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, Json::Value parameters, std::string requestId)
 		{
+			/// JSON-RPC 2.0: A Request object that is a method call is identified by the presence of an "id" member
 			m_rpcRequest["jsonrpc"] = jsonrpcVersion;
 			m_rpcRequest["method"] = methodName;
 			m_rpcRequest["params"] = parameters;
 			m_rpcRequest["id"] = requestId;
 		}
 
+		JsonRpcRequest::JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, Json::Value parametersNameWithValue)
+		{
+			/// JSON-RPC 2.0: A Notification is a Request object without an "id" member
+			m_rpcRequest["jsonrpc"] = jsonrpcVersion;
+			m_rpcRequest["method"] = methodName;
+			m_rpcRequest["params"] = parametersNameWithValue;
+		}
+
 		JsonRpcRequest::JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, std::unordered_map<ParameterName, ParameterValue> kv, std::string requestId)
 		{
+			/// JSON-RPC 2.0: A Request object that is a method call is identified by the presence of an "id" member
 			m_rpcRequest["jsonrpc"] = jsonrpcVersion;
 			m_rpcRequest["method"] = methodName;
 			Json::Value params;
@@ -22,8 +32,21 @@ namespace Nano {
 			m_rpcRequest["id"] = requestId;
 		}
 
+		JsonRpcRequest::JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, std::unordered_map<ParameterName, ParameterValue> kv)
+		{
+			/// JSON-RPC 2.0: A Notification is a Request object without an "id" member
+			m_rpcRequest["jsonrpc"] = jsonrpcVersion;
+			m_rpcRequest["method"] = methodName;
+			Json::Value params;
+			for (const auto& item : kv) {
+				params[item.first] = item.second;
+			}
+			m_rpcRequest["params"] = params;
+		}
+
 		JsonRpcRequest::JsonRpcRequest(const Json::Value& request) : m_rpcRequest(request)
 		{
+
 		}
 
 		std::string JsonRpcRequest::toJsonStr() const
@@ -134,6 +157,26 @@ namespace Nano {
 			return true;
 		}
 
+		JsonRpcRequest::Ptr JsonRpcRequest::generateReturnCallRequest(const std::string& version, const std::string& method, const std::string id, std::unordered_map<std::string, Json::Value> params)
+		{
+			Json::Value paramsJson(Json::objectValue);
+			for (const auto& item : params) {
+				paramsJson[item.first] = item.second;
+			}
+			JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(version, method, paramsJson, id);
+			return request;
+		}
+
+		JsonRpcRequest::Ptr JsonRpcRequest::generateNotifyCallRequest(const std::string& version, const std::string& method, std::unordered_map<std::string, Json::Value> params)
+		{
+			Json::Value paramsJson(Json::objectValue);
+			for (const auto& item : params) {
+				paramsJson[item.first] = item.second;
+			}
+			JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(version, method, paramsJson);
+			return request;
+		}
+
 		JsonRpcError::JsonRpcError(JsonRpcErrorCode errorCode)
 		{
 			m_rpcError["code"] = static_cast<int>(errorCode);
@@ -205,6 +248,7 @@ namespace Nano {
 
 		JsonRpcResponse::JsonRpcResponse(const Json::Value& response) : m_rpcResponse(response)
 		{
+			
 		}
 
 		Json::Value JsonRpcResponse::toJson() const
@@ -216,6 +260,33 @@ namespace Nano {
 		{
 			Json::StreamWriterBuilder writer;
 			return Json::writeString(writer, m_rpcResponse);
+		}
+
+		std::string JsonRpcResponse::getId() const
+		{
+			if (m_rpcResponse.isMember("id"))
+			{
+				return m_rpcResponse["id"].asString();
+			}
+			return "";
+		}
+
+		Json::Value JsonRpcResponse::getResult() const
+		{
+			if (m_rpcResponse.isMember("result"))
+			{
+				return m_rpcResponse["result"];
+			}
+			return Json::Value();
+		}
+
+		JsonRpcError::Ptr JsonRpcResponse::getError() const
+		{
+			if (m_rpcResponse.isMember("error"))
+			{
+				return std::make_shared<JsonRpcError>(JsonRpcError::JsonRpcErrorCode(m_rpcResponse["error"]["code"].asInt()));
+			}
+			return nullptr;
 		}
 
 		bool JsonRpcResponse::isError() const

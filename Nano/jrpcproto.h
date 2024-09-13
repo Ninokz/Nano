@@ -17,7 +17,11 @@ namespace Nano {
 		public:
 			JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, Json::Value parametersNameWithValue, std::string requestId);
 
+			JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, Json::Value parametersNameWithValue);
+
 			JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, std::unordered_map<ParameterName, ParameterValue> kv, std::string requestId);
+
+			JsonRpcRequest(std::string jsonrpcVersion, std::string methodName, std::unordered_map<ParameterName, ParameterValue> kv);
 
 			JsonRpcRequest(const Json::Value& request);
 
@@ -43,8 +47,12 @@ namespace Nano {
 
 			static bool fieldsExist(const Json::Value& rpcRequestJson);
 
+			static JsonRpcRequest::Ptr generateReturnCallRequest(const std::string& version, const std::string& method, const std::string id, std::unordered_map<std::string, Json::Value> params);
+
+			static JsonRpcRequest::Ptr generateNotifyCallRequest(const std::string& version, const std::string& method, std::unordered_map<std::string, Json::Value> params);
+
 			template <typename... Args>
-			static JsonRpcRequest::Ptr generate(const std::string& version,const std::string& method, const std::string id, const Args&... args) {
+			static JsonRpcRequest::Ptr generateReturnCallRequest(const std::string& version,const std::string& method, const std::string id, const Args&... args) {
 				Json::Value params(Json::objectValue);
 				addParams(params, args...);
 				JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(version, method, params, id);
@@ -52,7 +60,7 @@ namespace Nano {
 			}
 
 			template <typename... Args>
-			static JsonRpcRequest::Ptr generate(const std::string& version, std::string method, const Args&... args) {
+			static JsonRpcRequest::Ptr generateNotifyCallRequest(const std::string& version, std::string method, const Args&... args) {
 				Json::Value params(Json::objectValue);
 				addParams(params, args...);
 				JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(version, method, params, "");
@@ -108,6 +116,12 @@ namespace Nano {
 
 			Json::Value toJson() const;
 			std::string toJsonStr() const;
+
+			std::string getId() const;
+
+			Json::Value getResult() const;
+
+			JsonRpcError::Ptr getError() const;
 
 			bool isError() const;
 
