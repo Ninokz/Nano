@@ -9,7 +9,6 @@
 #include "rpcclient.h"
 #include "threadpool.h"
 
-
 namespace Nano {
 	namespace Rpc {
 		class RpcClientStub : public Noncopyable
@@ -19,7 +18,7 @@ namespace Nano {
 			RpcClientStub();
 			~RpcClientStub();
 
-			void rpcReturnCall(std::string ip, short port, std::string id, std::string methodName, std::unordered_map<std::string,Json::Value> params, const RpcDoneCallback callback, int milliseconds_timeout);
+			void rpcReturnCall(std::string ip, short port, std::string id, std::string methodName, std::unordered_map<std::string, Json::Value> params, const RpcDoneCallback callback, int milliseconds_timeout);
 			void asyncRpcReturnCall(std::string ip, short port, std::string id, std::string methodName, std::unordered_map<std::string, Json::Value> params, const RpcDoneCallback callback, int milliseconds_timeout);
 
 			void rpcNotifyCall(std::string ip, short port, std::string methodName, std::unordered_map<std::string, Json::Value> params);

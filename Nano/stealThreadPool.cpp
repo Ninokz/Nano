@@ -56,7 +56,7 @@ namespace Nano {
 				std::this_thread::yield();*/
 
 				/// 优化忙等 - 引入退避策略
-				if (m_thread_work_ques[index].try_pop(wrapper) || try_steal_from_others(index,wrapper)) {
+				if (m_thread_work_ques[index].try_pop(wrapper) || try_steal_from_others(index, wrapper)) {
 					fail_count = 0;
 					wrapper();
 				}
@@ -84,6 +84,7 @@ namespace Nano {
 			{
 				m_threads[i].join();
 			}
+			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "StealThreadPool") << "exit" << std::endl;
 		}
 
 		bool StealThreadPool::try_steal_from_others(int selfIndex, FunctionWrapper& wrapper)

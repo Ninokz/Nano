@@ -3,7 +3,6 @@
 #include "rpcservice.h"
 #include "rpcprocedure.h"
 
-
 namespace Nano {
 	namespace Rpc {
 		class RpcServerStub : public Noncopyable

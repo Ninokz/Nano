@@ -15,6 +15,7 @@
 #include "functionWrapper.h"
 #include "jointhreads.h"
 #include "const.h"
+#include "Log.h"
 
 namespace Nano {
 	namespace Concurrency {

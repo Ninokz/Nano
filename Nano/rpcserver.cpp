@@ -4,7 +4,6 @@ namespace Nano {
 	namespace Rpc {
 		RpcServer::RpcServer(short port) : Communication::BaseServer(port), m_rpcService(std::make_unique<RpcService>())
 		{
-
 		}
 
 		RpcServer::~RpcServer()
@@ -36,6 +35,7 @@ namespace Nano {
 					throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::ParseError);
 				}
 				else {
+					ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "request is: " << request->toJsonStr() << std::endl;
 					if (request->isReturnCall()) {
 						handleProcedureReturn(sender, request);
 					}
@@ -48,6 +48,7 @@ namespace Nano {
 				}
 			}
 			catch (RpcProtoException& e) {
+				ASYNC_LOG_WARN(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "RpcProtoException: " << e.err() << " " << e.detail() << std::endl;
 				Nano::JrpcProto::JsonRpcError::JsonRpcErrorCode code = Nano::JrpcProto::JsonRpcError::fromInt(e.err());
 				handleJsonRpcErrorException(sender, code);
 			}
@@ -63,17 +64,16 @@ namespace Nano {
 						bool flag = false;
 						JrpcProto::JsonRpcResponse::Ptr jrp = JrpcProto::JsonRpcResponse::generate(response, &flag);
 						if (flag) {
-							ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "response: " << response.toStyledString() << std::endl;
+							ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "response is: " << response.toStyledString() << std::endl;
 							std::string responseStr = jrp->toJsonStr();
 							char* buffer = nullptr;
 							int len = 0;
 							if (TransferCode::Code::encode(responseStr, &buffer, &len))
 							{
-								ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "send " << std::endl;
 								sender->Send(buffer, len);
 							}
 							else
-								throw std::exception("encode");
+								throw std::exception("encode error");
 							delete[] buffer;
 							buffer = nullptr;
 						}
@@ -81,8 +81,8 @@ namespace Nano {
 						{
 							throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::ParseError);
 						}
+					});
 				});
-			});
 		}
 
 		void RpcServer::handleProcedureNotify(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcRequest::Ptr request)
@@ -92,7 +92,7 @@ namespace Nano {
 				std::string method = request->getMethod();
 				Json::Value reqJson = request->toJson();
 				this->m_rpcService->callProcedureNotify(method, reqJson);
-			});
+				});
 		}
 
 		void RpcServer::handleJsonRpcErrorException(std::shared_ptr<Communication::Session> sender, JrpcProto::JsonRpcError::JsonRpcErrorCode code)
@@ -108,7 +108,7 @@ namespace Nano {
 				buffer = nullptr;
 			}
 			else
-				throw std::exception("encode");
+				throw std::exception("encode error");
 		}
 	}
 }

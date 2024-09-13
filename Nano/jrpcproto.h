@@ -43,7 +43,7 @@ namespace Nano {
 
 			bool isReturnCall() const;
 
-			static JsonRpcRequest::Ptr generate(const std::string & jsonStr, bool* flag);
+			static JsonRpcRequest::Ptr generate(const std::string& jsonStr, bool* flag);
 
 			static bool fieldsExist(const Json::Value& rpcRequestJson);
 
@@ -52,7 +52,7 @@ namespace Nano {
 			static JsonRpcRequest::Ptr generateNotifyCallRequest(const std::string& version, const std::string& method, std::unordered_map<std::string, Json::Value> params);
 
 			template <typename... Args>
-			static JsonRpcRequest::Ptr generateReturnCallRequest(const std::string& version,const std::string& method, const std::string id, const Args&... args) {
+			static JsonRpcRequest::Ptr generateReturnCallRequest(const std::string& version, const std::string& method, const std::string id, const Args&... args) {
 				Json::Value params(Json::objectValue);
 				addParams(params, args...);
 				JsonRpcRequest::Ptr request = std::make_shared<JsonRpcRequest>(version, method, params, id);
@@ -115,7 +115,6 @@ namespace Nano {
 			JsonRpcResponse(std::string jsonrpcVersion, std::string requestId, const Json::Value result);
 			JsonRpcResponse(std::string jsonrpcVersion, const JsonRpcError& error);
 			JsonRpcResponse(const Json::Value& response);
-
 
 			Json::Value toJson() const;
 			std::string toJsonStr() const;

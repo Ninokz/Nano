@@ -26,29 +26,28 @@ using namespace Nano::Communication;
 using namespace Nano::Rpc;
 using namespace Nano::Concurrency;
 
-
 void hellocallbackDone(Json::Value response) {
 	std::cout << "Response: " << response["result"].asString() << std::endl;
 }
 
 void helloworldProcedure(Json::Value& request, const RpcDoneCallback& done) {
-    std::string name = request["params"]["name"].asString();
-    Json::Value response;
-    response["result"] = "Hello, " + name + "!";
-    done(response);
+	std::string name = request["params"]["name"].asString();
+	Json::Value response;
+	response["result"] = "Hello, " + name + "!";
+	done(response);
 }
 
 void hello()
 {
 	RpcService rpcService;
-    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
-        {"name", Json::ValueType::stringValue}
-    };
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+		{"name", Json::ValueType::stringValue}
+	};
 	auto helloProcedureReturn = std::make_unique<ProcedureReturn>(
-        helloworldProcedure,
-        paramsNameTypesMap
+		helloworldProcedure,
+		paramsNameTypesMap
 	);
-    rpcService.addProcedureReturn("helloService", std::move(helloProcedureReturn));
+	rpcService.addProcedureReturn("helloService", std::move(helloProcedureReturn));
 
 	Json::Value request;
 	request["jsonrpc"] = "2.0";
@@ -62,23 +61,23 @@ void substractcallbackDone(Json::Value response) {
 }
 
 void subtractProcedure(Json::Value& request, const RpcDoneCallback& done) {
-    int subtrahend = request["params"]["subtrahend"].asInt();
-    int minuend = request["params"]["minuend"].asInt();
-    Json::Value response;
-    response["result"] = minuend - subtrahend;
-    done(response);
+	int subtrahend = request["params"]["subtrahend"].asInt();
+	int minuend = request["params"]["minuend"].asInt();
+	Json::Value response;
+	response["result"] = minuend - subtrahend;
+	done(response);
 }
 
 void substract()
 {
 	RpcService rpcService;
-    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
-      {"subtrahend", Json::ValueType::intValue},
-      {"minuend", Json::ValueType::intValue}
-    };
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"subtrahend", Json::ValueType::intValue},
+	  {"minuend", Json::ValueType::intValue}
+	};
 	auto subtractProcedureReturn = std::make_unique<ProcedureReturn>(
-        subtractProcedure,
-        paramsNameTypesMap
+		subtractProcedure,
+		paramsNameTypesMap
 	);
 
 	rpcService.addProcedureReturn("subtractService", std::move(subtractProcedureReturn));
@@ -95,38 +94,37 @@ void substract()
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
 	Json::Value result = "Hello, " + request["params"]["name"].asString() + "!";
-    bool flag = false;
-    Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(request, result, &flag);
+	bool flag = false;
+	Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(request, result, &flag);
 	done(response->toJson());
 }
 
 void RpcServerStubHelloWorldTest() {
-    InitLoggers();
-    RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
-    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
-      {"name", Json::ValueType::stringValue}
-    };
+	InitLoggers();
+	RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"name", Json::ValueType::stringValue}
+	};
 
-    rpcServerStub->registReturn("helloworldMethod", paramsNameTypesMap, helloworldReturnService);
-    rpcServerStub->run();
-    system("pause");
-    rpcServerStub->stop();
+	rpcServerStub->registReturn("helloworldMethod", paramsNameTypesMap, helloworldReturnService);
+	rpcServerStub->run();
+	system("pause");
+	rpcServerStub->stop();
 }
 
 void helloworldCallback(Json::Value response) {
-    ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldCallback") << "response: " << response.toStyledString() << std::endl;
+	ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldCallback") << "response: " << response.toStyledString() << std::endl;
 };
 
 void ClientStubHelloWorldTest() {
-    InitLoggers();
-    RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
+	InitLoggers();
+	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
 	std::unordered_map<std::string, Json::Value> params = {
 	  {"name", "World"}
 	};
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
-    system("pause");
+	system("pause");
 }
-
 
 void substractReturnService(Json::Value& request, const RpcDoneCallback& done) {
 	int subtrahend = request["params"]["subtrahend"].asInt();
@@ -162,42 +160,41 @@ void ClientStubSubstractTest() {
 	  {"subtrahend", 23},
 	  {"minuend", 42}
 	};
-    rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "substractMethod", params, substractCallback, 3000);
+	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "substractMethod", params, substractCallback, 3000);
 }
-
 
 void threadPoolTest()
 {
-    auto stealThreadPool = StealThreadPool::GetInstance();
-    auto helloProcedure = std::make_shared<ProcedureReturn>(
-        helloworldProcedure,
-        "name", Json::ValueType::stringValue
-    );
-    auto request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", "helloService", "1", { {"name", "World"} });
+	auto stealThreadPool = StealThreadPool::GetInstance();
+	auto helloProcedure = std::make_shared<ProcedureReturn>(
+		helloworldProcedure,
+		"name", Json::ValueType::stringValue
+	);
+	auto request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", "helloService", "1", { {"name", "World"} });
 	Json::Value v = request->toJson();
-    helloProcedure->invoke(v, hellocallbackDone);
+	helloProcedure->invoke(v, hellocallbackDone);
 
-    // 使用 lambda 函数提交任务到线程池
+	// 使用 lambda 函数提交任务到线程池
   /*  auto future = stealThreadPool->submit([helloProcedure, request]() mutable {
-        helloProcedure->invoke(request->toJson(), [](Json::Value response) {
-            std::cout << "Response: " << response["result"].asString() << std::endl;
-        });
-    });*/
+		helloProcedure->invoke(request->toJson(), [](Json::Value response) {
+			std::cout << "Response: " << response["result"].asString() << std::endl;
+		});
+	});*/
 
-    Nano::Concurrency::StealThreadPool::GetInstance()->submit([request, &helloProcedure]() {
-        Json::Value v = request->toJson();
-        helloProcedure->invoke(v, [](Json::Value response) {
-            std::cout << "Response: " << response["result"].asString() << std::endl;
-        });
-    });
+	Nano::Concurrency::StealThreadPool::GetInstance()->submit([request, &helloProcedure]() {
+		Json::Value v = request->toJson();
+		helloProcedure->invoke(v, [](Json::Value response) {
+			std::cout << "Response: " << response["result"].asString() << std::endl;
+			});
+		});
 
-    // 如果您确实想使用 std::bind，可以这样做：
-    //auto future = stealThreadPool->submit(std::bind(
-    //    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
-    //    helloProcedure.get(),
-    //    std::ref(request),
-    //    [](const Json::Value& response) {
-    //        std::cout << "Response: " << response["result"].asString() << std::endl;
-    //    }
-    //));
+	// 如果您确实想使用 std::bind，可以这样做：
+	//auto future = stealThreadPool->submit(std::bind(
+	//    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
+	//    helloProcedure.get(),
+	//    std::ref(request),
+	//    [](const Json::Value& response) {
+	//        std::cout << "Response: " << response["result"].asString() << std::endl;
+	//    }
+	//));
 }

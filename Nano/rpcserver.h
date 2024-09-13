@@ -23,7 +23,7 @@
 
 namespace Nano {
 	namespace Rpc {
-		class RpcServer : public Communication::BaseServer, public Communication::IDataReadyEventHandler, 
+		class RpcServer : public Communication::BaseServer, public Communication::IDataReadyEventHandler,
 			public std::enable_shared_from_this<RpcServer>
 		{
 		public:

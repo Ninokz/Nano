@@ -70,7 +70,7 @@ namespace Nano {
 
 		void RpcClient::OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet)
 		{
-			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcClient") << packet->ToString() << std::endl;
+			ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "RpcClient") << packet->ToString() << std::endl;
 			std::string responseJsonStr = TransferCode::Code::decode(packet->m_data, packet->m_size);
 			bool generateResult = false;
 			Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(responseJsonStr, &generateResult);

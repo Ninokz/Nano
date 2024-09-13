@@ -37,7 +37,7 @@ namespace Nano {
 				std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds_timeout));
 				m_rpcClient->Disconnect();
 				m_rpcClient.reset();
-			});
+				});
 		}
 
 		void RpcClientStub::rpcNotifyCall(std::string ip, short port, std::string methodName, std::unordered_map<std::string, Json::Value> params)
@@ -61,7 +61,7 @@ namespace Nano {
 				this->m_rpcClient->callNotifyProcedure(request);
 				m_rpcClient->Disconnect();
 				m_rpcClient.reset();
-			});
+				});
 		}
 	}
 }

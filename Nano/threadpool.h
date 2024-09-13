@@ -15,7 +15,7 @@
 
 namespace Nano {
 	namespace Concurrency {
-		class ThreadPool : public Singleton<ThreadPool>, public Noncopyable 
+		class ThreadPool : public Singleton<ThreadPool>, public Noncopyable
 		{
 			friend class Singleton<ThreadPool>;
 			using Task = std::packaged_task<void()>;

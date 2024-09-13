@@ -25,7 +25,7 @@ namespace Nano {
 			m_rpcRequest["jsonrpc"] = jsonrpcVersion;
 			m_rpcRequest["method"] = methodName;
 			Json::Value params;
-			for (const auto& item: kv) {
+			for (const auto& item : kv) {
 				params[item.first] = item.second;
 			}
 			m_rpcRequest["params"] = params;
@@ -46,7 +46,6 @@ namespace Nano {
 
 		JsonRpcRequest::JsonRpcRequest(const Json::Value& request) : m_rpcRequest(request)
 		{
-
 		}
 
 		std::string JsonRpcRequest::toJsonStr() const
@@ -246,8 +245,8 @@ namespace Nano {
 				return JsonRpcErrorCode::InternalError;
 			}
 		}
-	
-		JsonRpcResponse::JsonRpcResponse(std::string jsonrpcVersion, std::string requestId,const Json::Value result)
+
+		JsonRpcResponse::JsonRpcResponse(std::string jsonrpcVersion, std::string requestId, const Json::Value result)
 		{
 			m_rpcResponse["jsonrpc"] = jsonrpcVersion;
 			m_rpcResponse["result"] = result;
@@ -263,7 +262,6 @@ namespace Nano {
 
 		JsonRpcResponse::JsonRpcResponse(const Json::Value& response) : m_rpcResponse(response)
 		{
-			
 		}
 
 		Json::Value JsonRpcResponse::toJson() const
