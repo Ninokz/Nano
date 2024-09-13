@@ -8,7 +8,7 @@
 #include "nocopyable.h"
 #include "rpcprocedure.h"
 #include "jrpcproto.h"
-
+#include "Log.h"
 
 namespace Nano {
 	namespace Rpc {

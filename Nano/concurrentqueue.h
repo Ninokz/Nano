@@ -183,13 +183,12 @@ namespace Nano {
 
 			bool try_steal(T& value) {
 				std::unique_lock<std::mutex> tail_lock(m_tail_mutex, std::defer_lock);
-				std::unique_lock<std::mutex>  head_lock(m_head_mutex, std::defer_lock);
+				std::unique_lock<std::mutex> head_lock(m_head_mutex, std::defer_lock);
 				std::lock(tail_lock, head_lock);
 				if (m_head.get() == m_tail)
 				{
 					return false;
 				}
-
 				node* prev_node = m_tail->prev;
 				value = std::move(*(prev_node->data));
 				m_tail = prev_node;

@@ -14,6 +14,7 @@
 #include "concurrentqueue.h"
 #include "functionWrapper.h"
 #include "jointhreads.h"
+#include "const.h"
 
 namespace Nano {
 	namespace Concurrency {

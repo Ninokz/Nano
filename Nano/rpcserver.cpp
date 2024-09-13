@@ -31,7 +31,7 @@ namespace Nano {
 			std::string requestJsonStr = TransferCode::Code::decode(packet->m_data, packet->m_size);
 			bool generateResult = false;
 			Nano::JrpcProto::JsonRpcRequest::Ptr request = Nano::JrpcProto::JsonRpcRequest::generate(requestJsonStr, &generateResult);
-			
+			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "requestJsonStr: " << requestJsonStr << std::endl;
 			if (!generateResult) {
 				handleParseError(sender);
 			}
@@ -49,22 +49,26 @@ namespace Nano {
 		{
 			if (this->m_rpcService->hasProcedureReturn(request->getMethod()))
 			{
-				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
-				stealthreadPool->submit([this, sender, request]() mutable {
+				Nano::Concurrency::StealThreadPool::GetInstance()->submit([this, sender, request]() {
 					std::string method = request->getMethod();
-					Json::Value params = request->getParams();
-					this->m_rpcService->callProcedureReturn(method, params,
-						[this, sender, request](Json::Value response) {
+					Json::Value reqJson = request->toJson();
+					ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "method: " << method << std::endl;
+
+					this->m_rpcService->callProcedureReturn(method, reqJson,
+						[this, sender](Json::Value response) {
+							ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "response: " << response.toStyledString() << std::endl;
 							bool flag = false;
 							JrpcProto::JsonRpcResponse::Ptr jrp = JrpcProto::JsonRpcResponse::generate(response, &flag);
+							ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "ready to send: " << jrp->toJsonStr() << std::endl;
 							if (flag) {
 								std::string responseStr = jrp->toJsonStr();
 								char* buffer = nullptr;
 								int len = 0;
-								if (TransferCode::Code::encode(responseStr, &buffer, &len))
+								ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "send: " << responseStr << std::endl;
+								/*if (TransferCode::Code::encode(responseStr, &buffer, &len))
 									sender->Send(buffer, len);
 								else
-									handleParseError(sender);
+									handleParseError(sender);*/
 								delete[] buffer;
 								buffer = nullptr;
 							}
@@ -72,7 +76,7 @@ namespace Nano {
 							{
 								handleParseError(sender);
 							}
-						});
+					});
 				});
 			}
 			else
@@ -88,8 +92,8 @@ namespace Nano {
 				auto stealthreadPool = Nano::Concurrency::StealThreadPool::GetInstance();
 				stealthreadPool->submit([this, sender, request]() mutable {
 					std::string method = request->getMethod();
-					Json::Value params = request->getParams();
-					this->m_rpcService->callProcedureNotify(method, params);
+					Json::Value reqJson = request->toJson();
+					this->m_rpcService->callProcedureNotify(method, reqJson);
 				});
 			}
 			else

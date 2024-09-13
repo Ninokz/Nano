@@ -14,6 +14,7 @@
 #include "concurrentqueue.h"
 #include "functionWrapper.h"
 #include "jointhreads.h"
+#include "const.h"
 
 namespace Nano {
 	namespace Concurrency {
@@ -39,13 +40,17 @@ namespace Nano {
 				m_thread_work_ques[index].push(std::move(task));
 				return res;
 			}
-
+		private:
+			bool try_steal_from_others(int selfIndex, FunctionWrapper& wrapper);
 		private:
 			std::atomic_bool m_done;
 			std::vector<Concurrency::ConcurrentQueue<FunctionWrapper>> m_thread_work_ques;
 			std::vector<std::thread> m_threads;
 			JoinThreads m_joiner;
 			std::atomic<int>  m_atm_index;
+
+			const int m_fail_count_limit = 10;
+			const long m_sleep_time = 100;
 		};
 	}
 }

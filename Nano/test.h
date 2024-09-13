@@ -14,6 +14,7 @@
 #include "RpcClient.h"
 #include "RpcClientStub.h"
 
+#include "jrpcproto.h"
 
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
@@ -90,52 +91,12 @@ void substract()
 	rpcService.callProcedureReturn("subtractService", request, substractcallbackDone);
 }
 
-void threadPoolTest()
-{
-	auto stealThreadPool = StealThreadPool::GetInstance();
-
-    auto helloProcedure = std::make_shared<ProcedureReturn>(
-        helloworldProcedure,
-        "name", Json::ValueType::stringValue
-    );
-
-    Json::Value request;
-    request["jsonrpc"] = "2.0";
-    request["method"] = "hello";
-    request["params"]["name"] = "World";
-
-    // 使用 lambda 函数提交任务到线程池
-    auto future = stealThreadPool->submit([helloProcedure, request]() mutable {
-        helloProcedure->invoke(request, [](Json::Value response) {
-            std::cout << "Response: " << response["result"].asString() << std::endl;
-		/*	ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "BaseServer") << "Response: " << response["result"].asString();*/
-        });
-    });
-
-    // 如果您确实想使用 std::bind，可以这样做：
-    //auto future = stealThreadPool->submit(std::bind(
-    //    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
-    //    helloProcedure.get(),
-    //    std::ref(request),
-    //    [](const Json::Value& response) {
-    //        std::cout << "Response: " << response["result"].asString() << std::endl;
-    //    }
-    //));
-
-    try {
-        future.get();
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error occurred: " << e.what() << std::endl;
-    }
-}
-
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
-    std::string name = request["name"].asString();
-    Json::Value response;
-    response["result"] = "Hello, " + name + "!";
-    done(response);
+	Json::Value result = "Hello, " + request["params"]["name"].asString() + "!";
+    bool flag = false;
+    Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(request, result, &flag);
+	done(response->toJson());
 }
 
 void RpcServerStubHelloWorldTest() {
@@ -162,4 +123,40 @@ void ClientStubHelloWorldTest() {
 	  {"name", "World"}
 	};
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
+}
+
+void threadPoolTest()
+{
+    auto stealThreadPool = StealThreadPool::GetInstance();
+    auto helloProcedure = std::make_shared<ProcedureReturn>(
+        helloworldProcedure,
+        "name", Json::ValueType::stringValue
+    );
+    auto request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", "helloService", "1", { {"name", "World"} });
+	Json::Value v = request->toJson();
+    helloProcedure->invoke(v, hellocallbackDone);
+
+    // 使用 lambda 函数提交任务到线程池
+  /*  auto future = stealThreadPool->submit([helloProcedure, request]() mutable {
+        helloProcedure->invoke(request->toJson(), [](Json::Value response) {
+            std::cout << "Response: " << response["result"].asString() << std::endl;
+        });
+    });*/
+
+    Nano::Concurrency::StealThreadPool::GetInstance()->submit([request, &helloProcedure]() {
+        Json::Value v = request->toJson();
+        helloProcedure->invoke(v, [](Json::Value response) {
+            std::cout << "Response: " << response["result"].asString() << std::endl;
+        });
+    });
+
+    // 如果您确实想使用 std::bind，可以这样做：
+    //auto future = stealThreadPool->submit(std::bind(
+    //    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
+    //    helloProcedure.get(),
+    //    std::ref(request),
+    //    [](const Json::Value& response) {
+    //        std::cout << "Response: " << response["result"].asString() << std::endl;
+    //    }
+    //));
 }

@@ -141,7 +141,7 @@ namespace Nano {
 
 		bool JsonRpcRequest::fieldsExist(const Json::Value& rpcRequestJson)
 		{
-			if (!rpcRequestJson.isMember("jsonrpc") || rpcRequestJson["jsonrpc"].isString()) {
+			if (!rpcRequestJson.isMember("jsonrpc") || !rpcRequestJson["jsonrpc"].isString()) {
 				std::cerr << "Invalid or missing 'jsonrpc' field." << std::endl;
 				return false;
 			}
@@ -321,16 +321,60 @@ namespace Nano {
 			}
 		}
 
-		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& root, bool* flag)
+		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& response, bool* flag)
 		{
 			try {
-				if (!JsonRpcResponse::fieldsExist(root))
+				if (!JsonRpcResponse::fieldsExist(response))
 				{
 					*flag = false;
 					return nullptr;
 				}
 				*flag = true;
-				return  std::make_shared<JsonRpcResponse>(root);
+				return std::make_shared<JsonRpcResponse>(response);
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << e.what() << std::endl;
+				*flag = false;
+				return nullptr;
+			}
+		}
+
+		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& request, const Json::Value result, bool* flag)
+		{
+			try {
+				if (!JsonRpcRequest::fieldsExist(request))
+				{
+					*flag = false;
+					return nullptr;
+				}
+				else
+				{
+					*flag = true;
+					return std::make_shared<JsonRpcResponse>(request["jsonrpc"].asString(), request["id"].asString(), result);
+				}
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << e.what() << std::endl;
+				*flag = false;
+				return nullptr;
+			}
+		}
+
+		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& request, const JsonRpcError& error, bool* flag)
+		{
+			try {
+				if (!JsonRpcRequest::fieldsExist(request))
+				{
+					*flag = false;
+					return nullptr;
+				}
+				else
+				{
+					*flag = true;
+					return std::make_shared<JsonRpcResponse>(request["jsonrpc"].asString(), request["id"].asString(), error);
+				}
 			}
 			catch (const std::exception& e)
 			{
