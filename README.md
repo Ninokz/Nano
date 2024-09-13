@@ -14,13 +14,54 @@
 
 ## Use Example.
 
-只需要向 `RpcServerStub::Pre` 对象中使用 `registReturn` 方法注册 RPC 方法，注册的信息需要方法需要的参数及其类型即可
+注册服务：构建一个 `RpcServerStub::Pre` 对象，只需要调用 `RpcServerStub::Pre` 对象的 `registReturn` 方法进行注册 RPC 服务，通过 `registReturn` 方法的  `std::unordered_map` 参数设定 RPC 所需的参数类型和名称；然后再定义 RPC 方法本身，通过定义符合 `std::function<void(Json::Value&, const RpcDoneCallback&)>` 类型的可调用对象即可
 
+运行服务：使用上述构建的 `RpcServerStub::Pre` 对象，运行即可；在运行之前若需要输出控制台信息，调用 `InitLoggers()` 
 
+请求服务：构建一个 `RpcClientStub::Ptr` 对象，只需要调用 `RpcClientStub::Ptr` 对象的 `rpcReturnCall` 或者 `asyncRpcReturnCall` 方法或者 `rpcNotifyCall` 方法即可，只不过需要传入远端 IP 和 端口以及对应 RPC 参数；
+
+示例 - HelloWorld Service
+
+注册与运行服务
+
+```C++
+void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
+	Json::Value result = "Hello, " + request["params"]["name"].asString() + "!";
+	bool flag = false;
+	Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(request, result, &flag);
+	done(response->toJson());
+}
+
+RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"name", Json::ValueType::stringValue}
+	};
+
+	rpcServerStub->registReturn("helloworldMethod", paramsNameTypesMap, helloworldReturnService);
+	rpcServerStub->run();
+```
+
+请求服务
+
+```C++
+void helloworldCallback(Json::Value response) {
+	/// other code to handle response ...
+};
+
+RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
+	std::unordered_map<std::string, Json::Value> params = {
+	  {"name", "World"}
+	};
+	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
+```
+
+更多的示例在[测试头文件](https://github.com/Ninokz/Nano/blob/master/Nano/test.h)中可以找到
 
 ## TODO.
 
 - [ ] Generator for Service and Request
+- [ ] Env model
+- [ ] Log model
 - [ ] More Test
 
 ## Ref.
