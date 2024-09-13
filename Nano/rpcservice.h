@@ -13,20 +13,21 @@
 namespace Nano {
 	namespace Rpc {
 		class RpcService : public Noncopyable {
-			typedef std::unique_ptr<ProcedureReturn> ProcedureReturnPtr;
-			typedef std::unique_ptr<ProcedureNotify> ProcedureNotifyPtr;
-			typedef std::unordered_map<std::string, ProcedureReturnPtr> ProcedureReturnMap;
-			typedef std::unordered_map<std::string, ProcedureNotifyPtr> ProcedureNotifyMap;
+		public:
+			typedef std::unique_ptr<ProcedureReturn> ProcedureReturnUniqPtr;
+			typedef std::unique_ptr<ProcedureNotify> ProcedureNotifyUniqPtr;
+			typedef std::unordered_map<std::string, ProcedureReturnUniqPtr> ProcedureReturnMap;
+			typedef std::unordered_map<std::string, ProcedureNotifyUniqPtr> ProcedureNotifyMap;
 		public:
 			typedef std::unique_ptr<RpcService> Ptr;
 
-			void addProcedureReturn(std::string methodName, ProcedureReturnPtr p)
+			void addProcedureReturn(std::string methodName, ProcedureReturnUniqPtr p)
 			{
 				assert(m_procedureReturn.find(methodName) == m_procedureReturn.end());
 				m_procedureReturn.emplace(std::move(methodName), std::move(p));
 			}
 
-			void addProcedureNotify(std::string methodName, ProcedureNotifyPtr p)
+			void addProcedureNotify(std::string methodName, ProcedureNotifyUniqPtr p)
 			{
 				assert(m_procedureNotfiy.find(methodName) == m_procedureNotfiy.end());
 				m_procedureNotfiy.emplace(std::string(methodName), std::move(p));
@@ -35,6 +36,10 @@ namespace Nano {
 			void callProcedureReturn(std::string methodName,Json::Value& request,const RpcDoneCallback& done);
 
 			void callProcedureNotify(std::string methodName, Json::Value& request);
+
+			bool hasProcedureReturn(std::string methodName);
+
+			bool hasProcedureNotify(std::string methodName);
 
 		private:
 			ProcedureReturnMap m_procedureReturn;

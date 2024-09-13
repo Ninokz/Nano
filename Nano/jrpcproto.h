@@ -112,6 +112,7 @@ namespace Nano {
 			bool isError() const;
 
 			static JsonRpcResponse::Ptr generate(const std::string& jsonStr, bool* flag);
+			static JsonRpcResponse::Ptr generate(const Json::Value& root, bool* flag);
 			static bool fieldsExist(const Json::Value& rpcresponseJson);
 		private:
 			Json::Value m_rpcResponse;

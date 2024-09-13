@@ -250,6 +250,25 @@ namespace Nano {
 			}
 		}
 
+		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& root, bool* flag)
+		{
+			try {
+				if (!JsonRpcResponse::fieldsExist(root))
+				{
+					*flag = false;
+					return nullptr;
+				}
+				*flag = true;
+				return  std::make_shared<JsonRpcResponse>(root);
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << e.what() << std::endl;
+				*flag = false;
+				return nullptr;
+			}
+		}
+
 		bool JsonRpcResponse::fieldsExist(const Json::Value& rpcresponseJson)
 		{
 			if (!rpcresponseJson.isMember("jsonrpc") || !rpcresponseJson.isMember("id"))

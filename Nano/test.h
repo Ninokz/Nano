@@ -9,6 +9,8 @@
 
 #include "RpcProcedure.h"
 #include "RpcServer.h"
+#include "RpcServerStub.h"
+
 
 #include "stealThreadPool.h"
 #include "functionWrapper.h"
@@ -25,52 +27,37 @@ void hellocallbackDone(Json::Value response) {
 	std::cout << "Response: " << response["result"].asString() << std::endl;
 }
 
-void helloCallback(Json::Value& request, const RpcDoneCallback& done) {
+void helloworldProcedure(Json::Value& request, const RpcDoneCallback& done) {
     std::string name = request["params"]["name"].asString();
     Json::Value response;
     response["result"] = "Hello, " + name + "!";
     done(response);
 }
 
-void helloPc()
-{
-    // 创建 hello RpcProcedure
-    auto helloProcedure = std::make_shared<ProcedureReturn>(
-        helloCallback,
-        "name", Json::ValueType::stringValue
-    );
-
-    // 模拟 RPC 请求
-    Json::Value request;
-    request["jsonrpc"] = "2.0";
-    request["method"] = "hello";
-    request["params"]["name"] = "World";
-
-    // 调用过程
-    helloProcedure->invoke(request, [](Json::Value response) {
-        std::cout << "Response: " << response["result"].asString() << std::endl;
-    });
-}
-
 void hello()
 {
 	RpcService rpcService;
-	auto helloProcedure = std::make_unique<ProcedureReturn>(
-		helloCallback,
-		"name", Json::ValueType::stringValue
+    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+        {"name", Json::ValueType::stringValue}
+    };
+	auto helloProcedureReturn = std::make_unique<ProcedureReturn>(
+        helloworldProcedure,
+        paramsNameTypesMap
 	);
-    rpcService.addProcedureReturn("helloService", std::move(helloProcedure));
+    rpcService.addProcedureReturn("helloService", std::move(helloProcedureReturn));
+
 	Json::Value request;
 	request["jsonrpc"] = "2.0";
 	request["method"] = "helloService";
 	request["params"]["name"] = "World";
-
-	rpcService.callProcedureReturn("helloService", request, [](Json::Value response) {
-		std::cout << "Response: " << response["result"].asString() << std::endl;
-	});
+	rpcService.callProcedureReturn("helloService", request, hellocallbackDone);
 }
 
-void subtractCallback(Json::Value& request, const RpcDoneCallback& done) {
+void substractcallbackDone(Json::Value response) {
+	std::cout << "Response: " << response["result"].asInt() << std::endl;
+}
+
+void subtractProcedure(Json::Value& request, const RpcDoneCallback& done) {
     int subtrahend = request["params"]["subtrahend"].asInt();
     int minuend = request["params"]["minuend"].asInt();
     Json::Value response;
@@ -78,46 +65,26 @@ void subtractCallback(Json::Value& request, const RpcDoneCallback& done) {
     done(response);
 }
 
-void substractPc()
-{
-    // 创建 subtract RpcProcedure
-    auto subtractProcedure = std::make_shared<ProcedureReturn>(
-        subtractCallback,
-        "subtrahend", Json::ValueType::intValue,
-        "minuend", Json::ValueType::intValue
-    );
-
-    // 模拟 RPC 请求
-    Json::Value request;
-    request["jsonrpc"] = "2.0";
-    request["method"] = "subtract";
-    request["params"]["subtrahend"] = 23;
-    request["params"]["minuend"] = 42;
-
-    // 调用过程
-    subtractProcedure->invoke(request, [](Json::Value response) {
-        std::cout << "Response: " << response["result"].asInt() << std::endl;
-    });
-}
-
 void substract()
 {
 	RpcService rpcService;
-	auto subtractProcedure = std::make_unique<ProcedureReturn>(
-		subtractCallback,
-		"subtrahend", Json::ValueType::intValue,
-		"minuend", Json::ValueType::intValue
+    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+      {"subtrahend", Json::ValueType::intValue},
+      {"minuend", Json::ValueType::intValue}
+    };
+	auto subtractProcedureReturn = std::make_unique<ProcedureReturn>(
+        subtractProcedure,
+        paramsNameTypesMap
 	);
-	rpcService.addProcedureReturn("subtractService", std::move(subtractProcedure));
+
+	rpcService.addProcedureReturn("subtractService", std::move(subtractProcedureReturn));
 	Json::Value request;
 	request["jsonrpc"] = "2.0";
 	request["method"] = "subtractService";
 	request["params"]["subtrahend"] = 23;
 	request["params"]["minuend"] = 42;
 
-	rpcService.callProcedureReturn("subtractService", request, [](Json::Value response) {
-		std::cout << "Response: " << response["result"].asInt() << std::endl;
-		});
+	rpcService.callProcedureReturn("subtractService", request, substractcallbackDone);
 }
 
 void threadPoolTest()
@@ -125,7 +92,7 @@ void threadPoolTest()
 	auto stealThreadPool = StealThreadPool::GetInstance();
 
     auto helloProcedure = std::make_shared<ProcedureReturn>(
-        helloCallback,
+        helloworldProcedure,
         "name", Json::ValueType::stringValue
     );
 
@@ -160,53 +127,23 @@ void threadPoolTest()
     }
 }
 
-void testBaseServer()
-{
+
+void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
+    std::string name = request["name"].asString();
+    Json::Value response;
+    response["result"] = "Hello, " + name + "!";
+    done(response);
+}
+
+void RpcServerStubHelloWorldTest() {
     InitLoggers();
-    BaseServer baseServer(9800);
-    baseServer.Start();
-    system("pause");
-}
-
-void rpcserverTest()
-{
-	InitLoggers();
-	RpcServer::Ptr rpcServer = RpcServer::Create(9800);
-	rpcServer->Init();
-	rpcServer->Start();
-	system("pause");
-}
-
-void eventhanldertest()
-{
-    class A : public IDataReadyEventHandler, public std::enable_shared_from_this<A>
-    {
-    public:
-        A() {
-
-        }
-
-        /// weak_from_this() 是 std::enable_shared_from_this 的一部分，
-        /// 但它只有在对象已经被 std::shared_ptr 管理时才能正常工作。
-		/// 所以 init 函数中调用 shared_from_this() 来获取 std::shared_ptr<A> 对象。
-        void init() {
-            eventHandler.AddDataReadyHandler(weak_from_this());
-        }
-
-        void OnDataReady(std::shared_ptr<Session> sender, std::shared_ptr<RecvPacket> packet) override {
-            if (sender && packet) {
-                std::cout << "A: OnDataReady" << std::endl;
-            }
-            else {
-                std::cout << "A: OnDataReady nullptr" << std::endl;
-            }
-        }
-    public:
-        CEventHandler eventHandler;
+    RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
+    std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+      {"name", Json::ValueType::stringValue}
     };
 
-    // 使用 std::shared_ptr 来管理 A 对象
-    std::shared_ptr<A> a = std::make_shared<A>();
-	a->init();  
-    a->eventHandler.OnDataReady(nullptr, nullptr);
+    rpcServerStub->registReturn("helloworldMethod", paramsNameTypesMap, helloworldReturnService);
+    rpcServerStub->run();
+    system("pause");
+    rpcServerStub->stop();
 }

@@ -15,6 +15,7 @@
 namespace Nano {
 	namespace Rpc {
 		typedef std::function<void(Json::Value response)> RpcDoneCallback;
+
 		typedef std::function<void(Json::Value&, const RpcDoneCallback&)> ProcedureReturnCallback;
 		typedef std::function<void(Json::Value&)> ProcedureNotifyCallback;
 
@@ -31,6 +32,12 @@ namespace Nano {
 				constexpr int n = sizeof...(nameAndTypes);
 				static_assert(n % 2 == 0, "procedure must have param name and type pairs");
 				initProcedure(std::forward<ParamNameAndTypes>(nameAndTypes)...);
+			}
+
+			explicit RpcProcedure(Func&& callback, std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap) :
+				m_callback(std::forward<Func>(callback)),
+				m_standardParams(std::move(paramsNameTypesMap))
+			{
 			}
 
 			void invoke(Json::Value& request, const RpcDoneCallback& done) {
@@ -50,7 +57,7 @@ namespace Nano {
 			{
 				static_assert(std::is_same_v<std::decay_t<Type>, Json::ValueType>,
 					"param type must be Json::ValueType");
-				m_params.insert(std::make_pair(std::forward<Name>(paramName),
+				m_standardParams.insert(std::make_pair(std::forward<Name>(paramName),
 					std::forward<Type>(paramType)));
 				initProcedure(std::forward<Rest>(rest)...);
 			}
@@ -59,7 +66,7 @@ namespace Nano {
 			bool validateGeneric(Json::Value& request) const;
 		private:
 			Func m_callback;
-			std::unordered_map<std::string, Json::ValueType> m_params;	// 参数列表
+			std::unordered_map<std::string, Json::ValueType> m_standardParams;	// 参数列表
 		};
 
 		template <>
@@ -77,22 +84,25 @@ namespace Nano {
 
 		template <typename Func>
 		bool RpcProcedure<Func>::validateGeneric(Json::Value& request) const {
-			auto params = request.isMember("params") ? request["params"] : Json::Value(Json::nullValue);
-			if (params == Json::nullValue || !params.isObject()) {
+			if (!request.isMember("params")) {
 				return false;
 			}
-			for (Json::Value::const_iterator it = params.begin(); it != params.end(); ++it) {
-				std::string key = it.key().asString();  // 获取键
-				Json::Value value = *it;  // 获取对应的值		
-				if (m_params.find(key) == m_params.end()) {
-					return false;
+			else
+			{
+				Json::Value params = request["params"];
+				for (Json::Value::const_iterator it = params.begin(); it != params.end(); ++it) {
+					std::string key = it.key().asString();  // 获取键
+					Json::Value value = *it;				// 获取对应的值		
+					if (m_standardParams.find(key) == m_standardParams.end()) {
+						return false;
+					}
+					auto standradItem = m_standardParams.find(key);
+					if (standradItem->second != value.type()) {
+						return false;
+					}
 				}
-				auto standradItem = m_params.find(key);
-				if (standradItem->second != value.type()) {
-					return false;
-				}
+				return true;
 			}
-			return true;
 		}
 		typedef RpcProcedure<ProcedureReturnCallback> ProcedureReturn;
 		typedef RpcProcedure<ProcedureNotifyCallback> ProcedureNotify;

@@ -2,7 +2,7 @@
 
 namespace Nano {
 	namespace Rpc {
-		void RpcService::callProcedureReturn(std::string methodName, 
+		void RpcService::callProcedureReturn(std::string methodName,
 			Json::Value& request, 
 			const RpcDoneCallback& done)
 		{
@@ -19,6 +19,16 @@ namespace Nano {
 			if (it == m_procedureNotfiy.end()) 
 				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
 			it->second->invoke(request);
+		}
+
+		bool RpcService::hasProcedureReturn(std::string methodName)
+		{
+			return this->m_procedureReturn.find(methodName) != this->m_procedureReturn.end();
+		}
+
+		bool RpcService::hasProcedureNotify(std::string methodName)
+		{
+			return this->m_procedureNotfiy.find(methodName) != this->m_procedureNotfiy.end();
 		}
 	}
 }
