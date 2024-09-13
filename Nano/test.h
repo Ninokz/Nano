@@ -120,20 +120,6 @@ void substract()
 		});
 }
 
-void sub()
-{
-    const char* jsonStr = "{\"jsonrpc\":\"2.0\",\"method\":\"subtract\",\"params\":{\"subtrahend\":23,\"minuend\":42},\"id\":\"132\"}";
-    bool flag = false;
-    JsonRpcRequest::Ptr request = JrpcRequestGenerator::generate(jsonStr, &flag);
-
-	if (flag) {
-		std::cout << "Request: " << request->toJsonStr() << std::endl;
-	}
-	else {
-		std::cout << "Invalid JSON-RPC request" << std::endl;
-	}
-}
-
 void threadPoolTest()
 {
 	auto stealThreadPool = StealThreadPool::GetInstance();

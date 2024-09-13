@@ -7,11 +7,8 @@ namespace Nano {
 			const RpcDoneCallback& done)
 		{
 			auto it = m_procedureReturn.find(methodName);
-			if (it == m_procedureReturn.end()) {
-				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-				throw RpcException(code, detail);
-			}
+			if (it == m_procedureReturn.end()) 
+				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
 			it->second->invoke(request, done);
 		}
 
@@ -19,11 +16,8 @@ namespace Nano {
 			Json::Value& request)
 		{
 			auto it = m_procedureNotfiy.find(methodName);
-			if (it == m_procedureNotfiy.end()) {
-				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-				throw RpcException(code, detail);
-			}
+			if (it == m_procedureNotfiy.end()) 
+				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
 			it->second->invoke(request);
 		}
 	}

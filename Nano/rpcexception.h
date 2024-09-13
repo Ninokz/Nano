@@ -2,6 +2,8 @@
 #include <string>
 #include <exception>
 
+#include "jrpcproto.h"
+
 namespace Nano {
 	namespace Rpc {
         class RpcException : public std::exception
@@ -15,5 +17,12 @@ namespace Nano {
 			int m_code;
             const std::string m_detail;
         };
+
+		class RpcProtoException : public RpcException
+		{
+		public:
+			explicit RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode code) : 
+				RpcException(JrpcProto::JsonRpcError::toInt(code), JrpcProto::JsonRpcError::getErrorMessage(code)) {}
+		};
 	}
 }

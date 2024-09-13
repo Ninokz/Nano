@@ -65,22 +65,14 @@ namespace Nano {
 		template <>
 		inline void RpcProcedure<ProcedureReturnCallback>::validateRequest(Json::Value& request) const {
 			if (!validateGeneric(request))
-			{
-				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
-				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
-				throw RpcException(code, detail);
-			}
+				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
 		}
 
 		template <>
 		inline void RpcProcedure<ProcedureNotifyCallback>::validateRequest(Json::Value& request) const
 		{
 			if (!validateGeneric(request))
-			{
-				int code = JrpcProto::JsonRpcError::toInt(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
-				std::string detail = JrpcProto::JsonRpcError::getErrorMessage(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
-				throw RpcException(code, detail);
-			}
+				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::InvalidParams);
 		}
 
 		template <typename Func>
