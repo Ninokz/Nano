@@ -91,6 +91,7 @@ void substract()
 	rpcService.callProcedureReturn("subtractService", request, substractcallbackDone);
 }
 
+/// ============================= FINAL TEST ===================================
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
 	Json::Value result = "Hello, " + request["params"]["name"].asString() + "!";
@@ -125,6 +126,45 @@ void ClientStubHelloWorldTest() {
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
     system("pause");
 }
+
+
+void substractReturnService(Json::Value& request, const RpcDoneCallback& done) {
+	int subtrahend = request["params"]["subtrahend"].asInt();
+	int minuend = request["params"]["minuend"].asInt();
+	Json::Value result = minuend - subtrahend;
+	bool flag = false;
+	Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(request, result, &flag);
+	done(response->toJson());
+}
+
+void RpcServerStubSubstractTest() {
+	InitLoggers();
+	RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"subtrahend", Json::ValueType::intValue},
+	  {"minuend", Json::ValueType::intValue}
+	};
+
+	rpcServerStub->registReturn("substractMethod", paramsNameTypesMap, substractReturnService);
+	rpcServerStub->run();
+	system("pause");
+	rpcServerStub->stop();
+}
+
+void substractCallback(Json::Value response) {
+	ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "substractCallback") << "response: " << response.toStyledString() << std::endl;
+};
+
+void ClientStubSubstractTest() {
+	InitLoggers();
+	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
+	std::unordered_map<std::string, Json::Value> params = {
+	  {"subtrahend", 23},
+	  {"minuend", 42}
+	};
+    rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "substractMethod", params, substractCallback, 3000);
+}
+
 
 void threadPoolTest()
 {
