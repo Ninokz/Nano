@@ -11,6 +11,11 @@ namespace Nano {
 			this->m_callRecords.clear();
 		}
 
+		void RpcClient::Init()
+		{
+			this->m_ceventHandler->AddDataReadyHandler(weak_from_this());
+		}
+
 		bool RpcClient::callReturnProcedure(JrpcProto::JsonRpcRequest::Ptr request, const RpcDoneCallback callback)
 		{
 			// called

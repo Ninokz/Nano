@@ -16,8 +16,8 @@ namespace Nano {
 		{
 		public:
 			typedef std::shared_ptr<RpcClientStub> Ptr;
-			RpcClientStub() = default;
-			~RpcClientStub() = default;
+			RpcClientStub();
+			~RpcClientStub();
 
 			void rpcReturnCall(std::string ip, short port, std::string id, std::string methodName, std::unordered_map<std::string,Json::Value> params, const RpcDoneCallback callback, int milliseconds_timeout);
 			void asyncRpcReturnCall(std::string ip, short port, std::string id, std::string methodName, std::unordered_map<std::string, Json::Value> params, const RpcDoneCallback callback, int milliseconds_timeout);

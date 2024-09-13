@@ -68,7 +68,10 @@ namespace Nano {
 							char* buffer = nullptr;
 							int len = 0;
 							if (TransferCode::Code::encode(responseStr, &buffer, &len))
+							{
+								ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcServer") << "send " << std::endl;
 								sender->Send(buffer, len);
+							}
 							else
 								throw std::exception("encode");
 							delete[] buffer;

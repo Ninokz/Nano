@@ -2,12 +2,21 @@
 
 namespace Nano {
 	namespace Rpc {
+		RpcClientStub::RpcClientStub()
+		{
+		}
+
+		RpcClientStub::~RpcClientStub()
+		{
+		}
+
 		void RpcClientStub::rpcReturnCall(std::string ip, short port, std::string id, std::string methodName,
 			std::unordered_map<std::string, Json::Value> params,
 			const RpcDoneCallback callback, int milliseconds_timeout)
 		{
 			Nano::JrpcProto::JsonRpcRequest::Ptr request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", methodName, id, params);
 			m_rpcClient = std::make_shared<RpcClient>();
+			m_rpcClient->Init();
 			m_rpcClient->Connect(ip, port);
 			this->m_rpcClient->callReturnProcedure(request, callback);
 			std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds_timeout));
@@ -22,7 +31,7 @@ namespace Nano {
 			Nano::JrpcProto::JsonRpcRequest::Ptr request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", methodName, id, params);
 			m_rpcClient = std::make_shared<RpcClient>();
 			m_rpcClient->Connect(ip, port);
-
+			m_rpcClient->Init();
 			Nano::Concurrency::ThreadPool::GetInstance()->Commit([this, request, callback, milliseconds_timeout]() {
 				this->m_rpcClient->callReturnProcedure(request, callback);
 				std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds_timeout));
@@ -35,6 +44,7 @@ namespace Nano {
 		{
 			Nano::JrpcProto::JsonRpcRequest::Ptr request = Nano::JrpcProto::JsonRpcRequest::generateNotifyCallRequest("2.0", methodName, params);
 			m_rpcClient = std::make_shared<RpcClient>();
+			m_rpcClient->Init();
 			m_rpcClient->Connect(ip, port);
 			this->m_rpcClient->callNotifyProcedure(request);
 			m_rpcClient->Disconnect();

@@ -58,6 +58,7 @@ namespace Nano {
 					return;
 				}
 				auto& nxtPacket = this->m_sendQueue.front();
+				ASYNC_LOG_DEBUG(ASYNC_LOG_NAME("STD_LOGGER"), "Session") << "send" << std::endl;
 				boost::asio::async_write(
 					this->m_socket,
 					boost::asio::buffer(nxtPacket->m_data, nxtPacket->m_size),
