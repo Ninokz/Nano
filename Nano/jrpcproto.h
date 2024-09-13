@@ -102,6 +102,8 @@ namespace Nano {
 			static std::string getErrorMessage(JsonRpcErrorCode code);
 
 			static int toInt(JsonRpcErrorCode code);
+
+			static JsonRpcError::JsonRpcErrorCode fromInt(int code);
 		private:
 			Json::Value m_rpcError;
 		};
@@ -111,8 +113,9 @@ namespace Nano {
 			typedef std::shared_ptr<JsonRpcResponse> Ptr;
 		public:
 			JsonRpcResponse(std::string jsonrpcVersion, std::string requestId, const Json::Value result);
-			JsonRpcResponse(std::string jsonrpcVersion, std::string requestId,const JsonRpcError& error);
+			JsonRpcResponse(std::string jsonrpcVersion, const JsonRpcError& error);
 			JsonRpcResponse(const Json::Value& response);
+
 
 			Json::Value toJson() const;
 			std::string toJsonStr() const;
@@ -128,7 +131,7 @@ namespace Nano {
 			static JsonRpcResponse::Ptr generate(const std::string& jsonStr, bool* flag);
 			static JsonRpcResponse::Ptr generate(const Json::Value& response, bool* flag);
 			static JsonRpcResponse::Ptr generate(const Json::Value& request, const Json::Value result, bool* flag);
-			static JsonRpcResponse::Ptr generate(const Json::Value& request, const JsonRpcError& error, bool* flag);
+			static JsonRpcResponse::Ptr generate(const std::string jsonrpcVersion, const JsonRpcError& error);
 			static bool fieldsExist(const Json::Value& rpcresponseJson);
 		private:
 			Json::Value m_rpcResponse;

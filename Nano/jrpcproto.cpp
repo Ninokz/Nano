@@ -231,6 +231,21 @@ namespace Nano {
 		{
 			return static_cast<int>(code);
 		}
+
+		JsonRpcError::JsonRpcErrorCode JsonRpcError::fromInt(int code)
+		{
+			switch (code) {
+#define XX(name) case static_cast<int>(JsonRpcErrorCode::name): return JsonRpcErrorCode::name;
+				XX(ParseError)
+					XX(InvalidRequest)
+					XX(MethodNotFound)
+					XX(InvalidParams)
+					XX(InternalError)
+#undef XX
+			default:
+				return JsonRpcErrorCode::InternalError;
+			}
+		}
 	
 		JsonRpcResponse::JsonRpcResponse(std::string jsonrpcVersion, std::string requestId,const Json::Value result)
 		{
@@ -239,11 +254,11 @@ namespace Nano {
 			m_rpcResponse["id"] = requestId;
 		}
 
-		JsonRpcResponse::JsonRpcResponse(std::string jsonrpcVersion, std::string requestId,const JsonRpcError& error)
+		JsonRpcResponse::JsonRpcResponse(std::string jsonrpcVersion, const JsonRpcError& error)
 		{
 			m_rpcResponse["jsonrpc"] = jsonrpcVersion;
 			m_rpcResponse["error"] = error.toJson();
-			m_rpcResponse["id"] = requestId;
+			m_rpcResponse["id"] = "";
 		}
 
 		JsonRpcResponse::JsonRpcResponse(const Json::Value& response) : m_rpcResponse(response)
@@ -296,92 +311,57 @@ namespace Nano {
 
 		JsonRpcResponse::Ptr JsonRpcResponse::generate(const std::string& jsonStr, bool* flag)
 		{
-			try {
-				Json::CharReaderBuilder readerBuilder;
-				Json::Value root;
-				std::string errs;
-				std::istringstream iss(jsonStr);
-				if (!Json::parseFromStream(readerBuilder, iss, &root, &errs)) {
-					*flag = false;
-					return nullptr;
-				}
-				if (!JsonRpcResponse::fieldsExist(root))
-				{
-					*flag = false;
-					return nullptr;
-				}
-				*flag = true;
-				return  std::make_shared<JsonRpcResponse>(root);
-			}
-			catch (const std::exception& e)
-			{
-				std::cerr << e.what() << std::endl;
+			Json::CharReaderBuilder readerBuilder;
+			Json::Value root;
+			std::string errs;
+			std::istringstream iss(jsonStr);
+			if (!Json::parseFromStream(readerBuilder, iss, &root, &errs)) {
 				*flag = false;
 				return nullptr;
+			}
+			if (!JsonRpcResponse::fieldsExist(root))
+			{
+				*flag = false;
+				return nullptr;
+			}
+			else
+			{
+				*flag = true;
+				return  std::make_shared<JsonRpcResponse>(root);
 			}
 		}
 
 		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& response, bool* flag)
 		{
-			try {
-				if (!JsonRpcResponse::fieldsExist(response))
-				{
-					*flag = false;
-					return nullptr;
-				}
-				*flag = true;
-				return std::make_shared<JsonRpcResponse>(response);
-			}
-			catch (const std::exception& e)
+			if (!JsonRpcResponse::fieldsExist(response))
 			{
-				std::cerr << e.what() << std::endl;
 				*flag = false;
 				return nullptr;
+			}
+			else
+			{
+				*flag = true;
+				return std::make_shared<JsonRpcResponse>(response);
 			}
 		}
 
 		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& request, const Json::Value result, bool* flag)
 		{
-			try {
-				if (!JsonRpcRequest::fieldsExist(request))
-				{
-					*flag = false;
-					return nullptr;
-				}
-				else
-				{
-					*flag = true;
-					return std::make_shared<JsonRpcResponse>(request["jsonrpc"].asString(), request["id"].asString(), result);
-				}
-			}
-			catch (const std::exception& e)
+			if (!JsonRpcRequest::fieldsExist(request))
 			{
-				std::cerr << e.what() << std::endl;
 				*flag = false;
 				return nullptr;
+			}
+			else
+			{
+				*flag = true;
+				return std::make_shared<JsonRpcResponse>(request["jsonrpc"].asString(), request["id"].asString(), result);
 			}
 		}
 
-		JsonRpcResponse::Ptr JsonRpcResponse::generate(const Json::Value& request, const JsonRpcError& error, bool* flag)
+		JsonRpcResponse::Ptr JsonRpcResponse::generate(const std::string jsonrpcVersion, const JsonRpcError& error)
 		{
-			try {
-				if (!JsonRpcRequest::fieldsExist(request))
-				{
-					*flag = false;
-					return nullptr;
-				}
-				else
-				{
-					*flag = true;
-					return std::make_shared<JsonRpcResponse>(request["jsonrpc"].asString(), request["id"].asString(), error);
-				}
-			}
-			catch (const std::exception& e)
-			{
-				std::cerr << e.what() << std::endl;
-				*flag = false;
-				return nullptr;
-			}
+			return std::make_shared<JsonRpcResponse>(jsonrpcVersion, error);
 		}
 
 		bool JsonRpcResponse::fieldsExist(const Json::Value& rpcresponseJson)

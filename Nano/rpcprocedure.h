@@ -43,7 +43,6 @@ namespace Nano {
 
 			void invoke(Json::Value& request, const RpcDoneCallback& done) {
 				validateRequest(request);
-				ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcProcedure") << "invoke" << std::endl;
 				m_callback(request, done);
 			}
 
@@ -64,8 +63,8 @@ namespace Nano {
 				initProcedure(std::forward<Rest>(rest)...);
 			}
 
-			void validateRequest(Json::Value& request) const;
-			bool validateGeneric(Json::Value& request) const;
+			inline void validateRequest(Json::Value& request) const;
+			inline bool validateGeneric(Json::Value& request) const;
 		private:
 			Func m_callback;
 			std::unordered_map<std::string, Json::ValueType> m_standardParams;	// 参数列表
@@ -86,9 +85,7 @@ namespace Nano {
 
 		template <typename Func>
 		bool RpcProcedure<Func>::validateGeneric(Json::Value& request) const {
-			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcProcedure::validateGeneric")<< request.toStyledString() <<std::endl;
 			if (!request.isMember("params")) {
-				ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcProcedure::validateGeneric") << "nomember params" << std::endl;
 				return false;
 			}
 			else
@@ -98,12 +95,10 @@ namespace Nano {
 					std::string key = it.key().asString();  // 获取键
 					Json::Value value = *it;				// 获取对应的值		
 					if (m_standardParams.find(key) == m_standardParams.end()) {
-						ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcProcedure::validateGeneric") << "key is error" << std::endl;
 						return false;
 					}
 					auto standradItem = m_standardParams.find(key);
 					if (standradItem->second != value.type()) {
-						ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcProcedure::validateGeneric") << "type is error" << std::endl;
 						return false;
 					}
 				}

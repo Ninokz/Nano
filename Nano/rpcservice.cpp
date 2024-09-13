@@ -6,11 +6,10 @@ namespace Nano {
 			Json::Value& request, 
 			const RpcDoneCallback& done)
 		{
-			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcService") << "search: " << methodName << std::endl;
 			auto it = m_procedureReturn.find(methodName);
 			if (it == m_procedureReturn.end()) 
 				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
-			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcService") << "ready invoke: " << methodName << std::endl;
+			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcService") << "invoke: "<< methodName << std::endl;
 			it->second->invoke(request, done);
 		}
 
@@ -20,6 +19,7 @@ namespace Nano {
 			auto it = m_procedureNotfiy.find(methodName);
 			if (it == m_procedureNotfiy.end()) 
 				throw RpcProtoException(JrpcProto::JsonRpcError::JsonRpcErrorCode::MethodNotFound);
+			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "RpcService") << "invoke: " << methodName << std::endl;
 			it->second->invoke(request);
 		}
 
