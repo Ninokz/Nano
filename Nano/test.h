@@ -113,7 +113,7 @@ void RpcServerStubHelloWorldTest() {
 }
 
 void helloworldCallback(Json::Value response) {
-
+    ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "helloworldCallback") << "response: " << response.toStyledString() << std::endl;
 };
 
 void ClientStubHelloWorldTest() {
@@ -123,6 +123,7 @@ void ClientStubHelloWorldTest() {
 	  {"name", "World"}
 	};
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "helloworldMethod", params, helloworldCallback, 3000);
+    system("pause");
 }
 
 void threadPoolTest()
