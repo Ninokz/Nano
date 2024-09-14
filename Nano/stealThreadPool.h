@@ -51,7 +51,7 @@ namespace Nano {
 			std::atomic<int>  m_atm_index;
 
 			const int m_fail_count_limit = 10;
-			const long m_sleep_time = 100;
+			const int m_max_backoff_time = 200;
 		};
 	}
 }

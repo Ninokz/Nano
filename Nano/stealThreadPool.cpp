@@ -29,41 +29,21 @@ namespace Nano {
 		void StealThreadPool::worker_thread(int index)
 		{
 			int fail_count = 0;
+			int backoff_time_ms = 1;
 			while (!m_done)
 			{
-				/// 从其他线程窃取任务
 				FunctionWrapper wrapper;
-				/// 忙等
-				/*bool pop_res = m_thread_work_ques[index].try_pop(wrapper);
-				if (pop_res) {
-					wrapper();
-					continue;
-				}
-				bool steal_res = false;
-				for (int i = 0; i < m_thread_work_ques.size(); i++) {
-					if (i == index) {
-						continue;
-					}
-					steal_res = m_thread_work_ques[i].try_steal(wrapper);
-					if (steal_res) {
-						wrapper();
-						break;
-					}
-				}
-				if (steal_res) {
-					continue;
-				}
-				std::this_thread::yield();*/
-
-				/// 优化忙等 - 引入退避策略
 				if (m_thread_work_ques[index].try_pop(wrapper) || try_steal_from_others(index, wrapper)) {
 					fail_count = 0;
+					backoff_time_ms = 1; // 成功获取任务后，重置退避时间
 					wrapper();
 				}
 				else {
 					++fail_count;
 					if (fail_count > m_fail_count_limit) {
-						std::this_thread::sleep_for(std::chrono::milliseconds(m_sleep_time));
+						std::this_thread::sleep_for(std::chrono::milliseconds(backoff_time_ms));
+						// 指数退避策略，最多到 m_max_backoff_time 上限
+						backoff_time_ms = std::min(backoff_time_ms * 2, m_max_backoff_time);
 						fail_count = 0;
 					}
 					else {
