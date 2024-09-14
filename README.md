@@ -11,6 +11,7 @@
 ## Dependency.
 
 - [Boost 1.85.0](https://www.boost.org/users/history/version_1_85_0.html)
+- [jsoncpp 1.9.5](https://github.com/open-source-parsers/jsoncpp)
 
 ## Use Example.
 
@@ -60,8 +61,8 @@ RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
 ## TODO.
 
 - [ ] Generator for Service and Request
-- [ ] Env model
-- [ ] Log model
+- [ ] Env model Use
+- [ ] Log model Use
 - [ ] More Test
 
 ## Ref.

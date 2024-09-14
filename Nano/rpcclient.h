@@ -20,6 +20,7 @@
 
 #include "jrpcproto.h"
 #include "code.h"
+#include "rpcexception.h"
 
 #include "Log.h"
 
@@ -34,10 +35,7 @@ namespace Nano {
 			public:
 				typedef std::shared_ptr<RpcCallRecord> Ptr;
 				RpcCallRecord() = delete;
-				RpcCallRecord(JrpcProto::JsonRpcRequest::Ptr request) : request(request), response(nullptr)
-				{
-					timestamp = std::time(nullptr);
-				}
+				RpcCallRecord(JrpcProto::JsonRpcRequest::Ptr request) : request(request), response(nullptr), timestamp(std::time(nullptr)) {}
 				~RpcCallRecord() = default;
 			public:
 				time_t timestamp;
@@ -48,13 +46,11 @@ namespace Nano {
 			typedef std::unordered_map<std::string, std::pair<RpcCallRecord::Ptr, RpcDoneCallback>> RpcCallRecordMap;
 		public:
 			RpcClient();
+
 			virtual ~RpcClient();
-
 			void Init();
-
 			bool callReturnProcedure(JrpcProto::JsonRpcRequest::Ptr request, const RpcDoneCallback callback);
 			bool callNotifyProcedure(JrpcProto::JsonRpcRequest::Ptr request);
-
 			RpcCallRecord::Ptr getReturnCallRecord(const std::string& id);
 		private:
 			void OnDataReady(std::shared_ptr<Communication::Session> sender, std::shared_ptr<Communication::RecvPacket> packet) override;

@@ -74,7 +74,6 @@ namespace Nano {
 			std::string responseJsonStr = TransferCode::Code::decode(packet->m_data, packet->m_size);
 			bool generateResult = false;
 			Nano::JrpcProto::JsonRpcResponse::Ptr response = Nano::JrpcProto::JsonRpcResponse::generate(responseJsonStr, &generateResult);
-
 			if (generateResult)
 			{
 				auto it = m_callRecords.find(response->getId());
@@ -83,6 +82,15 @@ namespace Nano {
 					it->second.first->response = response;
 					it->second.second(response->getResult());
 				}
+				else
+				{
+					/// 未能查找到之前的请求记录 - 暂时先用这个异常
+					throw Nano::Rpc::RpcProtoException(Nano::JrpcProto::JsonRpcError::JsonRpcErrorCode::InternalError);
+				}
+			}
+			else
+			{
+				throw Nano::Rpc::RpcProtoException(Nano::JrpcProto::JsonRpcError::JsonRpcErrorCode::ParseError);
 			}
 		}
 	}

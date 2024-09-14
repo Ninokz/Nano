@@ -1,3 +1,8 @@
+///
+/// JSON-RPC 2.0 Specification
+///	https://www.jsonrpc.org/specification
+///
+
 #pragma once
 #include <string>
 #include <iostream>
@@ -117,6 +122,7 @@ namespace Nano {
 			JsonRpcResponse(const Json::Value& response);
 
 			Json::Value toJson() const;
+
 			std::string toJsonStr() const;
 
 			std::string getId() const;

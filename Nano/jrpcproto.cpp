@@ -115,7 +115,6 @@ namespace Nano {
 
 				std::istringstream iss(jsonStr);
 				if (!Json::parseFromStream(readerBuilder, iss, &root, &errs)) {
-					std::cerr << "Failed to parse JSON: " << errs << std::endl;
 					*flag = false;
 					return nullptr;
 				}
@@ -130,9 +129,8 @@ namespace Nano {
 					return std::make_shared<JsonRpcRequest>(root);
 				}
 			}
-			catch (const std::exception& e)
+			catch (const std::exception&)
 			{
-				std::cerr << e.what() << std::endl;
 				*flag = false;
 				return nullptr;
 			}
@@ -141,16 +139,16 @@ namespace Nano {
 		bool JsonRpcRequest::fieldsExist(const Json::Value& rpcRequestJson)
 		{
 			if (!rpcRequestJson.isMember("jsonrpc") || !rpcRequestJson["jsonrpc"].isString()) {
-				std::cerr << "Invalid or missing 'jsonrpc' field." << std::endl;
+				//std::cerr << "Invalid or missing 'jsonrpc' field." << std::endl;
 				return false;
 			}
 			if (!rpcRequestJson.isMember("method") || !rpcRequestJson["method"].isString()) {
-				std::cerr << "Invalid or missing 'method' field." << std::endl;
+				//std::cerr << "Invalid or missing 'method' field." << std::endl;
 				return false;
 			}
 			if (!rpcRequestJson.isMember("params") || !rpcRequestJson["params"].isObject())
 			{
-				std::cerr << "Invalid or missing 'params' field." << std::endl;
+				//std::cerr << "Invalid or missing 'params' field." << std::endl;
 				return false;
 			}
 			return true;

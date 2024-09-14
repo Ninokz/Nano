@@ -90,6 +90,42 @@ void substract()
 	rpcService.callProcedureReturn("subtractService", request, substractcallbackDone);
 }
 
+void threadPoolTest()
+{
+	auto stealThreadPool = StealThreadPool::GetInstance();
+	auto helloProcedure = std::make_shared<ProcedureReturn>(
+		helloworldProcedure,
+		"name", Json::ValueType::stringValue
+	);
+	auto request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", "helloService", "1", { {"name", "World"} });
+	Json::Value v = request->toJson();
+	helloProcedure->invoke(v, hellocallbackDone);
+
+	// 使用 lambda 函数提交任务到线程池
+  /*  auto future = stealThreadPool->submit([helloProcedure, request]() mutable {
+		helloProcedure->invoke(request->toJson(), [](Json::Value response) {
+			std::cout << "Response: " << response["result"].asString() << std::endl;
+		});
+	});*/
+
+	Nano::Concurrency::StealThreadPool::GetInstance()->submit([request, &helloProcedure]() {
+		Json::Value v = request->toJson();
+		helloProcedure->invoke(v, [](Json::Value response) {
+			std::cout << "Response: " << response["result"].asString() << std::endl;
+			});
+		});
+
+	// 如果您确实想使用 std::bind，可以这样做：
+	//auto future = stealThreadPool->submit(std::bind(
+	//    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
+	//    helloProcedure.get(),
+	//    std::ref(request),
+	//    [](const Json::Value& response) {
+	//        std::cout << "Response: " << response["result"].asString() << std::endl;
+	//    }
+	//));
+}
+
 /// ============================= FINAL TEST ===================================
 
 void helloworldReturnService(Json::Value& request, const RpcDoneCallback& done) {
@@ -163,38 +199,29 @@ void ClientStubSubstractTest() {
 	rpcClientStub->rpcReturnCall("127.0.0.1", 9800, "1", "substractMethod", params, substractCallback, 3000);
 }
 
-void threadPoolTest()
+void helloNotifyService(Json::Value& request)
 {
-	auto stealThreadPool = StealThreadPool::GetInstance();
-	auto helloProcedure = std::make_shared<ProcedureReturn>(
-		helloworldProcedure,
-		"name", Json::ValueType::stringValue
-	);
-	auto request = Nano::JrpcProto::JsonRpcRequest::generateReturnCallRequest("2.0", "helloService", "1", { {"name", "World"} });
-	Json::Value v = request->toJson();
-	helloProcedure->invoke(v, hellocallbackDone);
+	ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "helloNotifyService") << "notify: " << request.toStyledString() << std::endl;
+}
 
-	// 使用 lambda 函数提交任务到线程池
-  /*  auto future = stealThreadPool->submit([helloProcedure, request]() mutable {
-		helloProcedure->invoke(request->toJson(), [](Json::Value response) {
-			std::cout << "Response: " << response["result"].asString() << std::endl;
-		});
-	});*/
+void RpcServerStubhelloNotifyTest() {
+	InitLoggers();
+	RpcServerStub::Ptr rpcServerStub = std::make_shared<RpcServerStub>(9800);
+	std::unordered_map<std::string, Json::ValueType> paramsNameTypesMap = {
+	  {"notify", Json::ValueType::stringValue}
+	};
+	rpcServerStub->registNotify("helloNotifyMethod", paramsNameTypesMap, helloNotifyService);
+	rpcServerStub->run();
+	system("pause");
+	rpcServerStub->stop();
+}
 
-	Nano::Concurrency::StealThreadPool::GetInstance()->submit([request, &helloProcedure]() {
-		Json::Value v = request->toJson();
-		helloProcedure->invoke(v, [](Json::Value response) {
-			std::cout << "Response: " << response["result"].asString() << std::endl;
-			});
-		});
-
-	// 如果您确实想使用 std::bind，可以这样做：
-	//auto future = stealThreadPool->submit(std::bind(
-	//    static_cast<void (ProcedureReturn::*)(Json::Value&, const RpcDoneCallback&)>(&ProcedureReturn::invoke),
-	//    helloProcedure.get(),
-	//    std::ref(request),
-	//    [](const Json::Value& response) {
-	//        std::cout << "Response: " << response["result"].asString() << std::endl;
-	//    }
-	//));
+void ClientStubHelloWorldTest() {
+	InitLoggers();
+	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
+	std::unordered_map<std::string, Json::Value> params = {
+	  {"notify", "World"}
+	};
+	rpcClientStub->rpcNotifyCall("127.0.0.1", 9800, "helloworldMethod", params);
+	system("pause");
 }
