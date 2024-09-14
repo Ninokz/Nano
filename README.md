@@ -8,6 +8,8 @@
 
 框架底层网络库采用 [Boost](https://www.boost.org/users/history/version_1_85_0.html) 的 `Asio` 库，其支持多平台，理论上`Nano Frameworks` 框架也能在 Linux 上编译，只不过目前建立的是一个 Visual Studio 的工程，此外这个框架还支持异步日志、多种类型线程池选用等常见的功能。
 
+`BaseServer`设计的核心部分主要是一个连接监听器`acceptor`和一个`IOServicePool`，前者用于监听连接请求构建`session`，将连接的`socket`部署到`session`的`io_context`后再将`io_context`注册到后者中，后者`IOServicePool`本质上是一个线程池，只不过每个线程管理不同`session`的`io_context`，并发处理不同`io_context`读写事件，`RPCServer`设计的核心部分主要是一个线程池用于执行`RPCClient`发起的远程调用请求。
+
 ## Dependency.
 
 - [Boost 1.85.0](https://www.boost.org/users/history/version_1_85_0.html)
