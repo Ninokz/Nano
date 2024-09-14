@@ -4,7 +4,9 @@
 namespace Nano {
 	namespace Concurrency {
 		StealThreadPool::StealThreadPool() :
-			m_done(false), m_joiner(m_threads), m_atm_index(0)
+			m_done(false), m_joiner(m_threads), m_atm_index(0), 
+			m_fail_count_limit(Const::STEAL_THREAD_POOL_FAIL_COUNT_LIMIT), 
+			m_max_backoff_time(Const::STEAL_THREAD_POOL_MAX_BACKOFF_TIME)
 		{
 			unsigned const thread_count = Const::THREAD_POOL_SIZE;
 			try
@@ -64,7 +66,6 @@ namespace Nano {
 			{
 				m_threads[i].join();
 			}
-			ASYNC_LOG_INFO(ASYNC_LOG_NAME("STD_LOGGER"), "StealThreadPool") << "exit" << std::endl;
 		}
 
 		bool StealThreadPool::try_steal_from_others(int selfIndex, FunctionWrapper& wrapper)

@@ -33,7 +33,7 @@ namespace Nano {
 			std::future<typename std::result_of<FunctionType()>::type>
 				submit(FunctionType f)
 			{
-				int index = (m_atm_index.load() + 1) % m_thread_work_ques.size();
+				int index = (static_cast<unsigned long long>(m_atm_index.load()) + 1) % m_thread_work_ques.size();
 				m_atm_index.store(index);
 				typedef typename std::result_of<FunctionType()>::type result_type;
 				std::packaged_task<result_type()> task(std::move(f));
@@ -50,8 +50,8 @@ namespace Nano {
 			JoinThreads m_joiner;
 			std::atomic<int>  m_atm_index;
 
-			const int m_fail_count_limit = 10;
-			const int m_max_backoff_time = 200;
+			const int m_fail_count_limit;
+			const int m_max_backoff_time;
 		};
 	}
 }

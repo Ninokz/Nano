@@ -21,6 +21,8 @@ namespace Nano {
 				std::shared_ptr<T> data;
 				std::unique_ptr<node> next;
 				node* prev;
+				
+				node() : prev(nullptr) {}
 			};
 
 			std::mutex m_head_mutex;
@@ -41,6 +43,7 @@ namespace Nano {
 			{
 				std::unique_ptr<node> old_head = std::move(m_head);
 				m_head = std::move(old_head->next);
+				m_count.fetch_sub(1);
 				return old_head;
 			}
 
@@ -117,9 +120,9 @@ namespace Nano {
 				if (m_bstop.load()) {
 					return false;
 				}
-
 				value = std::move(*m_head->data);
 				m_head = std::move(m_head->next);
+				m_count.fetch_sub(1);
 				return true;
 			}
 
@@ -177,7 +180,7 @@ namespace Nano {
 
 					m_tail = new_tail;
 				}
-
+				m_count.fetch_add(1);
 				m_data_cond.notify_one();
 			}
 
@@ -193,6 +196,7 @@ namespace Nano {
 				value = std::move(*(prev_node->data));
 				m_tail = prev_node;
 				m_tail->next = nullptr;
+				m_count.fetch_sub(1);
 				return true;
 			}
 		};

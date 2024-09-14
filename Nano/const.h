@@ -9,5 +9,8 @@ namespace Nano {
 		const int MAS_SESSION = 64;
 
 		const int THREAD_POOL_SIZE = 4;
+
+		const int STEAL_THREAD_POOL_FAIL_COUNT_LIMIT = 10;
+		const int STEAL_THREAD_POOL_MAX_BACKOFF_TIME = 200;
 	}
 }
