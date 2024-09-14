@@ -216,7 +216,7 @@ void RpcServerStubhelloNotifyTest() {
 	rpcServerStub->stop();
 }
 
-void ClientStubHelloWorldTest() {
+void ClientStubhelloNotifyTest() {
 	InitLoggers();
 	RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
 	std::unordered_map<std::string, Json::Value> params = {

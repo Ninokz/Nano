@@ -1,6 +1,6 @@
 ﻿#include "test.h"
 
 int main() {
-	RpcServerStubSubstractTest();
+	RpcServerStubhelloNotifyTest();
 	return 0;
 }
