@@ -60,7 +60,6 @@ RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
 
 ## TODO.
 
-- [ ] Generator for Service and Request
 - [ ] Env model Use
 - [ ] Log model Use
 - [ ] More Test
