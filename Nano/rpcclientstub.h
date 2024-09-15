@@ -7,7 +7,7 @@
 
 #include "nocopyable.h"
 #include "rpcclient.h"
-#include "threadpool.h"
+#include "simplethreadpool.h"
 
 namespace Nano {
 	namespace Rpc {
