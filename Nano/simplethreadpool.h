@@ -2,22 +2,20 @@
 #include <atomic>
 #include <condition_variable>
 #include <future>
-#include <iostream>
 #include <mutex>
 #include <queue>
 #include <thread>
 #include <vector>
 #include <functional>
-#include <type_traits>
-#include "nocopyable.h"
 
+#include "nocopyable.h"
 #include "singleton.h"
 
 namespace Nano {
 	namespace Concurrency {
-		class ThreadPool : public Singleton<ThreadPool>, public Noncopyable
+		class SimpleThreadPool : public Singleton<SimpleThreadPool>, public Noncopyable
 		{
-			friend class Singleton<ThreadPool>;
+			friend class Singleton<SimpleThreadPool>;
 			using Task = std::packaged_task<void()>;
 		private:
 			std::atomic_int m_threadNum;
@@ -28,15 +26,15 @@ namespace Nano {
 			std::mutex  m_cv_mt;
 			std::condition_variable m_cv_lock;
 		private:
-			ThreadPool(int poolSize = std::thread::hardware_concurrency());
+			SimpleThreadPool(int poolSize = std::thread::hardware_concurrency());
 			void Start();
 			void Stop();
 
-			ThreadPool(const ThreadPool&) = delete;
-			ThreadPool& operator=(const ThreadPool&) = delete;
-			ThreadPool(ThreadPool&&) = delete;
+			SimpleThreadPool(const SimpleThreadPool&) = delete;
+			SimpleThreadPool& operator=(const SimpleThreadPool&) = delete;
+			SimpleThreadPool(SimpleThreadPool&&) = delete;
 		public:
-			virtual ~ThreadPool();
+			virtual ~SimpleThreadPool();
 
 			template<class F, class... Args>
 			auto Commit(F&& f, Args&&... args) ->

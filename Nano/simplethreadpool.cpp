@@ -1,8 +1,8 @@
-#include "threadpool.h"
+#include "simplethreadpool.h"
 
 namespace Nano {
 	namespace Concurrency {
-		ThreadPool::ThreadPool(int poolSize) : m_threadNum(poolSize), m_stop(false)
+		SimpleThreadPool::SimpleThreadPool(int poolSize) : m_threadNum(poolSize), m_stop(false)
 		{
 			if (poolSize <= 1)
 				m_threadNum = 2;
@@ -11,7 +11,7 @@ namespace Nano {
 			Start();
 		}
 
-		void ThreadPool::Start()
+		void SimpleThreadPool::Start()
 		{
 			for (int i = 0; i < m_threadNum; i++)
 			{
@@ -40,7 +40,7 @@ namespace Nano {
 			}
 		}
 
-		void ThreadPool::Stop()
+		void SimpleThreadPool::Stop()
 		{
 			m_stop.store(true);
 			m_cv_lock.notify_all();
@@ -51,7 +51,7 @@ namespace Nano {
 			}
 		}
 
-		ThreadPool::~ThreadPool()
+		SimpleThreadPool::~SimpleThreadPool()
 		{
 			Stop();
 		}

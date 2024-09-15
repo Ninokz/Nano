@@ -156,7 +156,7 @@
     <ClCompile Include="session.cpp" />
     <ClCompile Include="sessionmanager.cpp" />
     <ClCompile Include="stealThreadPool.cpp" />
-    <ClCompile Include="threadpool.cpp" />
+    <ClCompile Include="simplethreadpool.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -191,7 +191,7 @@
     <ClInclude Include="singleton.h" />
     <ClInclude Include="stealThreadPool.h" />
     <ClInclude Include="test.h" />
-    <ClInclude Include="threadpool.h" />
+    <ClInclude Include="simplethreadpool.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

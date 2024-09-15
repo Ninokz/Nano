@@ -2,7 +2,7 @@
 
 ## Intro.
 
-`Nano Frameworks` 是使用 `C++ 14` 编写的基于 `Boos.Asio` 异步 RPC 框架，端间采用 `json` 进行 `request` 与 `response` 传输，消息传输协议采用 [JSON-RPC 2.0](https://www.jsonrpc.org/specification) 规范. 框架结构如下图
+`Nano Frameworks` 是使用 `C++ 14` 编写的基于 `Boos.Asio` 异步 RPC 框架，通信数据传输用了自己简单在`Boos.Asio`上封装的网络库，端间采用 `json` 进行 `request` 与 `response` 传输，消息传输协议采用 [JSON-RPC 2.0](https://www.jsonrpc.org/specification) 规范. 框架结构如下图
 
 ![](https://observer-storage.oss-cn-chengdu.aliyuncs.com/github/Nano/nano-rpcdesign.png)
 
@@ -68,6 +68,7 @@ RpcClientStub::Ptr rpcClientStub = std::make_shared<RpcClientStub>();
 
 ## Ref.
 
+- [NBLib](https://github.com/Ninokz/NBlib)
 - [libjson-rpc-cpp](https://github.com/cinemast/libjson-rpc-cpp): C++ framework for json-rpc
 - [jrpc](https://github.com/guangqianpeng/jrpc): JSON-RPC implementation in C++17
 - [llfc blog](https://www.llfc.club/category?catid=225RaiVNI8pFDD5L4m807g7ZwmF) 

@@ -32,12 +32,12 @@ namespace Nano {
 			m_rpcClient = std::make_shared<RpcClient>();
 			m_rpcClient->Connect(ip, port);
 			m_rpcClient->Init();
-			Nano::Concurrency::ThreadPool::GetInstance()->Commit([this, request, callback, milliseconds_timeout]() {
+			Nano::Concurrency::SimpleThreadPool::GetInstance()->Commit([this, request, callback, milliseconds_timeout]() {
 				this->m_rpcClient->callReturnProcedure(request, callback);
 				std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds_timeout));
 				m_rpcClient->Disconnect();
 				m_rpcClient.reset();
-				});
+			});
 		}
 
 		void RpcClientStub::rpcNotifyCall(std::string ip, short port, std::string methodName, std::unordered_map<std::string, Json::Value> params)
@@ -57,7 +57,7 @@ namespace Nano {
 			m_rpcClient = std::make_shared<RpcClient>();
 			m_rpcClient->Connect(ip, port);
 
-			Nano::Concurrency::ThreadPool::GetInstance()->Commit([this, request]() {
+			Nano::Concurrency::SimpleThreadPool::GetInstance()->Commit([this, request]() {
 				this->m_rpcClient->callNotifyProcedure(request);
 				m_rpcClient->Disconnect();
 				m_rpcClient.reset();

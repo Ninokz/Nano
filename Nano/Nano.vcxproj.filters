@@ -108,7 +108,7 @@
     <ClCompile Include="mutex.cpp">
       <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
-    <ClCompile Include="threadpool.cpp">
+    <ClCompile Include="simplethreadpool.cpp">
       <Filter>源文件\su\concurrency</Filter>
     </ClCompile>
     <ClCompile Include="parrallenThreadPool.cpp">
@@ -191,7 +191,7 @@
     <ClInclude Include="concurrentqueue.h">
       <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
-    <ClInclude Include="threadpool.h">
+    <ClInclude Include="simplethreadpool.h">
       <Filter>头文件\su\concurrency</Filter>
     </ClInclude>
     <ClInclude Include="mutex.h">
